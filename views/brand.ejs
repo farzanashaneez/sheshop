@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/admin_panel.css">
+    <title>SheShop</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <div c><img src="/images/logo.png" class="centered-image" alt="SheShop"></div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/admin/dashboard"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+            <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
+            <li><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
+            <li ><a href="/admin/Categories"><i class='bx bx-category-alt'></i>Categories</a></li>
+            <li class="active"><a href="/admin/brands"><i class='bx bx-store-alt' ></i>Brands</a></li>        
+             <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/reports"><i class='bx bxs-report'></i>Reports</a></li>
+            <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
+            
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="/logout" class="logout">
+                    <i class='bx bx-log-out-circle'></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form style="display:none" action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="profile">
+                <h4>f</h4>
+                <h4>farzana shaneez</h4>
+            </a>
+
+        </nav>
+
+        <!-- End of Navbar -->
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <ul class="breadcrumb">
+                        <li><a href="#">
+                                admin
+                            </a></li>
+                       <li>/</li> 
+                        <li><a href="#" class="active">Brands</a></li>
+                    </ul>
+                </div>
+               
+            </div>
+            <div class="bottom-data">
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Brands</h3>
+                        <!-- <i class='bx bx-filter'></i> -->
+                        <i id="plusIconbrand"class='bx bx-plus'></i>
+                    </div>
+                   
+                    <table id="brandTable">
+                        <tr>
+                              <th>Brand Image</th>
+                             
+                              <th>Brand Name</th>
+                          </tr>
+                          <% brands.forEach(brand => { %>
+                          <tr class="brandRow" data-id="<%= brand._id %>">
+                              <td><img src="/uploads/product-images/<%=brand.brandimage%>"></td>
+                             
+                              <td><%= brand.brandname %></td>
+                          </tr>
+                          <% });%>
+                         
+                      </table>
+                </div>
+            </div>
+           
+        </main>
+
+    </div>
+
+    <script src="/javascript/admin_panel.js"></script>
+    <script>
+        const plusIconbrand = document.getElementById("plusIconbrand");
+if (plusIconbrand != null)
+  plusIconbrand.addEventListener("click", function () {
+    window.location.href = `/admin/brands/add`;
+
+  });
+  
+  const rows = document.querySelectorAll(".brandRow");
+  console.log(rows);
+  if (rows.length > 0) {
+   
+    rows.forEach((row, index) => {
+      console.log(row, index);
+      row.addEventListener("click", () => {
+        const brandId = row.getAttribute('data-id');
+        window.location.href = `/admin/brands/update/${brandId}`;
+      
+      });
+    });
+
+
+  }
+    </script>
+    
+
+</body>
+
+</html>

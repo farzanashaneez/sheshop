@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang=“en”>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SheShop</title>
+    <meta name="keywords" content="HTML5 Template">
+    <!-- <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes"> -->
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/skins/skin-demo-9.css">
+    <link rel="stylesheet" href="/assets/css/demos/demo-9.css">
+    <style>
+        .borderinvoice {
+    border: 1px solid #00000086; 
+    padding: 15px; 
+    margin: 15px; 
+    border-radius: 5px;
+}
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-6 ">
+
+            <div class="header-middle">
+                <div class="container">
+
+                    <div class="header-center">
+                        <a href="/home" class="logo">
+                            <img src="/images/She Shop.png" alt="Sheshop" width="205" height="70">
+                        </a>
+                    </div><!-- End .header-left -->
+
+
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+
+        </header><!-- End .header -->
+
+        <main class="main ">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+
+                        <li class="breadcrumb-item active" aria-current="page">Invoice</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+
+
+                    <div class="content-header ">
+
+                        <div class="mt-5 mb-5" style="margin-left: 200px;">
+                            <h1 class="content-title card-title ml-200" style="font-size:xx-large;">
+                                <strong>Invoice</strong> </h1>
+                        </div>
+
+
+                    </div>
+                    <div class="row justify-content-center align-items-center ">
+                        <div class="col-lg-8 col-md-12 borderinvoice" >
+                            <div class="card">
+                                <header class="card-header">
+                                    <div class="row align-items-center mt-1 mb-1">
+                                        <div class="col-lg-6 col-md-6 mb-lg-0  ">
+                                            <span>
+                                                <i class="material-icons md-calendar_today"></i> <b>
+                                                    <%= order.createdAt.toLocaleDateString() %>
+                                                </b>
+                                            </span> <br>
+                                            <small class="text-muted">Order ID:<%= order.orderid %> </small>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 ms-auto p-5 text-md-end ">
+                                            <a class="btn btn-primary" href="/profile/downloadinvoice/<%=order._id%>">
+                                                <i class="icon material-icons md-cloud_download mr-5"></i>Save PDF</a>
+
+                                        </div>
+                                    </div>
+                                </header> <!-- card-header end// -->
+
+                                
+                                <div class="card-body">
+                                    <div class="receipt-content">
+                                        <div class="container bootstrap snippets bootdey">
+                                            <div class="row ">
+
+
+                                                <div class="col-md-12">
+                                                    <div class="invoice-wrapper">
+                                                        <div class="intro">
+                                                            Hi <strong>
+                                                                <%= order.address.firstname %>
+                                                            </strong>,
+                                                            <br>
+                                                            This is the receipt for a payment of <strong>$<%=
+                                                                    order.payedamount %></strong> (USD) for your works
+                                                        </div>
+
+                                                        <div class="payment-info">
+                                                            <div class="row justify-content-between mt-5">
+                                                                <div class="col-sm-6">
+                                                                    <span>Payment No.</span>
+                                                                    <strong>
+                                                                        <%= order.orderid %>
+                                                                    </strong>
+                                                                </div>
+                                                                <div class="col-sm-6 text-end">
+                                                                    <span>Payment Date</span>
+                                                                    <strong>
+                                                                        <%= order.createdAt.toLocaleDateString() %>
+                                                                    </strong>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="payment-details mt-5">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <span>Client</span>
+                                                                    <strong>
+                                                                        <%= order.address.house %>
+                                                                    </strong>
+                                                                    <p>
+                                                                        <%= order.address.street %> <br>
+                                                                            City of<%= order.address.city %> <br>
+                                                                                State of<%= order.address.state %> <br>
+                                                                                    <%= order.address.zipcode %><br>
+
+                                                                                        <a href="#">
+                                                                                            <%= user?.firstname %>
+                                                                                        </a>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="col-sm-6 text-end">
+                                                                    <span>Payment To</span>
+                                                                    <strong>
+                                                                        <%= user.firstname %>
+                                                                    </strong>
+                                                                    <p>
+                                                                        <%= order.address.street %><br>
+                                                                            <%= order.address.city %> <br>
+                                                                                <%= order.address.state %><br>
+                                                                                    <%= order.address.zipcode %><br>
+                                                                                        <a href="#">
+                                                                                            <%= user?.email %>
+                                                                                        </a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="line-items mt-5">
+                                                            <div class="headers clearfix">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">Description</div>
+                                                                    <div class="col-md-3">Quantity</div>
+                                                                    <div class="col-md-5 text-end">Amount</div>
+                                                                </div>
+                                                            </div>
+
+                                                            <% order.products.forEach(product=> { %>
+                                                                <div class="items">
+                                                                    <div class="row item">
+                                                                        <div class="col-md-4 desc">
+                                                                            <%= product.productid.name %> ,
+                                                                        </div>
+                                                                        <div class="col-md-3 qty">
+                                                                            <%= product.quantity %>
+                                                                        </div>
+                                                                        <div class="col-md-5 amount text-end">
+                                                                            $<%= product.price %>
+
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <%});%>
+
+
+
+                                                                </div>
+                                                                
+                                                                <div class="total text-end mt-5">
+                                                                    <p class="extra-notes">
+                                                                        <strong>Extra Notes</strong>
+                                                                        Please send all items at the same time to
+                                                                        shipping address by next week.
+                                                                        Thanks a lot.
+                                                                    </p>
+                                                                    <div class="field">
+                                                                        Subtotal <span>$<%= order.payedamount %> </span>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        Shipping <span>$0.00</span>
+                                                                    </div>
+
+                                                                    <div class="field grand-total">
+                                                                        Total <span>$<%= order.payedamount %></span>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="footer">
+                                                        @SheShop
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div> <!-- card-body end// -->
+                                </div> <!-- card end// -->
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <br><br><br><br><br><br><br>
+
+
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+
+
+        <footer class="footer footer-2 ">
+            <div class="footer-bottom bg-footer">
+                <div class="container bg-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                                <img src="/images/logo.png" class="footer-logo" alt="Footer Logo" width="200"
+                                    height="150">
+                                <p>With our user-friendly website, shopping for your favorite beauty products is a
+                                    breeze. Explore our comprehensive range, read expert tips and tutorials, and shop
+                                    with confidence knowing that each product is carefully selected for its quality and
+                                    performance.</p>
+
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="/assets/images/payments.png" alt="Payment methods" width="272"
+                                                    height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About SheShop</a></li>
+                                    <li><a href="#">How to shop on SheShop</a></li>
+
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Sheshop. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    >
+
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                class="icon-instagram"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+
+    </div><!-- End .page-wrapper -->
+
+
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+
+
+
+
+
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/assets/js/jquery.plugin.min.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/assets/js/jquery.countdown.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/demos/demo-9.js"></script>
+</body>
+
+
+<!-- molla/index-9.html  22 Nov 2019 09:58:03 GMT -->
+
+</html>

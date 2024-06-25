@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/admin_panel.css">
+    <title>SheShop</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <div c><img src="/images/logo.png" class="centered-image" alt="SheShop"></div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/admin/dashboard"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+            <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
+            <li><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
+            <li><a href="/admin/Categories"><i class='bx bx-category-alt'></i>Categories</a></li>
+            <li class="active">  <a href="/admin/brands"><i class='bx bx-store-alt' ></i>Brands</a></li>
+            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/reports"><i class='bx bxs-report'></i>Reports</a></li>
+            <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
+            
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="/logout" class="logout">
+                    <i class='bx bx-log-out-circle'></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form style="display:none" action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="profile">
+                <h4>f</h4>
+                <h4>farzana shaneez</h4>
+            </a>
+
+        </nav>
+
+        <!-- End of Navbar -->
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <ul class="breadcrumb">
+                        <li><a href="#">
+                                admin
+                            </a></li>
+                        <li>/</li>
+                        <li><a href="#">Brands</a></li>
+                        <li>/</li>
+                        <li><a href="#" class="active">Add Brand</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="bottom-data">
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3> Add brand</h3>
+
+                    </div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 mt-5">
+                                <form method="post" action="/admin/brands/add" enctype="multipart/form-data" onsubmit="return validateForm()">
+                                    <div class="mb-4">
+                                        <div class="container justify-content-center">
+                                            <img id="previewImage" src="/images/imageicon" alt="Product Image" style="width: 200px; height: 200px;">
+                                        </div>
+                                        <input type="file" class="admin__input mt-3" id="myFile" name="myFile" required />
+                                    </div>
+                                    <hr>
+                                    <div class="mb-4 mt-5" style="margin-top: 20px;">
+                                        <label for="brandname" class="form-label">Name</label>
+                                        <input type="text" name="brandname" id="brandname" placeholder="Brand name" class="form-control border" required />
+                                        <div id="brandnameError" style="color: red;"></div>
+                                    </div>
+                                    <div class="d-grid text-end mt-5 col-md-5">
+                                        <button class="btn btn-primary" type="submit">Add Brand</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="/javascript/admin_panel.js"></script>
+    <script>
+        
+    function validateForm() {
+        // Validate brand name
+        var brandname = document.getElementById("brandname").value;
+        if (!brandname.trim()) {
+            document.getElementById("brandnameError").innerText = "Brand name is required";
+            return false;
+        }
+
+        // Validate file input
+        var fileInput = document.getElementById("myFile");
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert("Please select an image");
+            return false;
+        }
+
+        // Validate file type (optional)
+        var validExtensions = ["jpg", "jpeg", "png"];
+        var fileExtension = fileInput.files[0].name.split('.').pop().toLowerCase();
+        if (validExtensions.indexOf(fileExtension) === -1) {
+            alert("Invalid file type. Only JPG, JPEG, and PNG files are allowed.");
+            return false;
+        }
+
+        return true; // Form submission allowed
+    }
+        
+    //preview image
+        const imageInput = document.getElementById('myFile');
+        const previewImage = document.getElementById('previewImage');
+        console.log(imageInput)
+        console.log(previewImage)
+        imageInput.addEventListener('change', function () {
+            console.log("function called")
+            const file = this.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+    </script>
+
+
+</body>
+
+</html>

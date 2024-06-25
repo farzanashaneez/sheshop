@@ -5,10 +5,20 @@ const CategorySchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    categorydescription:{
+        type:String
+    },
+    categoryoptions:{
+        type:Array
+    },
     categoryimage: {
         type: String,
         required:true
-    }
+    },
+    categoryofferpercentage:{
+        type:Number
+    },
+
 },
     { timestamps: true }
 );

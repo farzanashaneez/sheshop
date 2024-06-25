@@ -7,6 +7,17 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/admin_panel.css">
     <title>SheShop</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chartBtn{
+        height: 30px;
+        width: 100 px;
+        background-color: chocolate;
+        color: wheat;
+        border-radius: 8px;
+        padding: 5px;
+    }
+</style>
 </head>
 
 <body>
@@ -21,14 +32,15 @@
             <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
             <li ><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
             <li><a href="/admin/categories"><i class='bx bx-category-alt' ></i>Categories</a></li>
+            <li><a href="/admin/brands"><i class='bx bx-store-alt' ></i>Brands</a></li>          
             <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
             <li><a href="/admin/reports"><i class='bx bxs-report' ></i>Reports</a></li>
             <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
-            <li><a href="#"><i class='bx bx-cog'></i>Settings</a></li>
+            
         </ul>
         <ul class="side-menu">
             <li>
-                <a href="#" class="logout">
+                <a href="/logout" class="logout"  >
                     <i class='bx bx-log-out-circle'></i>
                     Logout
                 </a>
@@ -42,7 +54,7 @@
         <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
-            <form action="#">
+            <form style="display:none" action="#">
                 <div class="form-input">
                     <input type="search" placeholder="Search...">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
@@ -75,10 +87,7 @@
                         <li><a href="#" class="active">dashboard</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
-                </a>
+               
             </div>
 
             <!-- Insights -->
@@ -120,91 +129,295 @@
             <!-- End of Insights -->
 
             <div class="bottom-data">
+                 <!-- Reminders -->
+                 <div class="reminders">
+                    <div style=" display: flex; justify-content: space-between;align-items: center;">
+                        <button id="yearBtn" class="chartBtn">Show Yearly</button>
+                        <button id="monthBtn" class="chartBtn">Show Monthly</button>
+                        <button id="weekBtn" class="chartBtn">Show Weekly</button>
+                      </div>
+                    
+                    <canvas id="myChart" width=auto height="200"></canvas>
+                </div>
+
+                <!-- End of Reminders-->
                 <div class="orders">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Recent Orders</h3>
+                        <h3>Top Categories</h3>
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-search'></i>
                     </div>
                     <table>
                         <thead>
                             <tr>
-                                <th>User</th>
-                                <th>Order Date</th>
-                                <th>Status</th>
+                                <th></th>
+                                <th>Category Name</th>
+                                <th style="text-align: center;">Total Sales</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <% let catnum = 1; %>
+
+                            <% topcategory.forEach(category => { %>
+
                             <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
+                                <td style="margin-left: 10px;">
+                                    <%= catnum %>
                                 </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status completed">Completed</span></td>
+                                <td><%= category._id %></td>
+                                <td style="text-align: center;"><%= category.totalSales %></td>
                             </tr>
+                            <% catnum++ %>
+                            <% });%>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Top Products</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <table>
+                        <thead>
                             <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
+                                <th></th>
+                                <th>ProductName</th>
+                                <th style="text-align: center;">TotalSales</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            <% let rowNum = 1; %>
+
+                            <% topProducts.forEach(product => { %>
+
                             <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
+                                <td style="margin-left: 10px;">
+                                    <%= rowNum %>
                                 </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status process">Processing</span></td>
+                                <td><%= product.productName %></td>
+                                <td style="text-align: center;"><%= product.totalSales %></td>
                             </tr>
+                            <% rowNum++ %>
+                            <% });%>
+
+                           
+                        </tbody>
+                    </table>
+                </div>
+               
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Top Brands</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Brand Name</th>
+                                <th style="text-align: center;">Total Sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% let brandnum = 1; %>
+
+                            <% topBrand.forEach(brand => { %>
+
+                            <tr>
+                                <td style="margin-left: 10px;">
+                                    <%= brandnum %>
+                                </td>
+                                <td><%= brand._id %></td>
+                                <td style="text-align: center;"><%= brand.totalSales %></td>
+                            </tr>
+                            <% brandnum++ %>
+                            <% });%>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Reminders -->
-                <div class="reminders">
-                    <div class="header">
-                        <i class='bx bx-note'></i>
-                        <h3>Remiders</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-plus'></i>
-                    </div>
-                    <ul class="task-list">
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Start Our Meeting</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Analyse Our Site</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <div class="task-title">
-                                <i class='bx bx-x-circle'></i>
-                                <p>Play Footbal</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- End of Reminders-->
+               
 
             </div>
 
         </main>
 
     </div>
+    <!-- <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
 
+// Create the chart
+var myChart = new Chart(ctx, {
+    type: 'line', // Choose the type of chart (e.g., bar, line, pie)
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+    </script> -->
+
+    <script>
+        // const orders= {
+        //     '2024': {
+        //       '5': { '19': 4560, '20': 12306, '21': 1840 },
+        //       '6': { '21': 1720, '22': 17162.800000000003, '23': 4706.4 }
+        //     }
+        //   }
+        const orders = JSON.parse('<%- JSON.stringify(ordersChartList) %>');
+
+          let myChart;
+        const ordersData =orders;
+        generateChart(ordersData,'week');
+       
+    
+        // Event listeners for the buttons
+        document.getElementById('yearBtn').addEventListener('click', () => {
+          generateChart(ordersData,'year');
+        });
+    
+        document.getElementById('monthBtn').addEventListener('click', () => {
+          generateChart(ordersData,'month');
+        });
+    
+        document.getElementById('weekBtn').addEventListener('click', () => {
+          generateChart(ordersData,'week');
+        });
+
+    function generateChart(data, selectedPeriod) {
+  // Check if a chart instance already exists
+  if (myChart) {
+    myChart.destroy();
+  }
+
+  // Create a new chart instance
+  const ctx = document.getElementById('myChart').getContext('2d');
+  myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'Total Amount',
+        data: [],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        
+      }]
+    },
+    options: {
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Total Amount',
+        },
+        ticks: {
+          beginAtZero: true
+        }
+      }],
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Time Period'
+        }
+      }],
+      
+    }
+  },
+});
+
+const array=Object.values(data).map(yearData => 
+{
+    console.log('yearData',yearData)
+    return Object.values(yearData).reduce((total, monthData) =>{ 
+        console.log('monthData',monthData)
+
+        return total + Object.values(monthData).reduce((total, weekdata) => total + weekdata, 0)
+    }, 0)});
+
+    console.log("array",array)
+
+
+  // Populate the chart data based on the selected time period
+  if (selectedPeriod === 'year') {
+    console.log(selectedPeriod,"after selectedPeriod",Object.keys(data))
+
+    myChart.data.labels = Object.keys(data);
+    myChart.data.datasets[0].data = Object.values(data).map(yearData => Object.values(yearData).reduce((total, monthData) => total + Object.values(monthData).reduce((total, weekdata) => total + weekdata, 0), 0));
+  } else if (selectedPeriod === 'month') {
+  console.log(selectedPeriod, "after selectedPeriod")
+
+  let labels=[];
+let datas=[];
+  for (let selectedYear in data) {
+    console.log("label-data",data)
+    labels=labels.concat(Object.keys(data[selectedYear]).map(month => month))
+    datas = datas.concat(Object.values(data[selectedYear]).map(monthData => Object.values(monthData).reduce((total, weekData) => total + weekData, 0)))
+    
+    
+  }
+  myChart.data.labels=labels;
+myChart.data.datasets[0].data=datas;
+  //myChart.data.labels = Object.keys(data[selectedYear]).map(month => month);
+  //myChart.data.datasets[0].data = Object.values(data[selectedYear]).map(monthData => Object.values(monthData).reduce((total, weekData) => total + weekData, 0));
+} else if (selectedPeriod === 'week') {
+  console.log(selectedPeriod, "after selectedPeriod")
+let labels=[];
+let datas=[];
+  for (let selectedYear in data) {
+    console.log("label-data",data)
+
+  for (let selectedMonth in data[selectedYear]) {
+    labels = labels.concat(Object.keys(data[selectedYear][selectedMonth]).map(week => week));
+    datas = datas.concat(Object.values(data[selectedYear][selectedMonth]).map(weekData => weekData));
+  console.log("label-data",labels,datas)
+  }
+}
+
+myChart.data.labels=labels;
+myChart.data.datasets[0].data=datas;
+
+
+}
+
+  myChart.update();
+}
+
+        </script>
     <script src="/javascript/admin_panel.js"></script>
 </body>
 

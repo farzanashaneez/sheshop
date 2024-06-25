@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang=“en”>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SheShop</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="google-signin-client_id"
+        content="81068074577-54f1nfn3q47mi0ts6fhv7189ss02rpu2.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/skins/skin-demo-9.css">
+    <link rel="stylesheet" href="/assets/css/demos/demo-9.css">
+    <style>
+        /* Center the modal */
+        .alert-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        /* Modal content */
+        .alert-modal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Close button */
+        .alert-modal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .alert-modal .close:hover,
+        .alert-modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Alert icon */
+        .alert-icon {
+            font-size: 40px;
+            color: #b37e56;
+            margin-right: 20px;
+        }
+
+        /* Alert message */
+        .alert-message {
+            flex-grow: 1;
+        }
+
+        .alert-message h3 {
+            color: #b37e56;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .alert-message p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* OK Button */
+        .alert-modal #okBtn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #b37e56;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-modal #okBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-modal #okBtn i {
+            margin-left: 10px;
+        }
+
+        /* Cute animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <header class="header header-6 ">
+
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
+                            <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                            <form action="/products/searchby" method="POST">
+                                <div class="header-search-wrapper search-wrapper-wide " style="margin-left: 20px;">
+                                    <label for="q" class="sr-only">Search</label>
+                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <input type="search" class="form-control" name="search" id="q"
+                                        placeholder="Search product ..." required>
+
+                                </div><!-- End .header-search-wrapper -->
+                            </form>
+                        </div><!-- End .header-search -->
+
+                    </div>
+                    <div class="header-center">
+                        <a href="/home" class="logo">
+                            <img src="images/She Shop.png" alt="Sheshop" width="205" height="70">
+                        </a>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                        <% if (typeof userData !=='undefined' ) { %>
+                            <a href="/wishlist" class="wishlist-link">
+                                <i class="icon-heart-o"></i>
+                                <span class="wishlist-count">
+                                    <%=wishcount%>
+                                </span>
+                                <span class="wishlist-txt">My Wishlist</span>
+                            </a>
+                            <% } else{%>
+                                <a href="#" class="wishlist-link">
+                                    <i class="icon-heart-o"></i>
+                                    <%}%>
+
+                                        <div class="dropdown cart-dropdown">
+                                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false" data-display="static">
+                                                <i class="icon-shopping-cart"></i>
+                                                <span class="cart-count">
+                                                    <% if (typeof userData !=='undefined' ) { %>
+                                                        <%= cartData.length %>
+                                                            <% } else { %>
+                                                                <%= 0 %>
+                                                                    <% } %>
+                                                </span>
+                                            </a>
+
+                                            <% if (typeof userData !=='undefined' ) { %>
+                                                <% if (userData) { %>
+                                                    <div class="dropdown-menu dropdown-menu-right ">
+
+                                                        <div class="dropdown-cart-products">
+
+                                                            <% if (cartData) { %>
+
+                                                                <% cartData.forEach(item=> { %>
+
+                                                                    <div class="product">
+                                                                        <div class="product-cart-details">
+                                                                            <h4 class="product-title">
+                                                                                <a href="product.html">
+                                                                                    <%=item.name%>
+                                                                                </a>
+                                                                            </h4>
+
+                                                                            <span class="cart-product-info">
+                                                                                <span class="cart-product-qty">
+                                                                                    <%=item.quantity%>
+                                                                                </span>
+                                                                                x $<%=item.price%>
+                                                                            </span>
+                                                                        </div><!-- End .product-cart-details -->
+
+                                                                        <figure class="product-image-container">
+                                                                            <a href="product.html"
+                                                                                class="product-image">
+                                                                                <img src="/uploads/product-images/<%=item.image[0]%>"
+                                                                                    alt="product">
+                                                                            </a>
+                                                                        </figure>
+
+                                                                    </div><!-- End .product -->
+
+                                                                    <% })%>
+                                                                        <% }%>
+
+
+                                                        </div><!-- End .cart-product -->
+
+                                                        <div class="dropdown-cart-total">
+                                                            <span>Total</span>
+
+                                                            <span class="cart-total-price">$<%=subtotal%></span>
+                                                        </div><!-- End .dropdown-cart-total -->
+
+                                                        <div class="dropdown-cart-action">
+                                                            <a href="/cart" class="btn btn-primary">View Cart</a>
+                                                            <a href="/cart/checkout"
+                                                                class="btn btn-outline-primary-2"><span>Checkout</span><i
+                                                                    class="icon-long-arrow-right"></i></a>
+                                                        </div><!-- End .dropdown-cart-total -->
+                                                    </div><!-- End .dropdown-menu -->
+                                                    <%}}%>
+
+                                        </div><!-- End .cart-dropdown -->
+
+
+
+                                        <div class="top-menu top-link-menu "
+                                            style="margin-left: 30px;margin-right: 40px;">
+
+
+                                            <% if (typeof userData !=='undefined' ) { %>
+
+                                                <div class="header-right header-dropdown">
+                                                    <a href="#"><i class="icon-user"></i>
+                                                        <%= userData.firstname %>
+                                                    </a>
+                                                    <div class="header-menu">
+                                                        <ul>
+                                                            <li><a href="/profile"><i class="icon-user"></i>Profile</a>
+                                                            </li>
+                                                            <li><a href="/home/logout"><i
+                                                                        class="icon-long-arrow-right"></i>logout</a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <% } else { %>
+                                                    <a href="#signin-modal" data-toggle="modal"><i
+                                                            class="icon-user"></i>Login</a>
+                                                    <% } %>
+
+
+                                        </div>
+                    </div>
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header ">
+                <div class="container">
+                    <div class="header-center ">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows ">
+                                <li class="megamenu-container ">
+                                    <a href="/products">All Products</a>
+                                </li>
+                                <% categoryData.forEach(category=> { %>
+                                    <li class="megamenu-container ">
+                                        <a href="/products/search?category=<%= category.categoryname %>">
+                                            <%= category.categoryname %>
+                                        </a>
+                                    </li>
+                                    <% }); %>
+
+
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+                    </div><!-- End .header-left -->
+
+
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
+        </header><!-- End .header -->
+
+        <main class="main">
+
+            <div class="hero pt-0 pb-3">
+                <div class="container">
+                    <div class="row hero">
+                        <div class="col-lg-12 d-flex align-items-start justify-content-center  text-custom-color  p-5">
+
+                        </div>
+                        <!-- <div class="col-md-6 banner-image"></div> -->
+                    </div><!-- End hero section -->
+
+                    <div class="owl-carousel mt-4 mb-3 owl-simple" data-toggle="owl" style="background-color: bisque;"
+                        data-owl-options='{
+                            "nav": false, 
+                            "dots": false,
+                            "margin": 30,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":2
+                                },
+                                "420": {
+                                    "items":3
+                                },
+                                "600": {
+                                    "items":4
+                                },
+                                "900": {
+                                    "items":5
+                                },
+                                "1024": {
+                                    "items":6
+                                }
+                            }
+                        }'>
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/1.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/2.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/3.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/4.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/5.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/6.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="/assets/images/brands/7.png" alt="Brand Name">
+                        </a>
+                    </div><!-- End .owl-carousel -->
+                </div><!-- End .container -->
+            </div><!-- End .bg-lighter -->
+
+            <div class="bg-lighter pt-5">
+                <div class="container">
+                  
+                    <div class="heading heading-flex mt-5 mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Trending Now</h2><!-- End .title -->
+                        </div><!-- End .heading-left -->
+    
+    
+                    </div><!-- End .heading -->
+
+                    <div class="tab-content tab-content-carousel">
+                        <div class="tab-pane p-0 fade show active" id="trending-women-tab" role="tabpanel"
+                            aria-labelledby="trending-women-link">
+                            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                                data-toggle="owl" data-owl-options='{
+                                    "nav": false, 
+                                    "dots": true,
+                                    "margin": 20,
+                                    "loop": false,
+                                    "responsive": {
+                                        "0": {
+                                            "items":2
+                                        },
+                                        "480": {
+                                            "items":2
+                                        },
+                                        "768": {
+                                            "items":3
+                                        },
+                                        "992": {
+                                            "items":4
+                                        },
+                                        "1200": {
+                                            "items":4,
+                                            "dots": false
+                                        }
+                                    }
+                                }'>
+                                <% productData.forEach(product=> { %>
+                                    <div class="product product-7 text-center">
+                                        <figure class="product-media">
+                                            <% if (product.quantity===0 ) { %>
+                                                <span class="product-label label-out ">Out of stock</span>
+                                                    <%}%>
+                                                    <% if (product.offerpercentage>0 ) { %>
+                                                     <span class="product-label label-sale" ><%= product.offerpercentage %>% off</span>
+                                                    <%}%>
+                                            <a href="product.html">
+                                                <img src="/uploads/product-images/<%=product.image[0]%>"
+                                                    alt="Product image" class="product-image">
+                                                <img src="/uploads/product-images/<%=product.image[1]%>"
+                                                    alt="Product image" class="product-image-hover">
+                                            </a>
+
+                                            <div class="product-action-vertical">
+                                                <a href="#"
+                                                    class="btn-product-icon btn-wishlist btn-expandable"><span>add to
+                                                        wishlist</span></a>
+                                                <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
+                                                    title="Quick view"><span>Quick view</span></a>
+                                            </div><!-- End .product-action-vertical -->
+
+                                            <div class="product-action">
+                                                <% if (typeof userData !=='undefined' ) { %>
+                                                    <a href="#" class="btn-product btn-cart"
+                                                        onclick="addToCart('<%= product._id %>','')"><span>add to
+                                                            cart</span></a>
+                                                    <% }else{%>
+                                                        <a href="#" class="btn-product btn-cart"
+                                                            onclick="addToCart('','user')"><span>add to
+                                                                cart</span></a>
+                                                        <% }%>                                            </div><!-- End .product-action -->
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="product.html">
+                                                    <%= product.name %>
+                                                </a></h3><!-- End .product-title -->
+                                            <div class="product-price ">
+                                                <% if (product.offerpercentage>0 ) { %>
+                                                    <span class="old-price">$<%=product.regularprice%></span>
+                                                    <%}%>
+                                                <span class="new-price">$<%=product.price%></span>
+                                            </div><!-- End .product-price -->
+
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 100%;"></div>
+                                                    <!-- End .ratings-val -->
+                                                </div><!-- End .ratings -->
+                                                <span class="ratings-text">( 6 Reviews )</span>
+                                            </div><!-- End .rating-container -->
+
+
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                    <% }); %>
+
+
+
+                            </div><!-- End .owl-carousel -->
+                        </div><!-- .End .tab-pane -->
+                        <div class="tab-pane p-0 fade" id="trending-men-tab" role="tabpanel"
+                            aria-labelledby="trending-men-link">
+                            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                                data-toggle="owl" data-owl-options='{
+                                    "nav": false, 
+                                    "dots": true,
+                                    "margin": 20,
+                                    "loop": false,
+                                    "responsive": {
+                                        "0": {
+                                            "items":2
+                                        },
+                                        "480": {
+                                            "items":2
+                                        },
+                                        "768": {
+                                            "items":3
+                                        },
+                                        "992": {
+                                            "items":4
+                                        },
+                                        "1200": {
+                                            "items":4,
+                                            "dots": false
+                                        }
+                                    }
+                                }'>
+
+                            </div><!-- End .owl-carousel -->
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .container -->
+            </div>
+
+            <div class="container">
+                <hr class="mt-3 mb-4">
+            </div><!-- End .container -->
+
+            <div class="container pb-2">
+                <div class="heading heading-flex mb-3">
+                    <div class="heading-left">
+                        <h2 class="title">Shop by Category</h2><!-- End .title -->
+                    </div><!-- End .heading-left -->
+
+
+                </div><!-- End .heading -->
+
+                <div class="row">
+
+
+                    <div class="col-lg-12">
+                        <div class="tab-content tab-content-carousel">
+                            <div class="tab-pane p-0 fade show active" id="bags-women-tab" role="tabpanel"
+                                aria-labelledby="bags-women-link">
+                                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                                    data-toggle="owl" data-owl-options='{
+                                        "nav": false, 
+                                        "dots": true,
+                                        "margin": 20,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {
+                                                "items":2
+                                            },
+                                            "480": {
+                                                "items":2
+                                            },
+                                            "768": {
+                                                "items":4
+                                            },
+                                            "1200": {
+                                                "items":4,
+                                                "nav": true,
+                                                "dots": false
+                                            }
+                                        }
+                                    }'>
+
+
+                                    <% categoryData.forEach(category=> { %>
+                                        <div class="category ">
+                                            <div class="category-item ">
+                                                <a href="/products/search?category=<%=category.categoryname %>">
+                                                    <img src="/uploads/product-images/<%=category.categoryimage%>"
+                                                        class="rounded-circle" alt="<%= category.categoryname %>"
+                                                        style="width: 250px;height: 250px;">
+                                                    <div class="category-name">
+                                                        <%= category.categoryname %>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+
+
+
+
+                                </div><!-- End .owl-carousel -->
+                            </div><!-- .End .tab-pane -->
+
+
+                            <div class="tab-pane p-0 fade" id="bags-men-tab" role="tabpanel"
+                                aria-labelledby="bags-men-link">
+                                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                                    data-toggle="owl" data-owl-options='{
+                                        "nav": false, 
+                                        "dots": true,
+                                        "margin": 20,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {
+                                                "items":2
+                                            },
+                                            "480": {
+                                                "items":2
+                                            },
+                                            "768": {
+                                                "items":3
+                                            },
+                                            "992": {
+                                                "items":4
+                                            },
+                                            "1200": {
+                                                "items":4,
+                                                "nav": true,
+                                                "dots": false
+                                            }
+                                        }
+                                    }'>
+                                </div><!-- End .owl-carousel -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div>
+                </div>
+            </div><!-- End .container -->
+
+
+            <div class="bg-custom  pt-6">
+                <div class="container ">
+                    <div class="heading heading-flex mb-3">
+                        <div class="heading-left">
+                            <h1 class="title text-white">Shop by Brand</h2><!-- End .title -->
+                        </div><!-- End .heading-left -->
+
+
+                    </div><!-- End .heading -->
+
+                    <div class="tab-content tab-content-carousel">
+                        <div class="tab-pane p-0 fade show active" id="trending-women-tab" role="tabpanel"
+                            aria-labelledby="trending-women-link">
+                            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                                data-toggle="owl" data-owl-options='{
+                                    "nav": false, 
+                                    "dots": true,
+                                    "margin": 20,
+                                    "loop": false,
+                                    "responsive": {
+                                        "0": {
+                                            "items":2
+                                        },
+                                        "480": {
+                                            "items":2
+                                        },
+                                        "768": {
+                                            "items":3
+                                        },
+                                        "992": {
+                                            "items":4
+                                        },
+                                        "1200": {
+                                            "items":4,
+                                            "dots": false
+                                        }
+                                    }
+                                }'>
+
+                                <% brandData.forEach(brand=> { %>
+                                    <div class="product product-7 text-center bg-customPrimary border-custom">
+                                        <figure class="brand-media">
+                                            <a href="/products/search?brand=<%= brand.brandname %>">
+                                                <img src="/uploads/product-images/<%=brand.brandimage%>"
+                                                    alt="Product image" class="brand-image">
+                                            </a>
+
+
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <h3 class="product-title text-white"><a href="product.html">
+                                                    <%= brand.brandname %>
+                                                </a></h3><!-- End .product-title -->
+
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .brand-->
+                                    <% }); %>
+
+
+
+
+                            </div><!-- End .owl-carousel -->
+                        </div><!-- .End .tab-pane -->
+                        <div class="tab-pane p-0 fade" id="trending-men-tab" role="tabpanel"
+                            aria-labelledby="trending-men-link">
+                            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                                data-toggle="owl" data-owl-options='{
+                                    "nav": false, 
+                                    "dots": true,
+                                    "margin": 20,
+                                    "loop": false,
+                                    "responsive": {
+                                        "0": {
+                                            "items":2
+                                        },
+                                        "480": {
+                                            "items":2
+                                        },
+                                        "768": {
+                                            "items":3
+                                        },
+                                        "992": {
+                                            "items":4
+                                        },
+                                        "1200": {
+                                            "items":4,
+                                            "dots": false
+                                        }
+                                    }
+                                }'>
+
+                            </div><!-- End .owl-carousel -->
+                        </div><!-- .End .tab-pane -->
+                    </div><!-- End .tab-content -->
+                </div><!-- End .container -->
+            </div>
+
+
+          
+
+
+            <div class="container">
+                <hr class="mt-3 mt-xl-1 mb-0">
+            </div><!-- End .container -->
+
+
+
+
+
+
+
+            
+
+
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2 ">
+            <div class="footer-bottom bg-footer">
+                <div class="container bg-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                                <img src="/images/logo.png" class="footer-logo" alt="Footer Logo" width="200"
+                                    height="150">
+                                <p>With our user-friendly website, shopping for your favorite beauty products is a
+                                    breeze. Explore our comprehensive range, read expert tips and tutorials, and shop
+                                    with confidence knowing that each product is carefully selected for its quality and
+                                    performance.</p>
+
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="/assets/images/payments.png" alt="Payment methods" width="272"
+                                                    height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About SheShop</a></li>
+                                    <li><a href="#">How to shop on SheShop</a></li>
+
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Sheshop. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    >
+
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                class="icon-instagram"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+
+    </div><!-- End .page-wrapper -->
+
+
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="#">Fragrance</a>
+                    </li>
+                    <li>
+                        <a href="#">Make Up</a>
+                    </li>
+                    <li>
+                        <a href="#">Skin Care</a>
+                    </li>
+                    <li>
+                        <a href="#">Bath and Body</a>
+                    </li>
+                    <li>
+                        <a href="#">Hair Care</a>
+                    </li>
+
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+    <!-- Sign in / Register Modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin"
+                                        role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                        aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                               
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel"
+                                    aria-labelledby="signin-tab">
+                                    <form id="signinForm">
+                                        <div class="form-group">
+                                            <label for="singin-email">User email </label>
+                                            <input type="text" class="form-control" id="useremail" name="useremail"
+                                                required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="userpassword"
+                                                name="userpassword" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer justify-content-center ">
+                                            <button type="submit" class="btn btn-outline-primary-2 " id="signin-button">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                        </div><!-- End .form-footer -->
+                                        <div class="row">
+                                            <div
+                                                class="col-sm-12 justify-content-center align-items-center text-center">
+                                                <a href="#" class="forgot-lin " onclick="handleForgotPassword()">Forgot
+                                                    Your Password?</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <a href="/home/auth/google" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+
+
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="password-reset" role="tabpanel"
+                                    aria-labelledby="Reset-tab">
+                                    <form id="password-reset-form" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="reset-email">Email</label>
+                                            <input type="email" class="form-control" id="reset-email" name="email"
+                                                required>
+                                        </div>
+                                        <div class="form-group" id="otp-container" style="display: none;">
+                                            <label for="otp-input">OTP</label>
+                                            <input type="text" class="form-control" id="otp-input" name="otp-input">
+                                            <button id="verifyOtpResetPassword" class="btn btn-outline-primary-2"
+                                                onclick="verifyOtp()" type="button">
+                                                <span>Verify OTP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary-2"
+                                                id="resend-otp-btn-password" disabled>Resend OTP</button>
+                                        </div>
+                                        <div class="form-group" id="new-password-container" style="display: none;">
+                                            <label for="new-password">New Password</label>
+                                            <input type="password" class="form-control" id="new-password"
+                                                name="new-password">
+                                            <label for="new-password-confirm">Confirm-Password</label>
+                                            <input type="password" class="form-control" id="new-password-confirm"
+                                                name="confirm-password">
+                                                <div class="row justify-content-center">
+                                                    <button type="button" class="btn btn-outline-primary-2"
+                                                        onclick="resetPassword()" id="reset-password-btn">
+                                                        <span>Reset Password</span>
+                                                        <i class="icon-long-arrow-right"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+
+                                        <div class="form-footer justify-content-center">
+                                            <button type="submit" class="btn btn-outline-primary-2"
+                                                id="verify-email-btn">
+                                                <span>Verify email</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                   
+                                </div>
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form id="signupForm" action="#">
+                                        <div class="form-group">
+                                            <label for="username"> Name *</label>
+                                            <input type="text" class="form-control" id="username" name="name" required>
+                                            <small id="nameError" class="text-danger"></small>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="useremail">Your email address *</label>
+                                            <input type="email" class="form-control" id="reguseremail" name="email"
+                                                required>
+                                            <small id="emailError" class="text-danger"></small>
+
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="password" required>
+                                            <small id="passwordError" class="text-danger"></small>
+
+                                        </div><!-- End .form-group -->
+
+                                        <div id="otpSection" style="display: none;">
+                                            <div class="form-group">
+                                                <label for="reg-otp">Enter OTP *</label>
+                                                <input type="text" class="form-control" id="reg-otp" name="otp"
+                                                    required>
+                                            </div><!-- End .form-group -->
+
+                                            <button id="verifyOtpBtn" class="btn btn-outline-primary-2" type="button">
+                                                <span>Verify OTP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                            <button id="resend-otp-btn" class="btn btn-primary" disabled>Resend
+                                                OTP</button>
+                                            <p id="countdown"></p>
+
+
+                                        </div><!-- End #otpSection -->
+
+                                        <div class="form-footer">
+                                            <button id="signupBtn" type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice ">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row ">
+                                            <div class="col-sm-12 ">
+                                                <a href="/home/auth/google" class="btn btn-login btn-g ">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+
+
+
+    <div id="alertmodal" class="modal alert-modal">
+        <div class="modal-content">
+            <span id="closeBtnalert" class="close" onclick="closeModal()">&times;</span>
+            <div class="alert-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="alert-message">
+                <h3 id="modal-title" style="text-align: center;">SheShop Alert</h3>
+                <p id="modal-message" style="text-align: center;"></p>
+            </div>
+            <button id="okBtn" class="btn btn-outline-primary-2 close" type="button" onclick="okButtonAlertModal()"
+                style="display:none;">
+                <span>OK</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+
+
+    <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="row no-gutters bg-white newsletter-popup-content">
+                    <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+                        <div class="banner-content text-center">
+                            <img src="/assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60"
+                                height="15">
+                            <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+                            <p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite
+                                products.</p>
+                            <form action="#">
+                                <div class="input-group input-group-round">
+                                    <input type="email" class="form-control form-control-white"
+                                        placeholder="Your Email Address" aria-label="Email Adress" required>
+                                    <div class="input-group-append">
+                                        <button class="btn" type="submit"><span>go</span></button>
+                                    </div><!-- .End .input-group-append -->
+                                </div><!-- .End .input-group -->
+                            </form>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                                <label class="custom-control-label" for="register-policy-2">Do not show this popup
+                                    again</label>
+                            </div><!-- End .custom-checkbox -->
+                        </div>
+                    </div>
+                    <div class="col-xl-2-5col col-lg-5 ">
+                        <img src="/assets/images/popup/newsletter/img-1.jpg" class="newsletter-img" alt="newsletter">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+        const passwordResetForm = document.getElementById('password-reset-form');
+        const otpContainer = document.getElementById('otp-container');
+        const newPasswordContainer = document.getElementById('new-password-container');
+        const resendOtpBtn = document.getElementById('resend-otp-btn-password');
+        const resetPasswordBtn = document.getElementById('reset-password-btn');
+        let countdownInterval;
+        const errorMessage = document.getElementById('alertmodal');
+        const signinForm = document.getElementById('signinForm');
+
+
+
+        function handleForgotPassword() {
+
+            // const resettab=document.getElementById('reset-tab');
+            // resettab.style.display = 'block';
+
+            // resetTab.setAttribute('aria-selected', 'true');
+
+            passwordResetForm.style.display = 'block';
+            document.getElementById('signin').classList.remove('show', 'active');
+            document.getElementById('password-reset').classList.add('show', 'active');
+
+            // Add event listener to the password reset form
+            // passwordResetForm.addEventListener('submit', handlePasswordReset);
+        }
+
+        function handlePasswordReset(event) {
+            console.log("handlePasswordReset")
+            event.preventDefault();
+            const email = document.getElementById('reset-email').value;
+
+            // Send a request to the server to generate an OTP and send it to the user's email
+            fetch('/otp/sendResetOtp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("sendResetOtp", data)
+                    if (data.success) {
+                        showModal(data.message);
+                        document.getElementById("verify-email-btn").style.display='none';
+                        otpContainer.style.display = 'block';
+                        resendOtpBtn.disabled = false;
+                        startCountdown();
+                    } else {
+                        // Display an error message
+                        showModal(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error resetting password:', error);
+                    alert('An error occurred while resetting your password. Please try again later.');
+                });
+        }
+
+        function verifyOtp() {
+            console.log("in verifyOtp")
+            const otp = document.getElementById('otp-input').value;
+            const email = document.getElementById('reset-email').value;
+
+
+            // Send a request to the server to verify the OTP
+            fetch('otp/verifyResetOTP', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ otp, email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.verified) {
+                        otpContainer.style.display = 'none';
+                        // email.readOnly = true;
+                        newPasswordContainer.style.display ='block';
+
+                        // resetPasswordBtn.style.display = 'block';
+                        resendOtpBtn.disabled = true;
+                        clearCountdown();
+                    } else {
+                        // Display an error message
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error verifying OTP:', error);
+                    alert('An error occurred while verifying the OTP. Please try again later.');
+                });
+        }
+
+        function resetPassword() {
+
+            if (!validateResetPassword()) {
+                showModal("Password must be at least 6 characters long and contain at least one letter and one number.")
+            }
+            else {
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('new-password-confirm').value;
+                const email = document.getElementById('reset-email').value;
+
+                if (newPassword !== confirmPassword) {
+                    showModal("password confirmation failed..!")
+                }
+
+                else {
+                    fetch('/otp/resetpassword', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ newPassword, email })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Redirect the user to the login page or display a success message
+                                document.getElementById('okBtn').style.display='block';
+                                showModal('Password reset successful. Please log in with your new password.');
+                                // Redirect to login page
+                            } else {
+                                document.getElementById('okBtn').style.display='block';
+                                showModal('Password reset successful. Please log in with your new password.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error resetting password:', error);
+                            showModal('An error occurred while resetting your password. Please try again later.');
+                        });
+                }
+            }
+        }
+
+        function startCountdown() {
+            let countdown = 120; // 2 minutes in seconds
+            resendOtpBtn.disabled = true;
+
+            countdownInterval = setInterval(() => {
+                const minutes = Math.floor(countdown / 60);
+                const seconds = countdown % 60;
+                resendOtpBtn.textContent = `Resend OTP (${minutes}:${seconds.toString().padStart(2, '0')})`;
+
+                if (--countdown < 0) {
+                    clearCountdown();
+                    resendOtpBtn.disabled = false;
+                    resendOtpBtn.textContent = 'Resend OTP';
+                }
+            }, 1000);
+        }
+
+        function clearCountdown() {
+            clearInterval(countdownInterval);
+        }
+
+        passwordResetForm.addEventListener('submit', handlePasswordReset);
+        resendOtpBtn.addEventListener('click', () => handlePasswordReset(new Event('submit')));
+
+
+        function validateResetPassword() {
+            const newPassword = document.getElementById('new-password');
+            if (newPassword.value.trim() === '') {
+                return false;
+            }
+            else {
+                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+                if (!passwordPattern.test(newPassword.value)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+
+
+
+
+
+        document.getElementById('signupBtn').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission
+            console.log('signupBtn clicked')
+            if (validateSignupForm()) {
+
+                this.style.display = 'none';
+                // document.getElementById('otpSection').style.display = 'block';
+                sendOTP();
+            }
+        });
+
+        document.getElementById('verifyOtpBtn').addEventListener('click', function () {
+            verifyOTP();
+
+        });
+
+        document.getElementById('okBtn').addEventListener('click', function () {
+            window.location.reload(); // Refresh the homepage
+        });
+
+        let countdown;
+        let timer = 120; // 2 minutes in seconds
+        function startTimer() {
+            let minutes, seconds;
+            countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById("countdown").textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    document.getElementById("resend-otp-btn").removeAttribute("disabled");
+                    document.getElementById("countdown").textContent = "";
+                }
+
+
+            }, 1000);
+        }
+
+        document.getElementById("resend-otp-btn").addEventListener("click", function () {
+            // Simulate OTP resend functionality
+            console.log("Resending OTP...");
+            sendOTP();
+            // Disable the button and start the timer
+            this.setAttribute("disabled", true);
+            timer = 120; // Reset the timer
+            startTimer();
+        });
+
+
+
+        // const errorMessage = document.getElementById('alertmodal');
+
+        signinForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const email = signinForm.querySelector('#useremail').value;
+            const password = signinForm.querySelector('#userpassword').value;
+            const closeButton = document.querySelector('#alertmodal .close');
+            closeButton.addEventListener('click', closeModal);
+            // const modalMessage = document.getElementById('modal-message');
+
+            fetch('/home/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+
+                    if (data.error) {
+                        // Display the error message
+                        showModal(data.error);
+
+                    } else {
+                        // Redirect the user or perform other actions
+                        window.location.href = '/home';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+
+
+        function addToCart(productId, user) {
+            if (user == 'user') {
+                showModal('please add an account and then proceed..!')
+            }
+            else {
+                fetch(`/products/cart/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId: productId })
+                })
+                    .then(response =>  response.json() )
+                    .then(data => {
+                        document.getElementById('okBtn').style.display = 'block';
+                        document.getElementById('closeBtnalert').style.display = 'block';
+                        console.log("data.message",data);
+                         showModal(data.message)   ;
+                        // Display the success message
+                    })
+                    .catch(error => {
+                        // Handle any errors
+                        console.error('Error adding product to cart:', error);
+                    });
+            }
+        }
+
+
+        function showModal(message) {
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function closeModal() {
+            errorMessage.style.display = 'none';
+        }
+        function okButtonAlertModal(){
+            window.location.reload();
+ 
+        }
+
+        function validateSignupForm() {
+            const form = document.getElementById('signupForm');
+            const username = document.getElementById('username');
+            const email = document.getElementById('reguseremail');
+            const password = document.getElementById('register-password');
+
+
+
+            let isValid = true;
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+
+
+            // Clear previous validation states
+            form.classList.remove('was-validated');
+            username.classList.remove('is-invalid');
+            email.classList.remove('is-invalid');
+            password.classList.remove('is-invalid');
+
+            emailError.textContent = '';
+            nameError.textContent = '';
+            passwordError.textContent = '';
+
+
+            // Validate username
+            if (username.value.trim() === '') {
+                username.classList.add('is-invalid');
+                nameError.textContent = 'Name is required';
+                isValid = false;
+            } else {
+                username.classList.remove('is-invalid');
+                username.classList.add('is-valid');
+            }
+
+            // Validate email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value)) {
+                email.classList.add('is-invalid');
+                document.getElementById('emailError').textContent = 'Enter a valid email';
+
+                isValid = false;
+            } else {
+                email.classList.remove('is-invalid');
+                email.classList.add('is-valid');
+            }
+
+            // Validate password
+            if (password.value.trim() === '') {
+                password.classList.add('is-invalid');
+                passwordError.textContent = 'Password is required';
+                isValid = false;
+            }
+            else {
+                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+                if (!passwordPattern.test(password.value)) {
+                    password.classList.add('is-invalid');
+                    passwordError.textContent = 'Password must be at least 6 characters long and contain at least one letter and one number.';
+                    isValid = false;
+                } else {
+                    password.classList.remove('is-invalid');
+                    password.classList.add('is-valid');
+                    //password.nextElementSibling.innerText = '';
+                }
+            }
+
+            // Add the 'was-validated' class to the form to trigger Bootstrap's validation styles
+            form.classList.add('was-validated');
+
+
+            return isValid;
+        }
+
+        function sendOTP() {
+
+            const email = document.getElementById('reguseremail').value;
+
+
+            fetch('/otp/sentotp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('otpSection').style.display = 'block';
+
+                        startTimer();
+                        showModal('OTP sent successfully');
+                        console.log('OTP sent successfully');
+
+                    } else {
+                        throw new Error('user you entered is already exist');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('signupBtn').style.display = 'block';
+                    document.getElementById('otpSection').style.display = 'none';
+                    showModal(error.message);
+                    console.error('Error sending OTP:', error);
+                });
+        }
+
+        function verifyOTP() {
+            const email = document.getElementById('reguseremail').value;
+            const otp = document.getElementById('reg-otp').value;
+            const password = document.getElementById('register-password').value;
+            const name = document.getElementById('username').value;
+
+
+
+            fetch('otp/verifyotp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ otp: otp, email: email, password: password, name: name })
+            })
+                .then(response => {
+                    console.log("otp verification", response)
+                    return response.json()
+                }
+
+                )
+                .then(data => {
+                    console.log(data)
+
+                    if (data.error) {
+                        // Display the error message
+                        showModal(data.error);
+
+                    } else {
+                        if (data.verified) {
+                            document.getElementById('okBtn').style.display = 'block';
+                            document.getElementById('closeBtnalert').style.display = 'block';
+                            showModal(data.message);
+                        }
+                        else {
+                            document.getElementById('closeBtnalert').style.display = 'block';
+                            showModal(data.message);
+                        }
+
+                    }
+                })
+                .catch(error => {
+                    showModal(error.message);
+                    console.error('Error verifying OTP:', error);
+                });
+        }
+
+    </script>
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/assets/js/jquery.plugin.min.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/assets/js/jquery.countdown.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/demos/demo-9.js"></script>
+</body>
+
+
+<!-- molla/index-9.html  22 Nov 2019 09:58:03 GMT -->
+
+</html>

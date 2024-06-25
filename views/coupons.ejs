@@ -7,6 +7,169 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/admin_panel.css">
     <title>SheShop</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* Coupon List Styles */
+.coupon-list {
+    color: black;
+  width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.coupon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.coupon-header h3 {
+  font-weight: bold;
+  margin: 0;
+}
+
+.add-coupon-btn {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-coupon-btn:hover {
+  background-color: #3e8e41;
+}
+
+.coupon-list-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.coupon-item {
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.coupon-item h4 {
+  font-weight: bold;
+  margin: 0;
+}
+
+.coupon-item p {
+  margin-bottom: 10px;
+}
+
+.remove-coupon-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.remove-coupon-btn:hover {
+  background-color: #c0392b;
+}
+.modal {
+    display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+    /* Modal content box */
+    .modal-content {
+        position: relative;
+  background-color:  #dad4c6;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+
+    /* Close button */
+    .close {
+        color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+    /* Form styles */
+    .modal-body form {
+        width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+    .modal-body label {
+        position: relative;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+    .modal-body input {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .add-coupon-btn {
+      padding: 10px 20px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .add-coupon-btn:hover {
+        background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+    }
+  .boldLetter{
+    font-weight: 800;
+  }
+  .lightLetter{
+    font-weight: 600;
+    color: #b37e56;
+  }
+    </style>
 </head>
 
 <body>
@@ -21,14 +184,14 @@
             <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
             <li ><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
             <li><a href="/admin/categories"><i class='bx bx-category-alt' ></i>Categories</a></li>
-            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/brands"><i class='bx bx-store-alt' ></i>Brands</a></li>            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
             <li><a href="/admin/reports"><i class='bx bxs-report' ></i>Reports</a></li>
             <li class="active"><a href="/admin/Coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
-            <li><a href="#"><i class='bx bx-cog'></i>Settings</a></li>
+            
         </ul>
         <ul class="side-menu">
             <li>
-                <a href="#" class="logout">
+                <a href="/logout" class="logout"  >
                     <i class='bx bx-log-out-circle'></i>
                     Logout
                 </a>
@@ -42,7 +205,7 @@
         <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
-            <form action="#">
+            <form style="display:none" action="#">
                 <div class="form-input">
                     <input type="search" placeholder="Search...">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
@@ -66,7 +229,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Dashboard</h1>
+                    <h1>Coupons</h1>
                     <ul class="breadcrumb">
                         <li><a href="#">
                                 admin
@@ -75,136 +238,203 @@
                         <li><a href="#" class="active">Coupons</a></li>
                     </ul>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
-                </a>
+               
             </div>
 
-            <!-- Insights -->
-            <ul class="insights">
-                <li>
-                    <i class='bx bx-calendar-check'></i>
-                    <span class="info">
-                        <h3>
-                            1,074
-                        </h3>
-                        <p>Paid Order</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-show-alt'></i>
-                    <span class="info">
-                        <h3>
-                            3,944
-                        </h3>
-                        <p>Site Visit</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-line-chart'></i>
-                    <span class="info">
-                        <h3>
-                            14,721
-                        </h3>
-                        <p>New Users</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-dollar-circle'></i>
-                    <span class="info">
-                        <h3>
-                            $6,742
-                        </h3>
-                        <p>Total Sales</p>
-                    </span>
-                </li>
-            </ul>
-            <!-- End of Insights -->
-
-            <div class="bottom-data">
-                <div class="orders">
+           
+            <div class="bottom-data" >
+                <div class="Coupons"style="width:100%">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Recent Orders</h3>
+                        <h3>Add /Remove coupons</h3>
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-search'></i>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Order Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status process">Processing</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="coupon-list" style="background-color: rgb(239, 236, 227);">
+                        <div class="coupon-header">
+                          <h3>Coupons</h3>
+                          <button class="add-coupon-btn" data-toggle="modal" data-target="#add-coupon-modal">Add Coupon</button>
+
+                        </div>
+                        <ul class="coupon-list-items">
+                          <!-- Coupon List Items -->
+                          <% coupons.forEach(item=> { %>
+                          <li class="coupon-item">
+                            <h4 class="boldLetter">Coupon Name :<span class="lightLetter" ><%= item.name %></span></h4>
+                            <p class="boldLetter">Created On  :<span class="lightLetter" ><%=  new Date(item.createdOn).toLocaleString() %> </span></p>
+                            <p class="boldLetter">Expire On  :<span class="lightLetter"> <%=  new Date(item.expireOn).toLocaleString() %></span></p>
+                            <p class="boldLetter">Offer Price  : <span class="lightLetter">$<%= item.offerPrice %></span></p>
+                            <p class="boldLetter">Minimum Purchase Amount  : <span class="lightLetter">$<%= item.minimumPrice %></span></p>
+                            <button class="remove-coupon-btn" data-coupon-id="<%= item._id %>">Remove</button>
+                          </li>
+                          <% });%>
+                         
+                          <!-- More Coupon List Items -->
+                        </ul>
+                      </div>
                 </div>
 
-                <!-- Reminders -->
-                <div class="reminders">
-                    <div class="header">
-                        <i class='bx bx-note'></i>
-                        <h3>Remiders</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-plus'></i>
-                    </div>
-                    <ul class="task-list">
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Start Our Meeting</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Analyse Our Site</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <div class="task-title">
-                                <i class='bx bx-x-circle'></i>
-                                <p>Play Footbal</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- End of Reminders-->
+                
 
             </div>
-
+            <div id="add-coupon-modal" class="modal">
+                <div class="modal-content">
+                  <span class="close" data-dismiss="modal">&times;</span>
+            <h3>Add Coupon</h3>
+            
+         
+          <div class="modal-body">
+            <form class="add-coupon-form" id="add-coupon-formid">
+              <label for="coupon-name">Coupon Name:</label>
+              <input type="text" id="coupon-name" name="coupon-name"><br><br>
+              <!-- <label for="created-on">Created On:</label>
+              <input type="date" id="created-on" name="created-on"><br><br> -->
+              <label for="expire-on">Expire On:</label>
+              <input type="date" id="expire-on" name="expire-on"><br><br>
+              <label for="offer-price">Offer Price:</label>
+              <input type="number" id="offer-price" name="offer-price"><br><br>
+              <label for="minimum-price">Minimum Price:</label>
+              <input type="number" id="minimum-price" name="minimum-price"><br><br>
+              <!-- <label for="is-list">Is List:</label> -->
+              <!-- <input type="checkbox" id="is-list" name="is-list"><br><br> -->
+              <button class="add-coupon-btn" type="submit">Add Coupon</button>
+            </form>
+          </div>
+        </div>
+        </div>
         </main>
-
+      
     </div>
+    
+<script>
 
+    // Get the modal
+let addCouponModal = document.getElementById('add-coupon-modal');
+
+// Get the close button
+let closeBtn = document.querySelector('.close');
+
+// Add event listener to the close button
+closeBtn.addEventListener('click', function() {
+  // Close the modal
+  addCouponModal.style.display = 'none';
+});
+
+// Add event listener to the add coupon button
+document.querySelector('.add-coupon-btn').addEventListener('click', function() {
+  // Open the modal
+  addCouponModal.style.display = 'block';
+});
+
+document.getElementById("add-coupon-formid").addEventListener("submit",  function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Validate form inputs
+    const name = document.getElementById("coupon-name").value;
+    //const createdOn = document.getElementById("created-on").value;
+    const createdOn = new Date().toLocaleString();
+
+    const expireOn = document.getElementById("expire-on").value;
+    const offerPrice = document.getElementById("offer-price").value;
+    const minimumPrice = document.getElementById("minimum-price").value;
+    // const isList = document.getElementById("is-list").checked;
+
+    if (!name || !createdOn || !expireOn || !offerPrice || !minimumPrice) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (Date.parse(expireOn) <= Date.parse(createdOn)) {
+      alert("Expiry date must be greater than the todays date.");
+      return;
+    }
+
+    if (parseFloat(offerPrice) >= parseFloat(minimumPrice)) {
+      alert("Offer price must be less than the minimum price.");
+      return;
+    }
+
+    // Create coupon object
+    const coupon = {
+      name,
+      createdOn,
+      expireOn,
+      offerPrice,
+      minimumPrice
+    
+    };
+
+    // Submit form data using Fetch API
+    fetch('http://localhost:3000/admin/Coupons/addcoupon', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(coupon)
+    })
+    .then(response => response.json())
+    .then(async data => {
+     if(data.isValid){
+      await Swal.fire({
+        title: 'Success!',
+        text: data.message,
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }); 
+    }
+      else{
+        await Swal.fire({
+        title: 'Failed!',
+        text: data.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      }); 
+      }     
+      window.location.reload();
+    })
+    .catch(async error => {
+      console.error('Error:', error);
+     // alert('Failed to add coupon.');
+     await Swal.fire({
+        title: 'Failed!',
+        text: data.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });      
+     
+    });
+  });
+  // Add event listener to the remove coupon button
+document.querySelectorAll('.remove-coupon-btn').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    // Get the coupon ID
+    const couponId = button.dataset.couponId;
+
+    // Send a DELETE request to the server
+    fetch('/admin/Coupons/removecoupon/' + couponId, {
+      method: 'GET',
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Remove the coupon from the list
+        // const couponItem = document.querySelector(`li[data-coupon-id="${couponId}"]`);
+        // couponItem.remove();
+        alert('removed coupon successfully.');
+        window.location.reload();
+      } else {
+        alert('removed coupon successfully.');
+        window.location.reload();
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('Failed to remove coupon.');
+    });
+  });
+});
+</script>
     <script src="/javascript/admin_panel.js"></script>
 </body>
 

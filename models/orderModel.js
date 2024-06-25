@@ -10,15 +10,32 @@ const OrderSchema = new mongoose.Schema({
     products: [
         {
             productid: {
-                type: mongoose.Schema.Types.ObjectId
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product',
             },
             quantity: {
                 type: Number,
                 default: 1
+            },
+            price: {
+                type: Number,
+                
             }
         }
     ],
+    orderid: {
+        type: String,
+        required: true
+    },
     totalamount: {
+        type: Number,
+        required: true
+    },
+    discount: {
+        type: Number,
+        required: true
+    },
+    payedamount: {
         type: Number,
         required: true
     },
@@ -28,8 +45,14 @@ const OrderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: "pending"
-    }
+        default: "processing"
+    },
+    paymentType:{
+        type: String,
+        default: "COD"
+    },
+    
+
 },
     { timestamps: true }
 );

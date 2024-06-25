@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/admin_panel.css">
+    <title>SheShop</title>
+    >
+    <style>
+         .alert-modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        /* Modal content */
+        .alert-modal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Close button */
+        .alert-modal .close {
+            position: relative;
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .alert-modal .close:hover,
+        .alert-modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Alert icon */
+        .alert-icon {
+            font-size: 40px;
+            color: #b37e56;
+            margin-right: 20px;
+        }
+
+        /* Alert message */
+        .alert-message {
+            flex-grow: 1;
+        }
+
+        .alert-message h3 {
+            color: #b37e56;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .alert-message p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* OK Button */
+        .alert-modal #okBtn {
+            position: relative;
+
+            /* display: block; */
+            /* margin: 20px auto 0; */
+            padding: 10px 20px;
+            margin-top: 40px;
+            left: -40%;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #b37e56;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-modal #okBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-modal #okBtn i {
+            margin-left: 10px;
+        }
+
+        /* Cute animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .order-details {
+    font-size: 16px; /* Set the desired font size */
+}
+
+.order-details h6 {
+    font-size: inherit; /* Inherit the font size from the parent container */
+    text-align: start;
+}
+.order-details-title{
+    margin-left: 20px;
+    width: 200px;
+}
+.d-flex{
+    display: flex;
+    justify-content:start;
+}
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <div c><img src="/images/logo.png" class="centered-image" alt="SheShop"></div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/admin/dashboard"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+            <li class="active"><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
+            <li><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
+            <li><a href="/admin/categories"><i class='bx bx-category-alt'></i>Categories</a></li>
+            <li><a href="/admin/brands"><i class='bx bx-store-alt'></i>Brands</a></li>
+            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/reports"><i class='bx bxs-report'></i>Reports</a></li>
+            <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
+            
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="/logout" class="logout">
+                    <i class='bx bx-log-out-circle'></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form style="display:none" action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="profile">
+                <h4>f</h4>
+                <h4>farzana shaneez</h4>
+            </a>
+
+        </nav>
+
+        <!-- End of Navbar -->
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">
+                                admin
+                            </a></li>
+                        <li>/</li>
+                        <li><a href="#" class="active">Orders</a></li>
+                    </ul>
+                </div>
+               
+            </div>
+
+
+
+            <div class="bottom-data">
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Recent Orders</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>product</th>
+                                <th>quantity</th>
+                                <th></th>
+                                <th>price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orderData.products.forEach((item)=> { %>
+                                <tr>
+                                    <td><img src="/uploads/product-images/<%=item.productid.image[0]%>">
+                                        <p>
+                                            <%= item.productid._id %>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <%= item.quantity %>
+                                    </td>
+                                    <td>
+                                       X
+                                    </td>
+                                    <td>
+                                            <%= item.productid.price %>
+                                       
+                                    </td>
+
+                                </tr>
+                                <% }) %>
+
+
+                        </tbody>
+                    </table>
+                    <div class="order-details" style="margin-top: 20px;">
+                        <div class="product bg-light">
+                            <div  class=" d-flex ">
+                                <h6 class="order-details-title"> Total Price :  </h6> <h6 class="order-details mr-5"> $<%=orderData.totalamount%></h6> 
+                            </div>
+                            <div  class=" d-flex ">
+                                <h6 class="order-details-title"> Discount :  </h6> <h6 class="order-details mr-5"> $<%=orderData.discount%></h6> 
+                            </div>
+                            <div  class=" d-flex ">
+                                <h6 class="order-details-title"> Total Payed :  </h6> <h6 class="order-details mr-5"> $<%=orderData.payedamount%></h6> 
+                            </div>
+                            <div  class="d-flex ">
+                                <h6 class="order-details-title"> Address  </h6> <h6 class="order-details mr-5"> <%=orderData.address.house%>,<%=orderData.address.street%>,<%=orderData.address.city%>,<%=orderData.address.state%>,<%=orderData.address.zipcode%></h6> 
+                            </div>
+                            <div  class="d-flex ">
+                                <h6 class="order-details-title"> Phone Number   </h6> <h6 class="order-details mr-5"> <%=orderData.address.phone%></h6> 
+                            </div>
+                            <div  class=" d-flex ">
+                                <h6 class="order-details-title">Order date :  </h6> <h6 class="order-details mr-5">  <%= new Date(orderData.createdAt).toLocaleString() %></h6> 
+                            </div>
+                            <div  class=" d-flex ">
+                                <h4 class="order-details-title">Order status :  </h4> <h4 class="order-details mr-5">   <%=orderData.status%></h4> 
+                            </div>
+                            
+                        </div>
+                       
+                    </div>
+                </div>
+               
+
+                
+
+            </div>
+
+        </main>
+        <div id="profilealertmodal" class="modal  alert-modal">
+            <div class="modal-content">
+                <span id="closeBtnalert" class="close" onclick="closeModal()">&times;</span>
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="alert-message">
+                    <h3 id="modal-title" style="text-align: center;">SheShop Alert</h3>
+                    <p id="modal-message-profile" style="text-align: center;"></p>
+                </div>
+                <button id="okBtn" class="btn btn-outline-primary-2 close" type="button" 
+                    style="display: block;">
+                    <span>OK</span>
+                    <i class="icon-long-arrow-right"></i>
+                </button>
+    
+            </div>
+        </div>
+    </div>
+    <script>
+
+         const closeButton = document.querySelector('#profilealertmodal .close');
+        //closeButton.addEventListener('click', closeModal);
+        const errorMessage = document.getElementById('profilealertmodal');
+
+        function showModal(message, orderid) {
+            const modalMessage = document.getElementById('modal-message-profile');
+        if(message==='accept'){
+            modalMessage.textContent = "Do you want to accept Order";
+            document.getElementById('okBtn').addEventListener('click',function(){
+                acceptOrder(orderid)
+            })
+
+
+        }else if(message==='reject'){
+            modalMessage.textContent = "Do you want to reject Order";
+            document.getElementById('okBtn').addEventListener('click',function(){
+                rejectOrder(orderid)
+            })
+
+        }
+        else if(message==='recieve'){
+            modalMessage.textContent = "Do you want to recieve Order";
+            document.getElementById('okBtn').addEventListener('click',function(){
+                markReceived(orderid)
+            })
+
+        }
+        else if(message==='cancel'){
+            modalMessage.textContent = "Do you want to cancel Order";
+            document.getElementById('okBtn').addEventListener('click',function(){
+                cancelOrder(orderid)
+            })
+
+        }
+
+            errorMessage.style.display = 'block';
+        }
+
+        function closeModal() {
+            errorMessage.style.display = 'none';
+        }
+       
+
+
+        function acceptOrder(orderId) {
+            fetch(`/admin/orders/shipping/${orderId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+    window.location.reload();        // Refresh the order list or update the UI as needed
+    })
+    .catch(error => {
+       console.log(error)
+    });
+        }
+
+        function rejectOrder(orderId) {
+            fetch(`/admin/orders/cancelled/${orderId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+    window.location.reload();        // Refresh the order list or update the UI as needed
+    })
+    .catch(error => {
+       console.log(error)
+    });        }
+
+        function markReceived(orderId) {
+            fetch(`/admin/orders/recieved/${orderId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+    window.location.reload();        // Refresh the order list or update the UI as needed
+    })
+    .catch(error => {
+       console.log(error)
+    });        }
+
+        function cancelOrder(orderId) {
+
+            fetch(`/admin/orders/cancelled/${orderId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+    window.location.reload();        // Refresh the order list or update the UI as needed
+    })
+    .catch(error => {
+       console.log(error)
+    });        }
+
+    </script>
+    <script src="/javascript/admin_panel.js"></script>
+</body>
+
+</html>

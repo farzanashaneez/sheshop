@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* Center the modal */
+        .alert-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        /* Modal content */
+        .alert-modal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Close button */
+        .alert-modal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .alert-modal .close:hover,
+        .alert-modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Alert icon */
+        .alert-icon {
+            font-size: 40px;
+            color: #b37e56;
+            margin-right: 20px;
+        }
+
+        /* Alert message */
+        .alert-message {
+            flex-grow: 1;
+        }
+
+        .alert-message h3 {
+            color: #b37e56;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .alert-message p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* OK Button */
+        .alert-modal #okBtn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #b37e56;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-modal #okBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-modal #okBtn i {
+            margin-left: 10px;
+        }
+
+        /* Cute animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-6 ">
+
+            <div class="header-middle">
+                <div class="container">
+
+                    <div class="header-center">
+                        <a href="/home" class="logo">
+                            <img src="/images/She Shop.png" alt="Sheshop" width="205" height="70">
+                        </a>
+                    </div><!-- End .header-left -->
+
+
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+
+        </header><!-- End .header -->
+
+        <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Login</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-color: rgba(10, 10, 10, 0.457); background-image: url('/images/heroImage.jpg'); background-blend-mode: multiply; background-size: cover;">
+            	<div class="container">
+            		<div class="form-box">
+            			<div class="form-tab">
+	            			<ul class="nav nav-pills nav-fill" role="tablist">
+							   
+							    <li class="nav-item">
+							        <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Register</a>
+							    </li>
+							</ul>
+							<div class="tab-content">
+							   
+							    <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                                    <form id="signupForm" action="#">
+                                        <div class="form-group">
+                                            <label for="username"> Name *</label>
+                                            <input type="text" class="form-control" id="username" name="name" required>
+                                            <small id="nameError" class="text-danger"></small>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="useremail">Your email address *</label>
+                                            <input type="email" class="form-control" id="reguseremail" name="email"
+                                                required>
+                                            <small id="emailError" class="text-danger"></small>
+
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password"
+                                                name="password" required>
+                                            <small id="passwordError" class="text-danger"></small>
+
+                                        </div><!-- End .form-group -->
+
+                                        <div id="otpSection" style="display: none;">
+                                            <div class="form-group">
+                                                <label for="reg-otp">Enter OTP *</label>
+                                                <input type="text" class="form-control" id="reg-otp" name="otp"
+                                                    required>
+                                            </div><!-- End .form-group -->
+
+                                            <button id="verifyOtpBtn" class="btn btn-outline-primary-2" type="button">
+                                                <span>Verify OTP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                            <button id="resend-otp-btn" class="btn btn-primary" disabled>Resend
+                                                OTP</button>
+                                            <p id="countdown"></p>
+
+
+                                        </div><!-- End #otpSection -->
+
+                                        <div class="form-footer">
+                                            <button id="signupBtn" type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+							    	
+							    </div><!-- .End .tab-pane -->
+							</div><!-- End .tab-content -->
+						</div><!-- End .form-tab -->
+            		</div><!-- End .form-box -->
+            	</div><!-- End .container -->
+            </div><!-- End .login-page section-bg -->
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2 ">
+            <div class="footer-bottom bg-footer">
+                <div class="container bg-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                                <img src="/images/logo.png" class="footer-logo" alt="Footer Logo" width="200"
+                                    height="150">
+                                <p>With our user-friendly website, shopping for your favorite beauty products is a
+                                    breeze. Explore our comprehensive range, read expert tips and tutorials, and shop
+                                    with confidence knowing that each product is carefully selected for its quality and
+                                    performance.</p>
+
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="/assets/images/payments.png" alt="Payment methods" width="272"
+                                                    height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About SheShop</a></li>
+                                    <li><a href="#">How to shop on SheShop</a></li>
+
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Sheshop. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    >
+
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                class="icon-instagram"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+   
+    <!-- Sign in / Register Modal -->
+    <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="singin-email">Username or email address *</label>
+                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password *</label>
+                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>LOG IN</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                            </div><!-- End .custom-checkbox -->
+
+                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SIGN UP</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="register-policy" required>
+                                                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
+                                            </div><!-- End .custom-checkbox -->
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                    <div class="form-choice">
+                                        <p class="text-center">or sign in with</p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login btn-g">
+                                                    <i class="icon-google"></i>
+                                                    Login With Google
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                            <div class="col-sm-6">
+                                                <a href="#" class="btn btn-login  btn-f">
+                                                    <i class="icon-facebook-f"></i>
+                                                    Login With Facebook
+                                                </a>
+                                            </div><!-- End .col-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .form-choice -->
+                                </div><!-- .End .tab-pane -->
+                            </div><!-- End .tab-content -->
+                        </div><!-- End .form-tab -->
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+    <div id="alertmodal" class="modal alert-modal">
+        <div class="modal-content">
+            <span id="closeBtnalert" class="close" onclick="closeModal()">&times;</span>
+            <div class="alert-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="alert-message">
+                <h3 id="modal-title" style="text-align: center;">SheShop Alert</h3>
+                <p id="modal-message" style="text-align: center;"></p>
+            </div>
+            <button id="okBtn" class="btn btn-outline-primary-2 close" type="button" onclick="okButtonAlertModal()"
+                style="display:none;">
+                <span>OK</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+    <script>
+         let countdownInterval;
+        const errorMessage = document.getElementById('alertmodal');
+
+         document.getElementById('signupBtn').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission
+            console.log('signupBtn clicked')
+            if (validateSignupForm()) {
+                console.log("signupBtn clicked then validateSignupForm")
+
+                this.style.display = 'none';
+                // document.getElementById('otpSection').style.display = 'block';
+                sendOTP();
+            }
+        });
+        function validateSignupForm() {
+            const form = document.getElementById('signupForm');
+            const username = document.getElementById('username');
+            const email = document.getElementById('reguseremail');
+            const password = document.getElementById('register-password');
+
+
+
+            let isValid = true;
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+
+
+            // Clear previous validation states
+            form.classList.remove('was-validated');
+            username.classList.remove('is-invalid');
+            email.classList.remove('is-invalid');
+            password.classList.remove('is-invalid');
+
+            emailError.textContent = '';
+            nameError.textContent = '';
+            passwordError.textContent = '';
+
+
+            // Validate username
+            if (username.value.trim() === '') {
+                username.classList.add('is-invalid');
+                nameError.textContent = 'Name is required';
+                isValid = false;
+            } else {
+                username.classList.remove('is-invalid');
+                username.classList.add('is-valid');
+            }
+
+            // Validate email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value)) {
+                email.classList.add('is-invalid');
+                document.getElementById('emailError').textContent = 'Enter a valid email';
+
+                isValid = false;
+            } else {
+                email.classList.remove('is-invalid');
+                email.classList.add('is-valid');
+            }
+
+            // Validate password
+            if (password.value.trim() === '') {
+                password.classList.add('is-invalid');
+                passwordError.textContent = 'Password is required';
+                isValid = false;
+            }
+            else {
+                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+                if (!passwordPattern.test(password.value)) {
+                    password.classList.add('is-invalid');
+                    passwordError.textContent = 'Password must be at least 6 characters long and contain at least one letter and one number.';
+                    isValid = false;
+                } else {
+                    password.classList.remove('is-invalid');
+                    password.classList.add('is-valid');
+                    //password.nextElementSibling.innerText = '';
+                }
+            }
+
+            // Add the 'was-validated' class to the form to trigger Bootstrap's validation styles
+            form.classList.add('was-validated');
+
+
+            return isValid;
+        }
+
+        function sendOTP() {
+
+            const email = document.getElementById('reguseremail').value;
+
+
+            fetch('http://localhost:3000/otp/sentotp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('otpSection').style.display = 'block';
+
+                        startTimer();
+                        showModal('OTP sent successfully');
+                        console.log('OTP sent successfully');
+
+                    } else {
+                        throw new Error('user you entered is already exist');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('signupBtn').style.display = 'block';
+                    document.getElementById('otpSection').style.display = 'none';
+                    showModal(error.message);
+                    console.error('Error sending OTP:', error);
+                });
+        }
+        document.getElementById('verifyOtpBtn').addEventListener('click', function () {
+            verifyOTP();
+
+        });
+        function verifyOTP() {
+            const email = document.getElementById('reguseremail').value;
+            const otp = document.getElementById('reg-otp').value;
+            const password = document.getElementById('register-password').value;
+            const name = document.getElementById('username').value;
+            const urlParams = new URLSearchParams(window.location.search);
+            const couponCode = urlParams.get('code');
+
+            console.log("email",email,"otp",otp,"password",password,"name",name)
+            fetch('http://localhost:3000/otp/verifyotp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ otp: otp, email: email, password: password, name: name ,couponCode:couponCode})
+            })
+                .then(response => {
+                    console.log("otp verification", response)
+                    return response.json()
+                }
+
+                )
+                .then(data => {
+                    console.log(data)
+
+                    if (data.error) {
+                        // Display the error message
+                        showModal(data.error);
+
+                    } else {
+                       
+                        window.location.href='/home';
+
+                    }
+                })
+                .catch(error => {
+                    showModal(error.message);
+                    console.error('Error verifying OTP:', error);
+                });
+        }
+
+        document.getElementById('okBtn').addEventListener('click', function () {
+            window.location.reload(); // Refresh the homepage
+        });
+
+        let countdown;
+        let timer = 120; // 2 minutes in seconds
+        function startTimer() {
+            let minutes, seconds;
+            countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById("countdown").textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    document.getElementById("resend-otp-btn").removeAttribute("disabled");
+                    document.getElementById("countdown").textContent = "";
+                }
+
+
+            }, 1000);
+        }
+
+        document.getElementById("resend-otp-btn").addEventListener("click", function () {
+            // Simulate OTP resend functionality
+            console.log("Resending OTP...");
+            sendOTP();
+            // Disable the button and start the timer
+            this.setAttribute("disabled", true);
+            timer = 120; // Reset the timer
+            startTimer();
+        });
+
+        function showModal(message) {
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function closeModal() {
+            errorMessage.style.display = 'none';
+        }
+        function okButtonAlertModal(){
+            window.location.reload();
+ 
+        }
+
+    </script>
+
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+
+<!-- molla/login.html  22 Nov 2019 10:04:03 GMT -->
+</html>

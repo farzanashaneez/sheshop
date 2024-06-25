@@ -1,21 +1,28 @@
 const mongoose=require('mongoose')
 
 const AddressSchema = new mongoose.Schema({
+  house: {
+    type: String,
+    
+  },
     street: {
       type: String,
-      required: true
+      
     },
     city: {
       type: String,
-      required: true
+      
     },
     state: {
       type: String,
-      required: true
+      
     },
-    zip: {
+    zipcode: {
       type: String,
-      required: true
+      
+    },
+    phone:{
+      type: Number,
     }
   }, { _id: false });
   module.exports=AddressSchema

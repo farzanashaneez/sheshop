@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .alert-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        /* Modal content */
+        .alert-modal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Close button */
+        .alert-modal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .alert-modal .close:hover,
+        .alert-modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Alert icon */
+        .alert-icon {
+            font-size: 40px;
+            color: #b37e56;
+            margin-right: 20px;
+        }
+
+        /* Alert message */
+        .alert-message {
+            flex-grow: 1;
+        }
+
+        .alert-message h3 {
+            color: #b37e56;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .alert-message p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* OK Button */
+        .alert-modal #okBtn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #b37e56;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-modal #okBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-modal #okBtn i {
+            margin-left: 10px;
+        }
+
+        /* Cute animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .address-card {
+            position: relative;
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+
+
+        .add-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn.btn-primary.btn-circle {
+            width: 200px;
+            height: 200px;
+            background-color: #888;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn.btn-primary.btn-circle i {
+            font-size: 100px;
+        }
+
+        .add-Address {
+
+            height: 400px;
+        }
+
+        .text-custom-color {
+            color: #b37e56;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-6 ">
+
+            <div class="header-middle">
+                <div class="container">
+
+                    <div class="header-center">
+                        <a href="/home" class="logo">
+                            <img src="/images/She Shop.png" alt="Sheshop" width="205" height="70">
+                        </a>
+                    </div><!-- End .header-left -->
+
+
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+
+        </header><!-- End .header -->
+
+        <main class="main">
+            <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                <div class="container">
+                    <h1 class="page-title">Address</h1>
+                </div><!-- End .container -->
+            </div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/profile">Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Address</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="dashboard">
+                    <div class="container">
+
+                        <div class="row justify-content-center">
+
+
+                            <div class="col-md-8 col-lg-8 justify-content-center">
+                                <div class="tab-content">
+
+
+                                    <div class="tab-pane fade show active" id="tab-account" role="tabpanel"
+                                        aria-labelledby="tab-account-link">
+                                        <div>
+
+
+
+                                            <div class="row">
+                                                <% userData.useraddress.forEach((item, index)=> { %>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="card card-dashboard">
+                                                            <div class="card-body">
+                                                                <h3 class="card-title">Address <%= index %> :</h3>
+                                                                <!-- End .card-title -->
+
+                                                                <p>
+                                                                    House: <%= item.house %><br>
+                                                                        Street: <%= item.street %><br>
+                                                                            Place: <%= item.city %>, <%= item.state %><br>
+                                                                            ZipCode: <%= item.zipcode %><br>
+                                                                                        Phone: <%= item.phone %><br>
+                                                                </p>
+
+                                                                <div class="d-flex justify-content-between">
+                                                                    <button class="btn"
+                                                                        onclick="editAddress('<%= JSON.stringify(item) %>','<%= index %>')">
+                                                                        <i class="icon-edit"
+                                                                            style="font-size: 20px;"></i>
+                                                                    </button>
+
+                                                                    <button class="btn"
+                                                                        onclick="removeAddress('<%= index %>')">
+                                                                        <i class="icon-close"
+                                                                            style="font-size: 20px;"></i>
+                                                                    </button>
+                                                                </div>
+
+                                                            </div><!-- End .card-body -->
+
+                                                        </div><!-- End .card-dashboard -->
+
+                                                    </div><!-- End .col-lg-6 -->
+
+                                                    <% }) %>
+
+
+
+
+                                                        <hr>
+
+
+                                            </div>
+                                            
+                                        </div><!-- .End .tab-pane -->
+                                    </div>
+                                </div><!-- End .col-lg-9 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .container -->
+                        <div class="row add-Address bg-lighter justify-content-center mb-5" id="Add-first-Address">
+                            <div class="address-card">
+                                <div class="address-content">
+                                    <h3 class="text-custom-color">ADD Address</h3>
+                                </div>
+                                <div class="add-button">
+
+                                    <button class="btn btn-primary btn-circle" onclick="addAddress(true,false)">
+                                        <i class="icon-plus"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div><!-- End .dashboard -->
+                </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2 ">
+            <div class="footer-bottom bg-footer">
+                <div class="container bg-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                                <img src="/images/logo.png" class="footer-logo" alt="Footer Logo" width="200"
+                                    height="150">
+                                <p>With our user-friendly website, shopping for your favorite beauty products is a
+                                    breeze. Explore our comprehensive range, read expert tips and tutorials, and shop
+                                    with confidence knowing that each product is carefully selected for its quality and
+                                    performance.</p>
+
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="/assets/images/payments.png" alt="Payment methods" width="272"
+                                                    height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About SheShop</a></li>
+                                    <li><a href="#">How to shop on SheShop</a></li>
+
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Sheshop. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    >
+
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                class="icon-instagram"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+    <!-- Sign in / Register Modal -->
+
+
+    <div class="modal fade" id="address-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+    
+                    <div class="form-box">
+                        <form action="/profile/address" method="post" id="address-form-modal" onsubmit="return validateForm()">
+                            <div class="form-group">
+                                <label for="house">House Name/no:</label>
+                                <input type="text" class="form-control" id="house" name="house" required>
+                                <div class="invalid-feedback">Please enter a valid house name or number.</div>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="street">Street</label>
+                                <input type="text" class="form-control" id="street" name="street" required>
+                                <div class="invalid-feedback">Please enter a valid street name.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                                <div class="invalid-feedback">Please enter a valid city.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                                <div class="invalid-feedback">Please enter a valid state.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipcode">Zip</label>
+                                <input type="text" class="form-control" id="zipcode" name="zipcode" required>
+                                <div class="invalid-feedback">Please enter a valid 5-digit ZIP code.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
+                            </div>
+    
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>Update Address</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+                            </div><!-- End .form-footer -->
+                        </form>
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div>
+    
+   
+    
+
+    <div id="profilealertmodal" class="modal  alert-modal">
+        <div class="modal-content">
+            <span id="closeBtnalert" class="close" onclick="closeModal()">&times;</span>
+            <div class="alert-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="alert-message">
+                <h3 id="modal-title" style="text-align: center;">SheShop Alert</h3>
+                <p id="modal-message-profile" style="text-align: center;"></p>
+            </div>
+            <button id="okBtn" class="btn btn-outline-primary-2 close" type="button" 
+                style="display: none;">
+                <span>OK</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+
+
+        var modal = document.getElementById('address-modal');
+        const okButton = document.getElementById("okBtn");
+
+
+
+        // function validateForm() {
+        //     const regex = /^[0-9\s+]+$/;
+
+        //     const phoneInput = document.getElementById('billingPhone1');
+
+        //     const billingZip = document.getElementById('billingZip1');
+
+        //     if (!regex.test(phoneInput.value)) {
+
+        //         return false;
+        //     }
+        //     if (!regex.test(billingZip.value)) {
+
+        //         return false;
+        //     }
+
+
+
+        //     return true; // Allow form submission
+
+
+        // }
+
+        function addAddress(isnew, isedit) {
+            
+           setModal();
+        }
+        function setModal(){
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            modal.setAttribute('aria-modal', 'true');
+            modal.removeAttribute('aria-hidden');
+
+            // Close modal when close button is clicked
+            var closeButton = modal.querySelector('.close');
+            closeButton.addEventListener('click', function () {
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+            });
+
+            document.body.classList.add('modal-open');
+
+            // Close modal when clicking outside the modal
+            window.addEventListener('click', function (event) {
+                if (event.target == modal) {
+                    modal.classList.remove('show');
+                    modal.style.display = 'none';
+                }
+            });
+        }
+        function editAddress(address,index) {
+            console.log("address", address,index)
+            const data = JSON.parse(address)
+            const newActionUrl=`/profile/address/edit/${index}`;
+           // modal.classList.add('show');
+           setModal();
+           document.getElementById('address-form-modal').action = newActionUrl;
+
+            document.getElementById('house').value = data.house;
+            document.getElementById('street').value = data.street;
+            document.getElementById('city').value = data.city;
+            document.getElementById('state').value = data.state;
+            document.getElementById('zipcode').value = data.zipcode;
+            document.getElementById('phone').value = data.phone;
+        }
+
+
+
+        
+
+
+
+        const closeButton = document.querySelector('#profilealertmodal .close');
+        closeButton.addEventListener('click', closeModal);
+        const errorMessage = document.getElementById('profilealertmodal');
+
+        function showModal(message) {
+          
+           
+            const modalMessage = document.getElementById('modal-message-profile');
+            modalMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function closeModal() {
+            errorMessage.style.display = 'none';
+          
+        }
+        function removeAddress(index) {
+            console.log("remove button clicked");
+            okButton.style.display = "block";
+    
+    okButton.addEventListener("click", function() {
+        deleteAddressConfirm(index);
+    });
+            showModal("do you want to delete address");
+        }
+        function deleteAddressConfirm(index) {
+            console.log(index)
+            if(index >= 0){
+            console.log("in deleteAddressConfirm")
+            closeModal();
+            fetch(`/profile/address/remove/${index}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+
+                    } else {
+                        window.location.reload();
+                        console.error('Failed to delete address');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting address:', error);
+                });
+            }
+        }
+        
+        function validateForm() {
+    // Get form elements
+    const house = document.getElementById('house');
+    const street = document.getElementById('street');
+    const city = document.getElementById('city');
+    const state = document.getElementById('state');
+    const zipcode = document.getElementById('zipcode');
+    const phone = document.getElementById('phone');
+    
+    let isValid = true;
+
+    // Regular expression for characters, numbers, and spaces
+    const charRegex = /^[^\w\d]*$/;
+
+    // Reset previous validation
+    [house, street, city, state, zipcode, phone].forEach(input => {
+        input.classList.remove('is-invalid');
+    });
+
+    // Validate fields are not empty and contain only characters, numbers, and spaces
+    if (charRegex.test(house.value.trim())) {
+        house.classList.add('is-invalid');
+        isValid = false;
+    }
+    if (charRegex.test(street.value.trim())) {
+        street.classList.add('is-invalid');
+        isValid = false;
+    }
+    if (charRegex.test(city.value.trim())) {
+        city.classList.add('is-invalid');
+        isValid = false;
+    }
+    if (charRegex.test(state.value.trim())) {
+        state.classList.add('is-invalid');
+        isValid = false;
+    }
+
+    // Validate zipcode is numeric and 5 digits long
+    if (!/^\d{5}$/.test(zipcode.value.trim())) {
+        zipcode.classList.add('is-invalid');
+        isValid = false;
+    }
+
+    // Validate phone number (example: 10 digits)
+    if (!/^\d{10}$/.test(phone.value.trim())) {
+        phone.classList.add('is-invalid');
+        isValid = false;
+    }
+
+    // Prevent form submission if any field is invalid
+    return isValid;
+}
+    </script>
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+
+<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+
+</html>

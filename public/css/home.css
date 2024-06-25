@@ -1,0 +1,53 @@
+:root {
+  --light: #1c332a;
+  --grey: #487564;
+  --dark: #efede7;
+  --primary: #b37e56;
+  --light-primary: #cfe8ff;
+  --dark-grey: #aaaaaa;
+  --danger: #d32f2f;
+  --light-danger: #fecdd3;
+  --warning: #fbc02d;
+  --light-warning: #fff2c6;
+  --success: #b37e56;
+  --light-success: #bbf7d0;
+  --logout: #fbc02d;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+.container-fluid{
+   padding-left: 0px;
+   padding-right: 0px;
+
+}
+
+
+
+.main-nav {
+  background-color: var(--light);
+}
+.hero-background {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+li {
+  display: block;
+  text-align: center;
+}
+ul {
+  margin: 0px;
+}
+.text-custom-color {
+    color: var(--dark); 
+  }
+  .navbar {
+    background-color:rgba(0, 0, 0, 0.6)
+  }
+
+  .hero{
+    
+    background-image: url("/public/images/heroImage.jpg");
+    background-color: rgba(255, 255, 255, 0.5); /* Add transparency with an alpha channel */
+ }
+ 

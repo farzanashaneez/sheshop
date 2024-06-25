@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .card {
+            position: relative;
+            height: 130px;
+        }
+
+        .form-check {
+            position: absolute;
+            top: 10px;
+            right: 50%;
+        }
+
+        input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #b37e56;
+
+            margin-right: 5px;
+            /* Adjust as needed */
+        }
+
+        .form-check-label {
+            display: inline-block;
+            vertical-align: top;
+            text-align: left;
+            padding-left: 30px;
+            /* Add right padding to the label */
+        }
+
+        .alert-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        /* Modal content */
+        .alert-modal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Close button */
+        .alert-modal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .alert-modal .close:hover,
+        .alert-modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Alert icon */
+        .alert-icon {
+            font-size: 40px;
+            color: #b37e56;
+            margin-right: 20px;
+        }
+
+        /* Alert message */
+        .alert-message {
+            flex-grow: 1;
+        }
+
+        .alert-message h3 {
+            color: #b37e56;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .alert-message p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* OK Button */
+        .alert-modal #okBtn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #b37e56;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-modal #okBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-modal #okBtn i {
+            margin-left: 10px;
+        }
+
+        /* Cute animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-6 ">
+
+            <div class="header-middle">
+                <div class="container">
+
+                    <div class="header-center">
+                        <a href="/home" class="logo">
+                            <img src="/images/She Shop.png" alt="Sheshop" width="205" height="70">
+                        </a>
+                    </div><!-- End .header-left -->
+
+
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+
+        </header><!-- End .header -->
+
+        <main class="main">
+            <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                <div class="container">
+                    <h1 class="page-title">Checkout<span>SheShop</span></h1>
+                </div><!-- End .container -->
+            </div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/cart">Cart</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="checkout">
+                    <div class="container">
+                        <div class="checkout-discount">
+
+                        </div><!-- End .checkout-discount -->
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-9 justify-content-cente align-items-center">
+                                    <div class="row justify-content-center">
+                                        <!-- In your EJS file -->
+                                        <div class="col-lg-6 ">
+
+                                            <% if (userData.useraddress.length===0 ) { %>
+
+                                                <h3 class="card-title"> No address added..!</h3><!-- End .card-title -->
+                                                <a href="/profile/address" class="btn btn-outline-primary-2"><span>Go To
+                                                        ADDRESS</span><i class="icon-long-arrow-right"></i></a>
+                                                <%}else{%>
+
+                                                    <h3 class="card-title"> Select an address</h3>
+                                                    <!-- End .card-title -->
+                                                    <%}%>
+
+
+                                                        <% userData.useraddress.forEach((address, index)=> { %>
+                                                            <div class="card card-dashboard">
+                                                                <div class="card-body">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="addressRadio"
+                                                                            id="address-<%= index %>"
+                                                                            value="<%= index %>">
+                                                                        <label class="form-check-label"
+                                                                            for="address-<%= index %>">
+                                                                            <%= address.house %><br>
+                                                                                <%= address.street %>, <%= address.city
+                                                                                        %>, <%= address.state %>, <%=
+                                                                                                address.zipcode %>
+                                                                                                <br>
+                                                                                                <%= address.phone %>
+                                                                        </label>
+                                                                    </div>
+                                                                    <p id="selectedAddress"></p>
+                                                                </div>
+                                                            </div>
+                                                            <% }); %>
+                                        </div><!-- End .col-lg-6  onchange="displaySelectedAddress(this.value)"-->
+
+
+
+
+
+
+                                    </div><!-- End .row <a href="#profilealertmodal" ><i
+                                        class="icon-arrow-up"></i>Remove Address</a>-->
+                                    <div class="cart-bottom">
+
+
+                                    </div><!-- End .cart-bottom -->
+                                </div><!-- End .col-lg-9 -->
+                                <aside class="col-lg-3">
+                                    <div class="summary">
+                                        <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                        <table class="table table-summary">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th class="text-center">quantity</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="table-body">
+                                                <% cart.forEach(product=> { %>
+
+                                                    <tr>
+                                                        <td><a href="#">
+                                                                <%= product.name %>
+                                                            </a></td>
+                                                        <td class="text-center">
+                                                            <%= product.quantity %> <i class="icon-close ml-5"></i>
+                                                        </td>
+
+                                                        <td>$<%= product.regularprice %>
+                                                        </td>
+                                                    </tr>
+
+                                                    <%});%>
+                                                        <tr>
+                                                            <td>Subtotal:</td>
+                                                            <td>:</td>
+                                                            <td id="grandTotal">$<%=subtotal%>
+                                                            </td>
+                                                        </tr><!-- End .summary-subtotal -->
+                                                        <tr>
+                                                            <td>Offer Discount </td>
+                                                            <td>:</td>
+                                                            <td>-$<%=offerdiscount%>
+                                                            </td>
+                                                        </tr><!-- End .summary-subtotal -->
+                                                        <%if(coupon>0){%>
+                                                            <tr>
+                                                                <td>Coupon Discount :</td>
+                                                                <td>:</td>
+                                                                <td>-$<%=coupon%>
+                                                                </td>
+                                                            </tr><!-- End .summary-subtotal -->
+                                                            <%}%>
+                                                                <tr>
+                                                                    <td>Shipping</td>
+                                                                    <td>:</td>
+                                                                    <td>Free shipping</td>
+                                                                </tr>
+                                                                <tr class="summary-total">
+                                                                    <td>Total</td>
+                                                                    <td>:</td>
+                                                                    <td>$<%=totalpayment%>
+                                                                    </td>
+                                                                </tr><!-- End .summary-total -->
+                                            </tbody>
+                                        </table><!-- End .table table-summary -->
+                                        <div class="cart-bottom d-block ">
+                                            <%if(coupon>0){%>
+                                                <div class="cart-discount">
+                                                    <div class="d-flex align-items-center ">
+                                                        <p>coupon added: </p>
+                                                        <p class="  p-outline-primary-2 d-block text-center ml-5">
+                                                            <%=couponname%>
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <a href="/cart/checkout/removecoupon"
+                                                            class="btn btn-outline-primary-2 btn-block text-center"
+                                                            onclick="removeCoupon(event)">Remove Coupon</a>
+                                                    </div><!-- .End .input-group-append -->
+
+                                                </div><!-- End .cart-discount -->
+                                                <%}else{%>
+                                                    <div class="cart-discount">
+                                                        <form id="couponForm">
+                                                            <div>
+                                                                <input type="text" id="inputcouponForm"
+                                                                    class="form-control " required
+                                                                    placeholder="Add coupon code">
+
+                                                            </div><!-- End .input-group -->
+                                                            <div>
+                                                                <button
+                                                                    class=" btn btn-outline-primary-2 btn-block text-center "
+                                                                    id="verifyCouponBtn"
+                                                                    onclick="verifyCoupon(event,'<%=totalpayment%>')">verify
+                                                                    coupon </button>
+                                                            </div><!-- .End .input-group-append -->
+                                                        </form>
+                                                    </div><!-- End .cart-discount -->
+                                                    <%}%>
+
+                                        </div><!-- End .cart-bottom -->
+                                        <h3 class="summary-title">Payment Options</h3><!-- End .summary-title -->
+
+                                        <div class="accordion-summary" id="accordion-payment">
+                                            <h2 class="card-title ">
+                                                <input type="radio" name="payment-method" value="cash-on-delivery"
+                                                    id="cash-on-delivery">
+                                                <label class="mt-1" for="cash-on-delivery"> Cash on delivery</label>
+                                            </h2>
+                                            <h2 class="card-title mt-2">
+                                                <input type="radio" name="payment-method" value="stripe" id="stripe">
+                                                <label for="stripe">Credit Card (Stripe)</label>
+                                                <img class="mt-1" src="/assets/images/payments-summary.png"
+                                                    alt="payments cards">
+                                            </h2>
+                                            <h2 class="card-title mt-2">
+                                                <input type="radio" name="payment-method" value="wallet" id="wallet">
+                                                <label for="wallet">Wallet</label>
+                                            </h2>
+
+
+                                        </div><!-- End .accordion -->
+
+                                        <a href="#" class="btn btn-outline-primary-2 btn-order btn-block"
+                                            onclick="validateAddressSelection('<%=subtotal%>','<%=coupondiscount%>','<%=offerdiscount%>'); return false;">
+                                            <span class="btn-text">Place Order</span>
+                                            <span class="btn-hover-text">Proceed to Checkout</span>
+                                        </a>
+                                    </div><!-- End .summary -->
+                                </aside><!-- End .col-lg-3 -->
+                            </div><!-- End .row -->
+                        </form>
+                    </div><!-- End .container -->
+
+                </div><!-- End .checkout -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2 ">
+            <div class="footer-bottom bg-footer">
+                <div class="container bg-footer">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                                <img src="/images/logo.png" class="footer-logo" alt="Footer Logo" width="200"
+                                    height="150">
+                                <p>With our user-friendly website, shopping for your favorite beauty products is a
+                                    breeze. Explore our comprehensive range, read expert tips and tutorials, and shop
+                                    with confidence knowing that each product is carefully selected for its quality and
+                                    performance.</p>
+
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="/assets/images/payments.png" alt="Payment methods" width="272"
+                                                    height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About SheShop</a></li>
+                                    <li><a href="#">How to shop on SheShop</a></li>
+
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Sheshop. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    >
+
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                class="icon-instagram"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+    <div id="profilealertmodal" class="modal  alert-modal">
+        <div class="modal-content">
+            <span id="closeBtnalert" class="close" onclick="closeModal()">&times;</span>
+            <div class="alert-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="alert-message">
+                <h3 id="modal-title" style="text-align: center;">SheShop Alert</h3>
+                <p id="modal-message-profile" style="text-align: center;"></p>
+            </div>
+            <button id="okBtn" class="btn btn-outline-primary-2 close" type="button" style="display: none;">
+                <span>OK</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        const okButton = document.getElementById("okBtn");
+        const closeButton = document.querySelector('#profilealertmodal .close');
+        closeButton.addEventListener('click', closeModal);
+        const errorMessage = document.getElementById('profilealertmodal');
+        const grandTotal = document.getElementById('grandTotal');
+        const paymentMethods = document.getElementsByName('payment-method');
+
+
+
+
+
+        function showModal(message) {
+
+            okButton.style.display = 'block'
+            okButton.addEventListener('click', function () {
+                var addressSelected = document.querySelector('input[name="addressRadio"]:checked');
+                console.log("message", message,addressSelected)
+                if (addressSelected === null) {
+                    console.log("addressSelected")
+
+                    closeModal();
+                }
+                else if (message === 'To place Order using  Cash On Delivery,Total amount should be less than 1000' || message==='No payment method selected..! Please select a method and proceed..!' || message==='You have no enough money in your wallet for this purchase') {
+                    console.log("second if else")
+
+                    closeModal();
+                }
+                // else if(message==='your order is successfully placed,you will get notified soon'){
+                //     console.log("third if else")
+
+                //     window.location.href = '/profile';
+                // }
+               
+                else {
+                    console.log("fourth ")
+                    
+                    window.location.href = '/profile';
+                }
+            })
+            const modalMessage = document.getElementById('modal-message-profile');
+            modalMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function closeModal() {
+            errorMessage.style.display = 'none';
+
+        }
+
+        function validateAddressSelection(subtotalamount, coupondiscount, offerdiscount) {
+            var addressSelected = document.querySelector('input[name="addressRadio"]:checked');
+            if (addressSelected === null) {
+                showModal('Please select an address before proceeding to checkout.');
+            } 
+           
+             else {
+                let checkedcount=0;
+                for (const paymentMethod of paymentMethods) {
+                    if (paymentMethod.checked) {
+                        checkedcount++;
+                        const selectedMethod = paymentMethod.value;
+                        var selectedAddressIndex = addressSelected.value;
+                        let totalamount = parseFloat(grandTotal.textContent.replace('$', ''));
+                        console.log("totalamount", totalamount)
+
+                        if (selectedMethod === 'cash-on-delivery') {
+                            if (totalamount >= 1000) {
+                                showModal('To place Order using  Cash On Delivery,Total amount should be less than 1000');
+
+                            }
+                            else {
+                                fetch('/cart/placeorder', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ addressIndex: selectedAddressIndex, totalamount: totalamount, coupondiscount, offerdiscount })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        showModal('your order is successfully placed,you will get notified soon')
+                                        console.log(data);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                            }
+                        }
+                        else if (selectedMethod === 'stripe') {
+                            // Handle Stripe payment
+                            console.log("card payment")
+                            fetch('/cart/checkout/cardpayment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    addressIndex: selectedAddressIndex, totalamount: totalamount, coupondiscount, offerdiscount
+                                })
+                            }).then(response => {
+                                console.log("card payment response")
+
+                                if (response.ok)
+                                    return response.json()//.then(json=>Promise.reject(json))
+                            }).then(({ url }) => {
+                                console.log("card payment responseurl", url)
+
+                                window.location = url
+                            }).catch(e => {
+                                console.log("error", e)
+                            })
+
+
+                        }
+                        else if (selectedMethod === 'wallet') {
+                            Swal.fire({
+                                title: 'Confirm Wallet Payment',
+                                text: `You are about to pay ${totalamount-coupondiscount-offerdiscount} from your wallet. Do you want to proceed?`,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, Pay from Wallet'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    console.log('you are in placeorder',selectedAddressIndex,totalamount,coupondiscount,offerdiscount)
+                                    // Handle Wallet payment
+                                    fetch('/cart/checkout/walletpayment', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ addressIndex: selectedAddressIndex, totalamount: totalamount, coupondiscount, offerdiscount })
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if(data.isSuccess){
+                                                showModal('your order is successfully placed,you will get notified soon')
+                                            }
+                                            else{
+                                                showModal('You have no enough money in your wallet for this purchase')
+
+                                            }
+                                          
+                                            console.log(data);
+                                        })
+                                        .catch(e => {
+                                            console.log("error", e);
+                                            Swal.fire(
+                                                'Error',
+                                                'There was an error processing your wallet payment. Please try again.',
+                                                'error'
+                                            );
+                                        });
+                                }
+                            });
+                        }
+
+
+                        break;
+                    }
+
+                }
+                 if(checkedcount==0){
+                showModal('No payment method selected..! Please select a method and proceed..!');
+
+             } 
+            }
+
+        }
+
+
+
+        function verifyCoupon(event, totalamount) {
+            event.preventDefault();
+            //const coupon = document.querySelector('#couponForm input[type="text"]').value;
+            const coupon = document.getElementById('inputcouponForm').value
+            console.log("in verifyCoupon ")
+
+            console.log("totalamount ", totalamount)
+
+
+
+            // Get the table body element
+            const tableBody = document.getElementById('table-body');
+
+            // Send a request to your server-side API to verify the coupon
+            fetch('/cart/checkout/verifycoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ coupon, totalamount }),
+            })
+                .then((response) => response.json())
+                .then(async (data) => {
+                    if (data.valid) {
+                        await Swal.fire({
+                            title: 'Coupon Shared!',
+                            text: `The coupon code verified successfully.`,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+
+
+                        window.location.reload();
+
+                    } else {
+
+                        await Swal.fire({
+                            title: 'Failed!',
+                            text: data.message,
+                            icon: 'failure',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert('Error verifying coupon', error.message);
+                });
+        }
+
+
+
+
+        function removeCoupon() {
+            event.preventDefault();
+            fetch('/cart/checkout/removecoupon', {
+                method: 'GET',
+                headers: {
+                    contentType: 'application/json',
+                },
+
+            }).then((response) => response.json())
+                .then(async (data) => {
+                    await Swal.fire({
+                        title: 'Coupon Removed!',
+                        text: `The coupon removed successfully.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    window.location.reload();
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert('Error removing coupon', error.message);
+                });
+        }
+
+    </script>
+
+    <!-- Plugins JS File -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/assets/js/superfish.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+
+<!-- molla/checkout.html  22 Nov 2019 09:55:06 GMT -->
+
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/admin_panel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css ">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+    <title>SheShop</title>
+
+    <style>
+        /* Custom CSS for the form */
+        .form-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #b37e56;
+        }
+
+        .admin__input {
+            width: 100%;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .form-control {
+            width: 200px;
+            height: 40px;
+            /* Adjust height as needed */
+            color: #1c332a;
+
+        }
+
+        .border {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            color: #fff;
+            background-color: #b37e56;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #735e4d;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+
+        }
+
+        .image-wrapper {
+            display: inline-block;
+            /* or use display: flex; */
+            margin-right: 20px;
+            /* Adjust the margin between image-containing divs */
+            vertical-align: top;
+            /* Align divs at the top */
+        }
+
+        /* Style for each image */
+        .image-container img {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .margin-custom {
+            margin-top: 10px;
+        }
+
+        .mb-4 {
+            margin-bottom: 10px;
+        }
+
+        .mt-5 {
+            margin-top: 10px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .col-lg-4 {
+            flex: 0 0 calc(33.33% - 10px);
+        }
+
+        /* Additional styles for select elements */
+        select.form-select {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            background-color: #ffffff;
+            /* appearance: none; */
+        }
+
+
+        #productdescription {
+            width: 80%;
+            height: 100px;
+            /* Adjust height as needed */
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .imagemodal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .imagemodal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .imagemodal .modal-header {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .imagemodal .modal-header .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .imagemodal .modal-header .btn-close {
+            font-size: 20px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .imagemodal .modal-header .btn-close:hover {
+            color: black;
+        }
+
+        .imagemodal .modal-body {
+            padding: 20px;
+        }
+
+        .imagemodal .img-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .imagemodal .img-container img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+
+        .imagemodal .modal-footer {
+            border-top: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .imagemodal .modal-footer .btn {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .imagemodal .modal-footer .btn-secondary {
+            background-color: #666;
+            color: #fff;
+        }
+
+        .imagemodal .modal-footer .btn-secondary:hover {
+            background-color: #444;
+        }
+
+        .imagemodal .modal-footer .btn-primary {
+            background-color: #b37e56;
+            color: #fff;
+        }
+
+        .imagemodal .modal-footer .btn-primary:hover {
+            background-color: #735e4d;
+        }
+
+        #croppedImages {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            width: 100vh;
+            height: auto;
+        }
+
+        .cropped-img {
+            width: 200px;
+            height: auto;
+            margin-top: 20px;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cropped-img-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .remove-btn {
+            position: relative;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            size: 44px;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <div c><img src="/images/logo.png" class="centered-image" alt="SheShop"></div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/admin/dashboard"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+            <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
+            <li class="active"><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
+            <li><a href="/admin/Categories"><i class='bx bx-category-alt'></i>Categories</a></li>
+            <li><a href="/admin/brands"><i class='bx bx-store-alt'></i>Brands</a></li>
+            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/reports"><i class='bx bxs-report'></i>Reports</a></li>
+            <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
+
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="/logout" class="logout">
+                    <i class='bx bx-log-out-circle'></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content ">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form style="display:none" action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="profile">
+                <h4>f</h4>
+                <h4>farzana shaneez</h4>
+            </a>
+
+        </nav>
+
+        <!-- End of Navbar -->
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <ul class="breadcrumb">
+                        <li><a href="#">
+                                admin
+                            </a></li>
+                        <li>/</li>
+                        <li><a href="#">products</a></li>
+                        <li>/</li>
+                        <li><a href="#" class="active">Add Products</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="bottom-data">
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3> Edit Product </h3>
+                    </div>
+                    <div>
+                        <form id="addProductForm" enctype="multipart/form-data" onsubmit="updateproduct(event)">
+
+
+                            <div id="croppedImages">
+                                <% blobUrls.forEach((data, index) => { %>
+                                    <div class="cropped-img-container">
+                                        <img class="cropped-img" src="/uploads/product-images/<%=data.image%>"
+                                            data-imagedata="<%=data.blobUrl%>" data-index="<%=index%>">
+                                        <button class="remove-btn">X</button>
+                                    </div>
+                                <% });%>
+                                
+
+
+
+
+                            </div>
+                            <button type="button" class="btn btn-primary" id="addImageButton">Add Image</button>
+                            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+
+                            <hr>
+                            <div class=" margin-custom">
+                                <label for="productName" class="form-label ">Name</label>
+                                <input type="text" name="productName" id="productName" placeholder="Product name"
+                                    value="<%= product.name %>" class="form-control border" required />
+                                <div id="productNameError" style="color: red;"></div>
+                            </div>
+                            <div class="mb-4 mt-5">
+                                <label class="form-label">Description</label>
+                                <textarea name="productdescription" id="productdescription" class="form-control border"
+                                    required><%= product.description %></textarea>
+                                <div id="productdescriptionError" style="color: red;"></div>
+                            </div>
+                            <div class="mb-4 mt-5">
+                                <label class="form-label">Brand</label>
+                                <select class="form-select border" style="width: 150px;" name="brandname">
+                                    <% for (let i=0; i < brands.length; i++) { %>
+                                        <% if (brands[i].brandname===product.brand) { %>
+                                            <option value="<%= brands[i].brandname %>" selected>
+                                                <%= brands[i].brandname %>
+                                            </option>
+                                            <% } else { %>
+                                                <option value="<%= brands[i].brandname %>">
+                                                    <%= brands[i].brandname %>
+                                                </option>
+                                                <% } %>
+                                                    <% } %>
+                                </select>
+
+                            </div>
+                            <div class="mb-4 mt-5">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Price</label>
+                                            <input placeholder="$" name="price" type="text" class="form-control border"
+                                                value="<%= product.price%>">
+                                            <div id="price-error" class="error-message"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Quantity</label>
+                                            <input placeholder="Quantity" name="quantity" type="text"
+                                                value="<%= product.quantity%>" class="form-control border">
+                                            <div id="quantity-error" class="error-message"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4 mt-5">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">>Max Product/Person</label>
+                                            <input placeholder="Volume" name="volume" type="text"
+                                                value="<%= product.volume%>" class="form-control border">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Color</label>
+                                            <input placeholder="Color" name="color" type="text"
+                                                value="<%= product.color%>" class="form-control border">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Category</label>
+                                            <select class="form-select border" style="width: 150px;"
+                                                name="categoryname">
+                                                <% for (let i=0; i < categories.length; i++) { %>
+                                                    <option value="<%= categories[i].categoryname %>">
+                                                        <%= categories[i].categoryname %>
+                                                    </option>
+                                                    <% } %>
+
+                                                        <% for (let i=0; i < categories.length; i++) { %>
+                                                            <% if (categories[i].categoryname===product.category) { %>
+                                                                <option value="<%= categories[i].categoryname %>"
+                                                                    selected>
+                                                                    <%= categories[i].categoryname %>
+                                                                </option>
+                                                                <% } else { %>
+                                                                    <option value="<%= categories[i].categoryname %>">
+                                                                        <%= categories[i].categoryname %>
+                                                                    </option>
+                                                                    <% } %>
+                                                                        <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid text-end mt-5 col-md-5">
+                                <button class="btn btn-primary" type="submit">Update Product</button>
+                            </div>
+                        </form>
+                        <form class="mt-5" method="post" action="/admin/products/delete/<%= product.id %>"
+                            onsubmit="return confirm('Are you sure you want to delete this category?');">
+                            <button class="btn btn-danger " type="submit">Delete Product</button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+    <div class="imagemodal" id="cropImageModal" tabindex="-1" aria-labelledby="cropImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cropImageModalLabel">Crop Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-container">
+                        <img id="imageToCrop" src="/images/hero.jpg">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="closeImageButton" type="button" class="btn btn-secondary "
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="cropButton">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascript/admin_panel.js"></script>
+
+    <script>
+
+        const maxImages = 5;
+        const imageIndex=[];
+        const croppedImagesDiv = document.getElementById('croppedImages');
+        let currentImages = `<%=product.image.length%>`;
+        let cropper;
+
+        document.querySelectorAll('.remove-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                currentImages--;
+                this.parentElement.remove();
+            });
+        });
+
+        document.getElementById('addImageButton').addEventListener('click', function () {
+            if (currentImages < maxImages) {
+                document.getElementById('imageInput').click();
+            } else {
+                alert(`You can only add up to ${maxImages} images.`);
+            }
+        });
+
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imageToCrop').src = e.target.result;
+                    document.getElementById('cropImageModal').style.display = 'block';
+
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+                    const image = document.getElementById('imageToCrop');
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 3,
+                        
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+       
+
+        document.getElementById('cropButton').addEventListener('click', function () {
+            const canvas = cropper.getCroppedCanvas();
+            canvas.toBlob(function (blob) {
+
+                const imgContainer = document.createElement('div');
+                imgContainer.classList.add('cropped-img-container');
+
+                const imgElement = document.createElement('img');
+                const url = URL.createObjectURL(blob);
+                imgElement.src = url;
+                imgElement.classList.add('cropped-img');
+                imgElement.dataset.blob = url;
+                console.log('&&**********  blobUrl', url);
+
+
+                const removeButton = document.createElement('button');
+                removeButton.classList.add('remove-btn');
+                removeButton.innerHTML = 'X';
+                removeButton.addEventListener('click', function () {
+                    currentImages--;
+                    imgContainer.remove();
+                });
+
+                imgContainer.appendChild(imgElement);
+                imgContainer.appendChild(removeButton);
+
+
+                imgElement.dataset.blob = url;
+                croppedImagesDiv.appendChild(imgContainer);
+                currentImages++;
+
+                document.getElementById('cropImageModal').style.display = 'none';
+            }, 'image/png');
+        });
+
+
+        document.getElementById('closeImageButton').addEventListener('click', function () {
+            document.getElementById('cropImageModal').style.display = 'none';
+        });
+
+
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('cropImageModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+
+        async function updateproduct(event) {
+
+            event.preventDefault();
+            if (!validateForm()) {
+                return;
+            }
+            if (document.getElementById('croppedImages').childElementCount === 0) {
+                alert('Please add an image to the form before submitting.');
+                return;
+            }
+
+            var formData = new FormData(document.getElementById('addProductForm'));
+
+            var images = document.getElementById('croppedImages').children;
+
+            for (var i = 0; i < images.length; i++) {
+
+                try {
+                    const blobUrl = images[i].querySelector('img').dataset.blob;
+                    const imagedata = images[i].querySelector('img').dataset.index;
+
+                    if (!imagedata) {
+                        const blob = await fetch(blobUrl).then(r => r.blob());
+                        formData.append('myFile', blob, `image${i}.png`);
+                    }
+                    else {
+                        // const sampleblob = new Blob([imagedata.blobUrl], { type: 'image/jpeg' });
+                        // const sampleblobUrl = URL.createObjectURL(sampleblob);
+                        // console.log('@@@@@@@@@blobUrl', sampleblobUrl);
+                        // const blob = await fetch(sampleblobUrl).then(r => r.blob());
+                        //formData.append('myFile', sampleblob, `image${i}.png`);
+                        imageIndex.push(images[i].querySelector('img').dataset.index);
+                    }
+
+
+
+
+
+
+
+                } catch (error) {
+                    console.error("Error fetching blob:", error);
+                }
+
+            }
+            formData.append('imageindex',imageIndex)
+            console.log("formData", formData)
+
+            try {
+                const response = await fetch(`/admin/products/update/<%=product._id %>`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.isvalid) {
+                     window.location.href = 'http://localhost:3000/admin/products';
+                }
+                else {
+                    alert('product updation failed...!')
+                }
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            };
+        };
+
+
+
+
+
+
+
+
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validate price
+            const price = document.querySelector('input[name="price"]').value;
+            if (isNaN(price) || price < 0) {
+                document.getElementById('price-error').innerText = 'Price must be a number greater than or equal to 0.';
+                isValid = false;
+            } else {
+                document.getElementById('price-error').innerText = '';
+            }
+
+            // Validate quantity
+            const quantity = document.querySelector('input[name="quantity"]').value;
+            if (isNaN(quantity) || quantity <= 0) {
+                document.getElementById('quantity-error').innerText = 'Quantity must be a number greater than 0.';
+                isValid = false;
+            } else {
+                document.getElementById('quantity-error').innerText = '';
+            }
+            // Validate product name
+            const productName = document.querySelector('input[name="productName"]').value;
+            if (productName.trim() === "") {
+                document.getElementById('productNameError').innerText = 'Product name is required.';
+                isValid = false;
+            } else {
+                document.getElementById('productNameError').innerText = '';
+            }
+
+            // Validate product description
+            const productDescription = document.querySelector('textarea[name="productdescription"]').value;
+            if (productDescription.trim() === "") {
+                document.getElementById('productdescriptionError').innerText = 'Product description is required.';
+                isValid = false;
+            } else {
+                document.getElementById('productdescriptionError').innerText = '';
+            }
+
+
+            return isValid;
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>

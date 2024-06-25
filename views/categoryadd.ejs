@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/admin_panel.css">
+    <title>SheShop</title>
+    <style>
+        /* Custom CSS for the form */
+        .form-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #b37e56;
+        }
+
+        .admin__input {
+            width: 100%;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .form-control {
+            width: 200px;
+            height: 40px;
+            /* Adjust height as needed */
+            color: #1c332a;
+
+        }
+
+        .border {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            color: #fff;
+            background-color: #b37e56;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #735e4d;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+
+        }
+
+        .image-wrapper {
+            display: inline-block;
+            /* or use display: flex; */
+            margin-right: 20px;
+            /* Adjust the margin between image-containing divs */
+            vertical-align: top;
+            /* Align divs at the top */
+        }
+
+        /* Style for each image */
+        .image-container img {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .margin-custom {
+            margin-top: 10px;
+        }
+
+        .mb-4 {
+            margin-bottom: 10px;
+        }
+
+        .mt-5 {
+            margin-top: 10px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .col-lg-4 {
+            flex: 0 0 calc(33.33% - 10px);
+        }
+
+        /* Additional styles for select elements */
+        select.form-select {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            background-color: #ffffff;
+            /* appearance: none; */
+        }
+
+
+        #categoryDescription,
+        #categoryoptions {
+            width: 80%;
+            height: 100px;
+            /* Adjust height as needed */
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        /* CSS for the alert container */
+        .alert-modal {
+           
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        /* Modal content */
+        .alert-modal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Close button */
+        .alert-modal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .alert-modal .close:hover,
+        .alert-modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Alert icon */
+        .alert-icon {
+            font-size: 40px;
+            color:#b37e56;
+            margin-right: 20px;
+        }
+
+        /* Alert message */
+        .alert-message {
+            flex-grow: 1;
+        }
+
+        .alert-message h3 {
+            color:#b37e56;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .alert-message p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* OK Button */
+        .alert-modal #okBtn {
+            display: block;
+            position: relative;
+           
+            margin: 20px auto 0;
+           
+            width: 100%;
+            height: auto;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color:#b37e56;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-modal #okBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-modal #okBtn i {
+            margin-left: 10px;
+        }
+
+        /* Cute animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <div c><img src="/images/logo.png" class="centered-image" alt="SheShop"></div>
+        </a>
+        <ul class="side-menu">
+            <li><a href="/admin/dashboard"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+            <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
+            <li><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
+            <li class="active"><a href="/admin/Categories"><i class='bx bx-category-alt'></i>Categories</a></li>
+            <li><a href="/admin/brands"><i class='bx bx-store-alt'></i>Brands</a></li>
+            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/reports"><i class='bx bxs-report'></i>Reports</a></li>
+            <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
+            
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="/logout" class="logout">
+                    <i class='bx bx-log-out-circle'></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form style="display:none" action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">12</span>
+            </a>
+            <a href="#" class="profile">
+                <h4>f</h4>
+                <h4>farzana shaneez</h4>
+            </a>
+
+        </nav>
+
+        <!-- End of Navbar -->
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <ul class="breadcrumb">
+                        <li><a href="#">
+                                admin
+                            </a></li>
+                        <li>/</li>
+                        <li><a href="#">Categories</a></li>
+                        <li>/</li>
+                        <li><a href="#" class="active">Add Category</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="bottom-data">
+                <div class="orders">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3> Add Category</h3>
+
+                    </div>
+                    <div class="container">
+
+                        <div class="row justify-content-center">
+
+                            <div class="col-md-6 mt-5">
+                                <form method="post" action="/admin/categories/add" enctype="multipart/form-data"
+                                    onsubmit="return validateForm()">
+                                    <div class="mb-4">
+                                        <div class="container justify-content-center">
+                                            <img id="previewImage" src="/images/imageicon.png" alt="Category Image"
+                                                style="width: 200px; height: 200px;">
+                                        </div>
+                                        <input type="file" class="admin__input mt-3" id="myFile" name="myFile" accept="image/*"
+                                            required />
+                                    </div>
+                                    <hr>
+                                    <div class="mb-4 mt-5">
+                                        <label for="categoryName" class="form-label">Name</label>
+                                        <input type="text" name="categoryName" id="categoryName"
+                                            placeholder="Category name" class="form-control border" required />
+                                        <div id="categoryNameError" style="color: red;"></div>
+                                    </div>
+                                    <div class="mb-4 mt-5">
+                                        <label class="form-label">Description</label>
+                                        <textarea name="categorydescription" id="categoryDescription"
+                                            class="form-control border" required></textarea>
+                                        <div id="categoryDescriptionError" style="color: red;"></div>
+                                    </div>
+                                    <div class="mb-4 mt-5">
+                                        <label class="form-label">Category Filters</label>
+                                        <textarea name="categoryoptions" id="categoryoptions"
+                                            class="form-control border"
+                                            placeholder="Add search options seperated by coma"></textarea>
+                                        <div id="categoryOptionError" style="color: red;"></div>
+                                    </div>
+                                    <div class="d-grid text-end mt-5 col-md-5">
+                                        <button class="btn btn-primary" type="submit">Add Category</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+         
+        </main>
+       
+            <% if (typeof error !=='undefined' ) { %>
+<div id="alertmodal" class="modal alert-modal" style="display: block;">
+    <div class="modal-content">
+       
+        <div class="alert-message">
+            <div class="alert-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3  id="modal-title" style="text-align: center;">SheShop Alert</h3>
+            <p id="modal-message" style="text-align: center;"> <%= error %></p>
+            <button id="okBtn" class="btn btn-outline-primary-2 close" type="button" onclick="closeModal()" style="display: block;">
+                <span>OK</span>
+                <i class="icon-long-arrow-right"></i>
+            </button>
+        </div>
+       
+    </div>
+</div>
+            <% } %>
+
+
+    </div>
+
+    <script src="/javascript/admin_panel.js"></script>
+    <script>
+      function closeModal() {
+    const modal = document.getElementById('alertmodal');
+    modal.style.display = 'none';
+}
+        function validateForm() {
+            //event.preventDefault(); 
+            // Validate category name
+            var categoryName = document.getElementById("categoryName").value;
+            if (!categoryName.trim()) {
+                document.getElementById("categoryNameError").innerText = "Category name is required";
+                return false;
+            }
+
+            // Validate category description
+            var categoryDescription = document.getElementById("categoryDescription").value;
+            if (!categoryDescription.trim()) {
+                document.getElementById("categoryDescriptionError").innerText = "Category description is required";
+                return false;
+            }
+
+            // Validate file input
+            var fileInput = document.getElementById("myFile");
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Please select an image");
+                return false;
+            }
+
+            // Validate file type (optional)
+            var validExtensions = ["jpg", "jpeg", "png"];
+            var fileExtension = fileInput.files[0].name.split('.').pop().toLowerCase();
+            if (validExtensions.indexOf(fileExtension) === -1) {
+                alert("Invalid file type. Only JPG, JPEG, and PNG files are allowed.");
+                return false;
+            }
+            console.log('returnig true')
+            return true; // Form submission allowed
+        }
+
+        // preview image
+        const imageInput = document.getElementById('myFile');
+        const previewImage = document.getElementById('previewImage');
+        console.log(imageInput)
+        console.log(previewImage)
+        imageInput.addEventListener('change', function () {
+            console.log("function called")
+            const file = this.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,10 +1,25 @@
 const mongoose = require('mongoose');
 
+const RatingSchema = new mongoose.Schema({
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Reference to the user who submitted the rating
+    rating: { type: Number, required: true }, // Rating value (e.g., 1-5 stars)
+    review: { type: String }, 
+  }, { timestamps: true });
+
 const ProductSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         unique: true
+    },
+    brand: {
+        type: String,
+        required: true,
+      
+    },
+    category: {
+        type: String,
+        required: true,
     },
     description: {
         type: String,
@@ -25,13 +40,25 @@ const ProductSchema = new mongoose.Schema({
     quantity: {
         type: Number
     },
-    option: {
+    volume: {
+        type: Number
+    },
+    color: {
         type: Array
+    },
+    regularprice: {
+        type: Number,
+        required: true
+    },
+    offerpercentage: {
+        type: Number,
+        default: 0
     },
     price: {
         type: Number,
         required: true
-    }
+    },
+    ratings: [RatingSchema] 
 },
     { timestamps: true }
 );

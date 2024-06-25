@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  .main h1{
+    font-weight: 300;
+    /* height: 34px;
+    line-height: 34px; */
+    color: rgb(32, 32, 32);
+    font-family: "Noto Serif", serif;
+    font-size: 31px;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+.gift h1{
+    font-weight: 500;
+    padding-left: 50px;
+    /* height: 34px;
+    line-height: 34px; */
+    color: rgb(32, 32, 32);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 35px;
+    letter-spacing: 0.5px;
+}
+.aboutMain h6{
+    /* height: 34px;
+    line-height: 34px; */
+    color: rgb(58, 58, 58);
+    font-weight: lighter !important;
+    font-size: 14px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    letter-spacing: 0.16px;
+    line-height: 27.200001px;}
+.aboutMain h1{
+    font-weight: lighter !important;
+    color: rgb(32, 32, 32);
+    font-family: "Noto Serif", serif;
+    font-size: 50px;
+    letter-spacing: 2px;
+}
+.aboutMain h3{
+  font-family: "Graphik Webfont", -apple-system, "Helvetica Neue", "Droid Sans", Arial, sans-serif;
+  font-size: 27.01px;
+  font-weight: 500;
+  letter-spacing: 0.13505px;
+}
+.frameicon{
+    fill: rgb(241, 100, 29);
+
+
+}
+.form-control-dark {
+    border-color: var(--bs-gray);
+  }
+  .form-control-dark:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+  }
+  
+  .text-small {
+    font-size: 85%;
+  }
+  
+  .dropdown-toggle:not(:focus) {
+    outline: 0;
+  }
+  .fixed-top-right{
+    position: fixed;
+    top: 8px; /* Adjust top margin as needed */
+    right: 20px; 
+  }
+  .fas{
+    font-size: 24px;
+  }
+  .etsy-search{ 
+    min-width: 400px;
+    width: 100%;
+
+  }
+        .etsyInput{
+        flex: 4;
+        }
+        .etsyCategory{
+        flex: 1;
+        }
+/* .card:hover {
+    background-color: #f0f0f0; 
+    border: 1px solid #ddd;   
+    transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out; /* Add a smooth transition effect 
+} */
+ .card-body img-fluid{
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+    cursor: pointer;
+
+}
+
+
+.cgryimage:hover{
+    transform: scale(1.05);
+ /* box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06); */
+ border: 0px solid rgba(100, 100, 100, 1);
+  border-radius: 50px;
+  box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.37);
+}
+.secondcard{
+    height: 300px;
+    flex-grow: 1;
+}
+.secondaryimage{
+    border: 0px solid rgba(100, 100, 100, 1); 
+    border-radius: 10px;
+}
+.secondcard:hover{
+    transform: scale(1.05);
+ /* box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06); */
+border: 0px solid rgba(100, 100, 100, 1); 
+  box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.37);
+}
+
+.main h6:hover{
+    
+        color: rgb(132, 132, 132); /* Set the default text color */
+        transition: color 0.3s ease; /* Add a smooth transition effect for color change */
+       text-decoration: underline;
+}
+
+  
+ 
+  
+
+  

@@ -1,6 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+     .modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /* overflow: auto; */
+  background-color: rgba(0, 0, 0, 0.4);
+}
 
+.modal-content {
+    position: relative;
+  background-color:  #dad4c6;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.report-Form {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.report-Form label {
+    position: relative;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.report-Form input[type="number"],
+.report-Form select {
+    position: relative;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.report-Form button[type="submit"] {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.report-Form button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,14 +94,14 @@
             <li><a href="/admin/orders"><i class='bx bx-list-ul'></i>Orders</a></li>
             <li ><a href="/admin/products"><i class='bx bx-store-alt'></i></i>Products</a></li>
             <li><a href="/admin/categories"><i class='bx bx-category-alt' ></i>Categories</a></li>
-            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
+            <li><a href="/admin/brands"><i class='bx bx-store-alt' ></i>Brands</a></li>            <li><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
             <li class="active"><a href="/admin/reports"><i class='bx bxs-report' ></i>Reports</a></li>
             <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
-            <li><a href="#"><i class='bx bx-cog'></i>Settings</a></li>
+            
         </ul>
         <ul class="side-menu">
             <li>
-                <a href="#" class="logout">
+                <a href="/logout" class="logout"  >
                     <i class='bx bx-log-out-circle'></i>
                     Logout
                 </a>
@@ -42,7 +115,7 @@
         <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
-            <form action="#">
+            <form style="display:none" action="#">
                 <div class="form-input">
                     <input type="search" placeholder="Search...">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
@@ -66,7 +139,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Dashboard</h1>
+                    <h1>Reports</h1>
                     <ul class="breadcrumb">
                         <li><a href="#">
                                 admin
@@ -77,134 +150,153 @@
                 </div>
                 <a href="#" class="report">
                     <i class='bx bx-cloud-download'></i>
-                    <span>Download CSV</span>
+                    <span>Generate Sale Report</span>
+                </a>
+                <a href="/admin/reports/generateexcelreport" class="report">
+                    <i class='bx bx-cloud-download'></i>
+                    <span>Generate Excel Report</span>
                 </a>
             </div>
 
-            <!-- Insights -->
-            <ul class="insights">
-                <li>
-                    <i class='bx bx-calendar-check'></i>
-                    <span class="info">
-                        <h3>
-                            1,074
-                        </h3>
-                        <p>Paid Order</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-show-alt'></i>
-                    <span class="info">
-                        <h3>
-                            3,944
-                        </h3>
-                        <p>Site Visit</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-line-chart'></i>
-                    <span class="info">
-                        <h3>
-                            14,721
-                        </h3>
-                        <p>New Users</p>
-                    </span>
-                </li>
-                <li><i class='bx bx-dollar-circle'></i>
-                    <span class="info">
-                        <h3>
-                            $6,742
-                        </h3>
-                        <p>Total Sales</p>
-                    </span>
-                </li>
-            </ul>
-            <!-- End of Insights -->
+           
 
-            <div class="bottom-data">
-                <div class="orders">
+            <div class="bottom-data" >
+                <div class="Reports"style="width:100%">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Recent Orders</h3>
+                        <h3>Recent Sale</h3>
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-search'></i>
                     </div>
+                    
                     <table>
                         <thead>
                             <tr>
-                                <th>User</th>
-                                <th>Order Date</th>
-                                <th>Status</th>
+                                <th>Order id</th>
+                                <th>Order date</th>
+                                <th>User name</th>
+                                <th>Total Price</th>
+                                <th>Discount</th>
+                                <th>Total Payed</th>
+                                <th>Payment Method</th>
+                                <th>Order status</th>
+
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="/images/profile-1.png">
-                                    <p>John Doe</p>
-                                </td>
-                                <td>14-08-2023</td>
-                                <td><span class="status process">Processing</span></td>
-                            </tr>
+                            <% Orders?.forEach(order=> { %>
+                                <tr>
+                                    <td><%= order.orderid %></td>
+                                    <td><%= new Date(order.createdAt).toLocaleString() %></td>
+                                    <td><%= order.userid?.firstname %></td>
+                                    <td><%= order.totalamount %></td>
+                                    <td><%= order.discount %></td>
+                                    <td><%= order.payedamount %></td>
+                                    <td><%= order.paymentType %></td>
+                                    <td><%= order.status %></td>
+
+                                
+                                </tr>
+                                <% }); %>
+
                         </tbody>
                     </table>
+                   
                 </div>
 
-                <!-- Reminders -->
-                <div class="reminders">
-                    <div class="header">
-                        <i class='bx bx-note'></i>
-                        <h3>Remiders</h3>
-                        <i class='bx bx-filter'></i>
-                        <i class='bx bx-plus'></i>
-                    </div>
-                    <ul class="task-list">
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Start Our Meeting</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <div class="task-title">
-                                <i class='bx bx-check-circle'></i>
-                                <p>Analyse Our Site</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <div class="task-title">
-                                <i class='bx bx-x-circle'></i>
-                                <p>Play Footbal</p>
-                            </div>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- End of Reminders-->
+                
 
             </div>
 
         </main>
 
     </div>
+<!-- Modal -->
+<!-- HTML -->
+<div id="reportModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Generate Sales Report</h2>
+        <form id="report-form" class="report-Form" action="/admin/reports/generate-report" method="post">
+            <label for="date-filter">Date Filter:</label>
+            <select id="date-filter" name="datefilter" >
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="custom">Custom Date Range</option>
+            </select>
 
+            <!-- Custom Date Range Fields -->
+            <div id="custom-date-range" style="display: none;">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date" name="startdate">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date" name="enddate">
+            </div>
+
+            <button type="submit">Generate</button>
+        </form>
+    </div>
+</div>
+<script>
+ const modal = document.getElementById('reportModal');
+    const reportLink = document.querySelector('.report');
+
+    reportLink.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        modal.style.display = 'block';
+    });
+const dateFilterSelect = document.getElementById('date-filter');
+
+dateFilterSelect.addEventListener('change', (e) => {
+    const selectedDateFilter = e.target.value;
+
+    if (selectedDateFilter === 'custom') {
+        document.getElementById('custom-date-range').style.display = 'block';
+    } else {
+        document.getElementById('custom-date-range').style.display = 'none';
+    }
+});
+const form = document.getElementById('report-form');
+const startDateInput = document.getElementById('start-date');
+const endDateInput = document.getElementById('end-date');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  if (dateFilterSelect.value === 'custom') {
+    if (!startDateInput.value) {
+      alert('Please select a start date');
+      return;
+    }
+
+    if (!endDateInput.value) {
+      alert('Please select an end date');
+      return;
+    }
+
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+
+    const today = new Date();
+
+    if (startDate >= endDate) {
+      alert('The start date must be less than the end date.');
+      return;
+    }
+
+    if (startDate >= today || endDate >= today) {
+      alert('Ensure the selected date is not after today.');
+      return;
+    }
+  }
+
+  form.submit();
+  modal.style.display = 'none';
+
+});
+</script>
     <script src="/javascript/admin_panel.js"></script>
 </body>
 
