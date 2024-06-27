@@ -1,6 +1,6 @@
 const passport = require("passport");
 const User = require("../models/userModel");
-const crypto=require("crypto")
+const crypto=require("crypto") 
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
@@ -8,7 +8,7 @@ require('dotenv').config();
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/home/auth/google/callback",
+    callbackURL:process.env.callbackURL,
     scope:["profile","email"]
   },
   async function(request, accessToken, refreshToken, profile, done) {

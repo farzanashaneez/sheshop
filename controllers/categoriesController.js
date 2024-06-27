@@ -99,14 +99,15 @@ const categoryController = {
           res.redirect("/admin/categories");
         } catch (error) {
          
-          res.json({ error: err.message });
+          res.json({ error: error.message });
         }
       } else {
       
         
         res.send("category exist");
       }
-    } catch (error) {
+    } catch (error) { 
+      console.log("error",error)
       res.redirect("/admin/categories");
     }
   },

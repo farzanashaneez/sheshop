@@ -632,7 +632,8 @@ for (var i = 0; i < images.length; i++) {
         });
         const data = await response.json();
         if(data.isvalid){
-            window.location.href = 'http://localhost:3000/admin/products';
+            const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+            window.location.href = `${API_BASE_URL}/admin/products`;
         }
         else{
             alert('product adding failed...!')

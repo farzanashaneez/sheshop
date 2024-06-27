@@ -797,7 +797,9 @@
   const emailInput = document.querySelector('#email-input');
   const email = emailInput.value;
   const couponcode=document.getElementById("couponcode");
-  const couponUrl = `http://localhost:3000/signup/coupon?code=${couponcode.textContent}`;
+
+  const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+  const couponUrl = `${API_BASE_URL}/signup/coupon?code=${couponcode.textContent}`;
 
   try {
     const response = await fetch('/signup/sharecoupon', {

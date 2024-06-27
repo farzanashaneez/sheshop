@@ -112,13 +112,16 @@ function errorHandler(err, req, res, next) {
 }
 
 /* connecting to the database */
-mongoose.connect('mongodb://localhost:27017/SheShop')
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => {
     console.log("Successfully connected to the database");
 }).catch(err => {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
+
+
+
 
 /* listen for requests */
 app.listen(3000, () => {

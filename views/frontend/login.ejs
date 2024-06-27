@@ -556,8 +556,9 @@
 
             const email = document.getElementById('reguseremail').value;
 
+            const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
-            fetch('http://localhost:3000/otp/sentotp', {
+            fetch(`${API_BASE_URL}/otp/sentotp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -596,7 +597,9 @@
             const couponCode = urlParams.get('code');
 
             console.log("email",email,"otp",otp,"password",password,"name",name)
-            fetch('http://localhost:3000/otp/verifyotp', {
+            const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+
+            fetch(`${API_BASE_URL}/otp/verifyotp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

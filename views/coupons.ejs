@@ -307,7 +307,8 @@
     </div>
     
 <script>
-
+const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+console.log("API_BASE_URL",API_BASE_URL)
     // Get the modal
 let addCouponModal = document.getElementById('add-coupon-modal');
 
@@ -364,7 +365,7 @@ document.getElementById("add-coupon-formid").addEventListener("submit",  functio
     };
 
     // Submit form data using Fetch API
-    fetch('http://localhost:3000/admin/Coupons/addcoupon', {
+    fetch(`${API_BASE_URL}/admin/Coupons/addcoupon`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
