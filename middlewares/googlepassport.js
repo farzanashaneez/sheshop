@@ -5,9 +5,10 @@ const crypto=require("crypto")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 
-passport.use(new GoogleStrategy({
+passport.use(new GoogleStrategy({  
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+
     callbackURL:"https://www.sheshop.store/home/auth/google/callback"//process.env.CALLBACK_URL,
        },
   async function(request, accessToken, refreshToken, profile, done) {
