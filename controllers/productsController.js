@@ -47,7 +47,7 @@ const productController={
                     categoryModel.find(),
                     brandModel.find()
                   ]);
-                res.render("productupdate", { product:product[0],categories: categories, brands: brands,blobUrls })
+                res.render("productUpdate", { product:product[0],categories: categories, brands: brands,blobUrls })
             } else {
                 console.log("product not found");
             }
