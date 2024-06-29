@@ -65,7 +65,12 @@ app.use(routes)
 
 
 
+app.get('*',(req,res)=>{
+  //res.status(404).send('404 - Page not found');
+  res.render('frontend/error',{title:"error 404",message:"Page Not Found"})
 
+
+})
 app.get('/logout',(req,res)=>{
     
     res.locals.user=null;
