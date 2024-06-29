@@ -68,7 +68,7 @@ const stripeController = {
           currency:'usd',
           duration: 'once',
         });
-        console.log("line_items", line_items);
+        console.log("line_items.",order._id, line_items);
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ["card"],
           line_items: line_items,
@@ -178,7 +178,9 @@ const stripeController = {
 
         await Cart.deleteOne({userid:req.session.userid });
         const orderid=req.session.orderid;
-        const order=await Order.findById(orderid);
+	const orderarray=await Order.find().sort({createdAt:-1});
+        const order=orderarray[0];
+        console.log("orderarray",orderarray)
         order.status="processing";
        const data=await order.save()
 

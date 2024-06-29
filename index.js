@@ -30,7 +30,7 @@ app.use(cookieParser())
 
 app.use(session({
     secret: 'secret',
-    resave: false,
+    resave:true,
     saveUninitialized: true,
 }))
 
@@ -58,7 +58,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
+app.set('trust proxy', 1);
 // 
 const routes = require('./routes');
 app.use(routes)
