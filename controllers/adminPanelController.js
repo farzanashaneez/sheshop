@@ -1,4 +1,5 @@
 const Order=require('../models/orderModel')
+const User=require("../models/userModel")
 
 const adminController={
     async get_dashboard(req,res){
@@ -8,11 +9,13 @@ const adminController={
         findTopProducts(),
         findTopCategory(),
         findTopBrand(),
+       
       ]);
 
-
+      const statistic= await  findstatistics();
+      console.log("statistic",statistic)
         if(res.locals.user)
-        res.render('admin_panel',{ordersChartList,topProducts,topcategory,topBrand});
+        res.render('admin_panel',{ordersChartList,topProducts,topcategory,topBrand,statistic});
     else{
         res.redirect('/admin_login')
     }
@@ -149,6 +152,37 @@ async function processOrdersData() {
       
       return topBrands
       
+  }
+  async function findstatistics(){
+    try {
+      // Calculate total sales (sum of payedamount of all orders)
+      const totalSales = await Order.aggregate([
+        {
+          $group: {
+            _id: null,
+            total: { $sum: '$payedamount' }
+          }
+        }
+      ]);
+  
+      // Count paid orders (orders not in 'pending' status)
+      const paidOrders = await Order.countDocuments({ status: { $ne: 'pending' } });
+  
+      // Count new users (registered within a specific timeframe, e.g., last month)
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+      const newUsers = await User.countDocuments({ createdAt: { $gte: oneMonthAgo } });
+  
+      // Return the results
+      return {
+        totalSales: totalSales[0] ? totalSales[0].total : 0,
+        paidOrders,
+        newUsers
+      };
+    } catch (error) {
+      console.error(error);
+     // throw new Error('Error calculating sales data');
+    }
   }
 
 module.exports=adminController

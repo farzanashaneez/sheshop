@@ -148,8 +148,14 @@
         .status-shipping {
             color: rgb(250, 162, 0);
         }
+        .status-returned {
+            color: rgb(25, 0, 250);
+        }
         .bottomborder{
             border-bottom: 0.1rem solid #ebeaea;
+        }
+        .returnedproduct{
+            color: red;
         }
     </style>
 </head>
@@ -282,6 +288,9 @@
                                                                                     <%= product.productid?.name %>
                                                                                 </h6>
                                                                             </figure>
+                                                                            <h6 class="order-details mr-5 returnedproduct">
+                                                                               <%=product.isreturned? "returned":"" %>
+                                                                            </h6>
                                                                             <h6 class="order-details mr-5">
                                                                                 <%=product.quantity%> x <%=
                                                                                         product.productid?.regularprice %>
@@ -377,9 +386,13 @@
                                                                                 <% } %>
 
                                                                                 <% if(item.status === 'recieved') { %>
-                                                                                    <a href="/profile/cancelorder/<%=item._id%>" class="btn btn-sm btn-secondary btn-block .cancel-order-link" role="button" data-orderid="<%=item._id%>" data-toggle="tooltip" data-placement="top" title="Cancel Order">
+                                                                                    <!-- <a href="/profile/cancelorder/<%=item._id%>" class="btn btn-sm btn-secondary btn-block .cancel-order-link" role="button" data-orderid="<%=item._id%>" data-toggle="tooltip" data-placement="top" title="Cancel Order">
+                                                                                        Return
+                                                                                    </a> -->
+                                                                                    <a href="#" class="btn btn-sm btn-secondary btn-block .cancel-order-link" role="button" data-orderid="<%=item._id%>" data-products='<%= JSON.stringify(item.products) %>' data-toggle="tooltip" data-placement="top" title="Return Order" onclick="showReturnAlert(event)">
                                                                                         Return
                                                                                     </a>
+                                                                                    
                                                                                 <% } %>
                                                                             
                                                                 </div><!-- End .card-body -->
@@ -883,6 +896,77 @@ function confirmCancellation(event) {
 
 
 
+function showReturnAlert(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const products = JSON.parse(button.getAttribute('data-products'));
+  const data_orderid = button.getAttribute('data-orderid');
+
+
+  let selectedProducts = [];
+
+  const productList = products.map(product => `
+    <div class="product d-flex justify-content-between align-items-center">
+      <figure class="product-media d-flex justify-content-center align-items-center">
+        <img src="/uploads/product-images/${product.productid?.image[0]}" style="height:50px;width: 70px;" alt="Product image">
+        <h6 class="ml-5" style="width: 200px; height: auto;">${product.productid?.name}</h6>
+      </figure>
+      <div class="order-details mr-5">
+        <h6>${product.quantity}</h6>
+        <input type="checkbox" class="return-checkbox" data-product-id="${product.productid?._id}"> Select
+      </div>
+    </div>
+  `).join('');
+
+  Swal.fire({
+    title: 'Return Products',
+    html: productList,
+    showCancelButton: true,
+    confirmButtonText: 'Return',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Get the selected product IDs
+      const checkboxes = document.querySelectorAll('.return-checkbox:checked');
+      selectedProducts = Array.from(checkboxes).map(checkbox => checkbox.getAttribute('data-product-id'));
+        if(selectedProducts.length>0){
+      // Make the return fetch call
+      fetch('/profile/return', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ products: selectedProducts,order_id:  data_orderid })
+      })
+      .then(response => response.json())
+      .then(data => {
+        Swal.fire(
+          'Returned!',
+          'Your selected products have been returned.',
+          'success'
+        );
+        // Handle the response from the server
+        console.log(data);
+      })
+      .catch(error => {
+        Swal.fire(
+          'Error!',
+          'An error occurred while returning the products.',
+          'error'
+        );
+        console.error(error);
+      });
+    }
+    else{
+        Swal.fire(
+          'Error!',
+          'product is not selected to return',
+          'error'
+        );
+    }
+    }
+  });
+}
 
     </script>
     <!-- Plugins JS File -->

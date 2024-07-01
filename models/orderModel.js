@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const AddressSchema=require('./addressSchema')
+const AddressSchema=require('./addressSchema');
+const { bool } = require('sharp');
 
 const OrderSchema = new mongoose.Schema({
     userid: {
@@ -20,6 +21,10 @@ const OrderSchema = new mongoose.Schema({
             price: {
                 type: Number,
                 
+            },
+            isreturned:{
+                type:Boolean,
+                default:false
             }
         }
     ],

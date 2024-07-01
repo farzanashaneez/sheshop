@@ -19,6 +19,7 @@ const profileController = {
     let data;
     try {
       if (req.session && req.session.userid) {
+       
         const [userData, wallethistory, orderData] = await Promise.all([
           User.findById(req.session.userid),
           Wallet.find({ userId: req.session.userid }).sort({ createdAt: -1 }),
@@ -33,11 +34,12 @@ const profileController = {
           wallets: wallethistory,
           orderData: orderData || [],
         };
+        res.render("frontend/profile", data);
       } else {
-        res.send({ message: "no user logged" });
+        res.render('frontend/error',{title:"User not Found",message:"No logged user found"})
       }
 
-      res.render("frontend/profile", data);
+      // res.render("frontend/profile", data);
     } catch (error) {
       console.log(error.message);
     }
@@ -201,8 +203,11 @@ const profileController = {
       console.log("after updatiion result :", result);
     }
     const findUser = await User.findById(req.session.userid);
-    console.log("findUser", findUser);
-    if (findUser && itemstatus!=='pending') {
+    console.log("findUser", orderData.paymentType);
+
+    if (findUser && itemstatus!=='pending' && orderData.paymentType !== "COD") {
+      console.log("if statementdUser", orderData.paymentType);
+
       findUser.wallet += orderData.payedamount;
       await findUser.save();
       let desc="credited through order cancellation";
@@ -222,6 +227,69 @@ const profileController = {
     res.redirect("/profile");
   },
   
+  async postreturn(req, res) {
+    console.log("in postreturn",req.body)
+   const {products,order_id}=req.body;
+
+
+   const orderData = await Order.findById(order_id).populate('products.productid')
+   const itemstatus=orderData.status;
+   orderData.status = "returned";
+    const productArray=orderData.products;
+    const updatedProducts=productArray.map(product=>{
+      console.log(product._id,products)
+      if (products.some(p => p.toString() === product.productid._id.toString())) {
+        product.isreturned = true;
+      }
+      return product
+    })
+
+
+
+    console.log("updatedProducts",updatedProducts)
+   await orderData.save();
+
+
+
+  // let array = orderData.products;
+  let result=[];
+  let totalamountreturned=0;
+    for (const cancelledProduct of updatedProducts) {
+  if(cancelledProduct.isreturned==true){
+      result = await Products.updateOne(
+       { _id: cancelledProduct.productid._id },
+       { $inc: { quantity: cancelledProduct.quantity } }
+     );
+     totalamountreturned+=cancelledProduct.quantity*cancelledProduct.productid.price;
+  }
+     console.log("after updatiion result :", result);
+    }
+   const findUser = await User.findById(req.session.userid);
+   console.log("findUser", findUser.wallet,"type of(totalamountreturned):",typeof(totalamountreturned),totalamountreturned);
+
+   if (findUser && itemstatus!=='pending' && orderData.paymentType !== "COD") {
+     console.log("if statementdUser", orderData.paymentType);
+
+     findUser.wallet +=totalamountreturned;
+     await findUser.save();
+     let desc="credited through order return";
+     
+
+     const userWallet = await Wallet.create({
+       userId: findUser._id,
+       amount: totalamountreturned,
+       description: desc,
+       balance: findUser.wallet,
+     });
+     await userWallet.save();
+   }
+
+
+
+
+    
+    res.json({success:true})
+  },
   async getinvoice(req, res) {
     const [orderData, userData] = await Promise.all([
       Order.findById(req.params.orderid).populate("products.productid"),

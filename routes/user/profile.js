@@ -16,6 +16,9 @@ router.get('/cancelorder/:orderid',sheProfileController.getcancelOrder);
 router.get('/getinvoice/:orderid',sheProfileController.getinvoice);
 router.get('/downloadinvoice/:orderid',sheProfileController.generateInvoiceReport);
 
+router.post('/return',sheProfileController.postreturn);
+
+
 
 
 

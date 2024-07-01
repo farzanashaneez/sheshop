@@ -64,7 +64,9 @@ const cartController = {
         
       }
     } catch (error) {
-      res.send({ error });
+      res.render('frontend/error',{title:"Error",message:error.message})
+
+     // res.send({ error });
       console.log(error);
     }
   },
@@ -309,6 +311,7 @@ const cartController = {
           totalamount: totalamount,
           discount,
           payedamount,
+          paymentType:"wallet",
           address: userData.useraddress[addressIndex],
           status: "processing",
         });
