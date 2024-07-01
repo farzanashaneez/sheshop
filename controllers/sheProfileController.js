@@ -80,7 +80,7 @@ const profileController = {
         });
         const userData = await User.findById(req.session.userid);
 
-        if (type === "1") {
+        if (type === "1") { 
           userData.address.billingaddress = address1;
         } else if (type === "2") {
           userData.address.shippingaddress = address1;
