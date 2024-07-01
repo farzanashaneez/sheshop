@@ -948,6 +948,8 @@ function showReturnAlert(event) {
         );
         // Handle the response from the server
         console.log(data);
+        window.location.reload();
+
       })
       .catch(error => {
         Swal.fire(
