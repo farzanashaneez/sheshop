@@ -233,7 +233,8 @@ const profileController = {
 
 
    const orderData = await Order.findById(order_id).populate('products.productid')
-   const itemstatus=orderData.status;
+   console.log("orderData",orderData)
+  //  const itemstatus=orderData.status || ;
    orderData.status = "returned";
     const productArray=orderData.products;
     const updatedProducts=productArray.map(product=>{
@@ -267,7 +268,7 @@ const profileController = {
    const findUser = await User.findById(req.session.userid);
    console.log("findUser", findUser.wallet,"type of(totalamountreturned):",typeof(totalamountreturned),totalamountreturned);
 
-   if (findUser && itemstatus!=='pending' && orderData.paymentType !== "COD") {
+   if (findUser &&  orderData.paymentType !== "COD") {
      console.log("if statementdUser", orderData.paymentType);
 
      findUser.wallet +=totalamountreturned;
