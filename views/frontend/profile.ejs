@@ -931,7 +931,7 @@ function showReturnAlert(event) {
       selectedProducts = Array.from(checkboxes).map(checkbox => checkbox.getAttribute('data-product-id'));
         if(selectedProducts.length>0){
       // Make the return fetch call
-      console.log(selectedProducts,order_id,data_orderid)
+      console.log(selectedProducts,data_orderid)
       fetch('/profile/return', {
         method: 'POST',
         headers: {

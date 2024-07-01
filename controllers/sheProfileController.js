@@ -285,11 +285,7 @@ const profileController = {
      await userWallet.save();
    }
 
-
-
-
-    
-    res.json({success:true})
+res.json({success:true})
   },
   async getinvoice(req, res) {
     const [orderData, userData] = await Promise.all([
