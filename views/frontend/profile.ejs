@@ -155,7 +155,7 @@
             border-bottom: 0.1rem solid #ebeaea;
         }
         .returnedproduct{
-            color: red;
+             color: red;
         }
     </style>
 </head>
@@ -931,7 +931,7 @@ function showReturnAlert(event) {
       selectedProducts = Array.from(checkboxes).map(checkbox => checkbox.getAttribute('data-product-id'));
         if(selectedProducts.length>0){
       // Make the return fetch call
-      fetch('/return', {
+      fetch('/profile/return', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
