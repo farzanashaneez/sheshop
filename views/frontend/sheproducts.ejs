@@ -367,8 +367,9 @@
                         <div class="toolbox-center">
                             <div class="toolbox-info">
                                 Showing <span>
-                                    <%=productData.length%> of <%=productData.length%>
+                                    <%=(limit*(currentPage-1))+productData.length%> of <%=totalProducts%>
                                 </span> Products
+                               
                             </div><!-- End .toolbox-info -->
                         </div><!-- End .toolbox-center -->
 
@@ -465,9 +466,24 @@
 
                     </div><!-- End .row -->
 
-                    <div class="load-more-container text-center">
-                        <a href="#" class="btn btn-outline-darker btn-load-more">More Products <i
-                                class="icon-refresh"></i></a>
+                    <div class="load-more-container text-center " >
+                        <div class="row d-flex justify-content-center">
+                            <% if (currentPage > 1) { %>
+                              <a class="mr-5" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"style="font-size: 22px;">Previous</a>
+                            <% } %>
+                          
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                              <% if (i === currentPage) { %>
+                                <span class="mr-5" style="font-size: 22px;"><%= i %></span>
+                              <% } else { %>
+                                <a class="mr-5" href="?page=<%= i %>&limit=<%= limit %>" style="font-size: 22px;"><%= i %></a>
+                              <% } %>
+                            <% } %>
+                          
+                            <% if (currentPage < totalPages) { %>
+                              <a class="mr-5" href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" style="font-size: 22px;">Next</a>
+                            <% } %>
+                          </div>
                     </div><!-- End .load-more-container -->
                 </div><!-- End .products -->
 

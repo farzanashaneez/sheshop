@@ -11,20 +11,50 @@ const ExcelJS = require("exceljs")
 
 
 const reportController = {
+  // async load_dashboard(req, res) {
+  //   try {
+  //     const Orders = await Order.find({})
+  //       .sort({ createdAt: -1 })
+  //       .populate("userid") // Populate userid reference
+  //       .populate("products.productid"); // Populate productid references within products array
+
+  //     console.log(Orders);
+
+  //     res.render("reports", { Orders });
+  //   } catch (err) {
+  //     console.log("error", err);
+  //   }
+  // },
   async load_dashboard(req, res) {
     try {
-      const Orders = await Order.find({})
-        .sort({ createdAt: -1 })
-        .populate("userid") // Populate userid reference
-        .populate("products.productid"); // Populate productid references within products array
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 10; 
 
-      console.log(Orders);
+        const skip = (page - 1) * limit;
 
-      res.render("reports", { Orders });
+        const Orders = await Order.find({})
+            .sort({ createdAt: -1 })
+            .populate("userid")
+            .populate("products.productid") 
+            .skip(skip)
+            .limit(limit);
+
+        const totalOrders = await Order.countDocuments({});
+
+        const totalPages = Math.ceil(totalOrders / limit);
+
+        res.render("reports", {
+            Orders,
+            currentPage: page,
+            totalPages,
+            limit
+        });
     } catch (err) {
-      console.log("error", err);
+        console.log("error", err);
+        res.status(500).send("An error occurred");
     }
-  },
+}
+,
 
   async generateReport(req, res) {
     try {

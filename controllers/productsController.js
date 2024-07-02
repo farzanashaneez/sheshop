@@ -8,18 +8,46 @@ const fs = require('fs');
 
 
 const productController={
-    async get_products(req,res){
-        try {
-            const products=await productModel.find({}).sort({createdAt:-1});
+    // async get_products(req,res){
+    //     try {
+    //         const products=await productModel.find({}).sort({createdAt:-1});
           
-            res.render('products',{products:products});
-        } catch (err) {
-            res.render('frontend/error',{title:"Not Found...!",message:"Product not found"})
+    //         res.render('products',{products:products});
+    //     } catch (err) {
+    //         res.render('frontend/error',{title:"Not Found...!",message:"Product not found"})
 
-           // res.status(500).json({ message: err.message });
-        }
+    //        // res.status(500).json({ message: err.message });
+    //     }
       
-    },
+    // },
+    async get_products(req, res) {
+        try {
+          const page = parseInt(req.query.page) || 1;
+          const limit = parseInt(req.query.limit) || 10;
+          const skip = (page - 1) * limit;
+      
+          const products = await productModel.find({})
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+      
+          const totalProducts = await productModel.countDocuments();
+          const totalPages = Math.ceil(totalProducts / limit);
+      
+          res.render('products', { 
+            products, 
+            currentPage: page, 
+            totalPages, 
+            limit 
+          });
+        } catch (err) {
+          res.render('frontend/error', {
+            title: "Not Found...!", 
+            message: "Product not found"
+          });
+        }
+      },
+      
  
     async getUdateProducts(req,res){
         try {

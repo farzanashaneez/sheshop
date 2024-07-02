@@ -3,16 +3,40 @@ const userModel=require('../models/userModel')
 
 const customerController={
     
-    async get_users(req,res){
+    // async get_users(req,res){
+    //     try {
+    //         const users=await userModel.find({});
+    //         console.log(users)
+    //         res.render('customers',{users});
+    //     } catch (err) {
+    //         res.status(500).json({ message: err.message });
+    //     }
+      
+    // },
+    async get_users(req, res) {
         try {
-            const users=await userModel.find({});
-            console.log(users)
-            res.render('customers',{users});
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const skip = (page - 1) * limit;
+    
+            const users = await userModel.find({})
+                .skip(skip)
+                .limit(limit);
+    
+            const totalUsers = await userModel.countDocuments();
+            const totalPages = Math.ceil(totalUsers / limit);
+    
+            res.render('customers', { 
+                users, 
+                currentPage: page, 
+                totalPages, 
+                limit 
+            });
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
-      
     },
+    
     async postBlockorUnblock(req, res){
         const userId = req.params.userId;
         console.log(userId)

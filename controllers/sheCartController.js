@@ -57,6 +57,7 @@ const cartController = {
           subtotal,
           shippingcharge,
           totalpayment,
+          
         });
       } else {
                res.render('frontend/error',{title:"Logged User not Found...!",message:"Please go to home page and then proceed"})
@@ -225,7 +226,7 @@ const cartController = {
 
       }
     } catch (error) {
-      res.render('frontend/error',{title:"Logged User not Found...!",message:error.message})
+      res.render('frontend/error',{title:"No products in the cart",message:error.message})
 
       //res.status(400).send({ message: error.message }); // Send the error message
       console.log(error);

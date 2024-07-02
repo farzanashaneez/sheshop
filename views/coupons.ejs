@@ -169,6 +169,37 @@
     font-weight: 600;
     color: #b37e56;
   }
+  .pagination {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Pagination links */
+.pagination a, .pagination span {
+  color: #b37e56;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Current page */
+.pagination span {
+  background-color: #3e8e41;
+}
+
+/* Hover effect */
+.pagination a:hover {
+  background-color: #45a049;
+}
+
+/* Disabled links */
+.pagination a.disabled {
+  color: #ddd;
+  pointer-events: none;
+}
     </style>
 </head>
 
@@ -256,6 +287,7 @@
                           <button class="add-coupon-btn" data-toggle="modal" data-target="#add-coupon-modal">Add Coupon</button>
 
                         </div>
+                        
                         <ul class="coupon-list-items">
                           <!-- Coupon List Items -->
                           <% coupons.forEach(item=> { %>
@@ -271,7 +303,25 @@
                          
                           <!-- More Coupon List Items -->
                         </ul>
+                        <div class="pagination">
+                          <% if (currentPage > 1) { %>
+                            <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+                          <% } %>
+                        
+                          <% for (let i = 1; i <= totalPages; i++) { %>
+                            <% if (i === currentPage) { %>
+                              <span><%= i %></span>
+                            <% } else { %>
+                              <a href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+                            <% } %>
+                          <% } %>
+                        
+                          <% if (currentPage < totalPages) { %>
+                            <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                          <% } %>
+                        </div>
                       </div>
+                      
                 </div>
 
                 

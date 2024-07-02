@@ -4,15 +4,41 @@ const fs = require("fs");
 const path = require("path");
 
 const categoryController = {
+  // async get_categories(req, res) {
+  //   try {
+  //     const categories = await categoryModel.find({});
+  //     categoryArray = categories;
+  //     res.render("categories", { categories: categories });
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // },
   async get_categories(req, res) {
     try {
-      const categories = await categoryModel.find({});
-      categoryArray = categories;
-      res.render("categories", { categories: categories });
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+  
+      const categories = await categoryModel.find({})
+        .skip(skip)
+        .limit(limit);
+  
+      const totalCategories = await categoryModel.countDocuments();
+      const totalPages = Math.ceil(totalCategories / limit);
+  
+      res.render("categories", { 
+        categories, 
+        currentPage: page, 
+        totalPages, 
+        limit 
+      });
     } catch (err) {
-      console.log(err)
+      console.log(err);
+      res.status(500).json({ message: err.message });
     }
   },
+  
+
   async getEditCategory(req, res) {
     try {
       const id = req.params.id;

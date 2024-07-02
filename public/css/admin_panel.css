@@ -516,6 +516,9 @@ h1{
 .content main .bottom-data .orders table tr td .status.shipping{
     background: yellow;
 }
+.content main .bottom-data .orders table tr td .status.returned{
+    background: rgb(162, 162, 162);
+}
 
 .content main .bottom-data .reminders{
     flex-grow: 1;

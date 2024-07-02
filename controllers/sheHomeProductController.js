@@ -18,11 +18,24 @@ const productController = {
     } else console.log("not authenticated");
 
     try {
-      const [categoryData, brandData, productData] = await Promise.all([
+    //   const [categoryData, brandData, productData] = await Promise.all([
+    //     Category.find({}),
+    //     Brand.find({}),
+    //     Product.find().sort({ id: -1 })
+    // ]);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
+
+    const [categoryData, brandData, productData, totalProducts] = await Promise.all([
         Category.find({}),
         Brand.find({}),
-        Product.find().sort({ id: -1 })
+        Product.find().sort({ id: -1 }).skip(skip).limit(limit),
+        Product.countDocuments()
     ]);
+
+    const totalPages = Math.ceil(totalProducts / limit);
+
     
       let data;
       let minPrice = 0;
@@ -104,13 +117,20 @@ const productController = {
           minPrice,
           maxPrice,
           subtotal,
+          currentPage: page,
+            totalPages,
+            limit,
+            totalProducts
         };
       } else {
         data = {
           categoryData: categoryData,
           brandData: brandData,
           productData: productData,
-
+          currentPage: page,
+            totalPages,
+            limit,
+            totalProducts,
           minPrice,
           maxPrice,
         };

@@ -4,11 +4,36 @@ const Wallet = require("../models/walletSchema");
 const User = require("../models/userModel");
 
 const orderController = {
-  async load_dashboard(req, res) {
-    const orderData = await Order.find().sort({ createdAt: -1 });
+  // async load_dashboard(req, res) {
+  //   const orderData = await Order.find().sort({ createdAt: -1 });
 
-    res.render("orders", { orderData });
-  },
+  //   res.render("orders", { orderData });
+  // },
+  async load_dashboard(req, res) {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const orderData = await Order.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalOrders = await Order.countDocuments();
+        const totalPages = Math.ceil(totalOrders / limit);
+
+        res.render("orders", {
+            orderData,
+            currentPage: page,
+            totalPages,
+            limit
+        });
+    } catch (err) {
+        console.log("error", err);
+    }
+},
+
   async changeStatus(req, res) {
     console.log("wallet chechking......!!!!!")
     console.log("in change status", req.params.status);

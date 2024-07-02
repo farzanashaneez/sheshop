@@ -104,6 +104,41 @@
             font-size: 14px;
             color: #a46649;
         }
+
+        .pagination {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            background-color: #3e8e41;
+            /* Green color */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Pagination links */
+        .pagination a,
+        .pagination span {
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Current page */
+        .pagination span {
+            background-color: #b37e56;
+        }
+
+        /* Hover effect */
+        .pagination a:hover {
+            background-color: #45a049;
+        }
+
+        /* Disabled links */
+        .pagination a.disabled {
+            color: #ddd;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -123,7 +158,7 @@
             <li class="active"><a href="/admin/customers"><i class='bx bx-group'></i>Customers</a></li>
             <li><a href="/admin/reports"><i class='bx bxs-report'></i>Reports</a></li>
             <li><a href="/admin/coupons"><i class='bx bxs-offer'></i>Coupons</a></li>
-            
+
         </ul>
         <ul class="side-menu">
             <li>
@@ -174,7 +209,7 @@
                         <li><a href="#" class="active">Customers</a></li>
                     </ul>
                 </div>
-               
+
             </div>
 
 
@@ -187,6 +222,23 @@
                         <i class='bx bx-filter'></i>
                         <i class='bx bx-search'></i>
                     </div>
+                    <div class="pagination">
+                        <% if (currentPage > 1) { %>
+                          <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+                        <% } %>
+                      
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                          <% if (i === currentPage) { %>
+                            <span><%= i %></span>
+                          <% } else { %>
+                            <a href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+                          <% } %>
+                        <% } %>
+                      
+                        <% if (currentPage < totalPages) { %>
+                          <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                        <% } %>
+                      </div>
                     <table>
                         <thead>
                             <tr>
@@ -206,8 +258,10 @@
                                             <%= user.firstname %>
                                         </p>
                                     </td>
-                                   
-                                    <td><%= user.email %></td>
+
+                                    <td>
+                                        <%= user.email %>
+                                    </td>
                                     <td>
                                         <label class="switch">
                                             <input type="checkbox" class="toggle-btn" data-user-id="<%= user._id %>" <%
@@ -244,16 +298,16 @@
                 .then(response => response.json())
                 .then(data => {
                     const toggleSwitch = document.querySelector(`input[data-user-id="${userId}"]`);
-                    const toggleLabel=document.querySelector(`label.toggle-label[data-user-id="${userId}"]`);
+                    const toggleLabel = document.querySelector(`label.toggle-label[data-user-id="${userId}"]`);
                     const slider = toggleSwitch.nextElementSibling;
 
                     if (data.isBlock) {
                         toggleSwitch.checked = true;
-                        toggleLabel.textContent='Unblock';
+                        toggleLabel.textContent = 'Unblock';
                         slider.classList.add('slider-on');
                     } else {
                         toggleSwitch.checked = false;
-                        toggleLabel.textContent='Block';
+                        toggleLabel.textContent = 'Block';
                         slider.classList.remove('slider-on');
                     }
                 })

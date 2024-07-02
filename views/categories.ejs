@@ -80,6 +80,38 @@
 .offer-Form button[type="submit"]:hover {
   background-color: #3e8e41;
 }
+.pagination {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: #3e8e41; /* Green color */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Pagination links */
+.pagination a, .pagination span {
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Current page */
+.pagination span {
+  background-color:#b37e56;
+}
+
+/* Hover effect */
+.pagination a:hover {
+  background-color: #45a049;
+}
+
+/* Disabled links */
+.pagination a.disabled {
+  color: #ddd;
+  pointer-events: none;
+}
 
     </style>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -165,7 +197,23 @@
                         <!-- <i class='bx bx-filter'></i> -->
                         <i id="plusIconCat" class='bx bx-plus'>Add New</i>
                     </div>
-
+                    <div class="pagination">
+                        <% if (currentPage > 1) { %>
+                          <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+                        <% } %>
+                      
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                          <% if (i === currentPage) { %>
+                            <span><%= i %></span>
+                          <% } else { %>
+                            <a href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+                          <% } %>
+                        <% } %>
+                      
+                        <% if (currentPage < totalPages) { %>
+                          <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                        <% } %>
+                      </div>
                     <table id="categoryTable">
                         <tr>
                             <th>Category Image</th>

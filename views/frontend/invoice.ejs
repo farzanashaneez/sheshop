@@ -125,7 +125,7 @@
                                                         </div>
 
                                                         <div class="payment-info">
-                                                            <div class="row justify-content-between mt-5">
+                                                            <div class="row justify-content-between mt-5 pr-5">
                                                                 <div class="col-sm-6">
                                                                     <span>Payment No.</span>
                                                                     <strong>
@@ -142,7 +142,7 @@
                                                         </div>
 
                                                         <div class="payment-details mt-5">
-                                                            <div class="row">
+                                                            <div class="row d-flex justify-content-center pr-5">
                                                                 <div class="col-sm-6">
                                                                     <span>Client</span>
                                                                     <strong>
@@ -159,7 +159,7 @@
                                                                                         </a>
                                                                     </p>
                                                                 </div>
-                                                                <div class="col-sm-6 text-end">
+                                                                <div class="col-sm-6 text-end pr-5 ">
                                                                     <span>Payment To</span>
                                                                     <strong>
                                                                         <%= user.firstname %>
@@ -196,7 +196,7 @@
                                                                             <%= product.quantity %>
                                                                         </div>
                                                                         <div class="col-md-5 amount text-end">
-                                                                            $<%= product.price %>
+                                                                            $<%= product.productid.price %>
 
                                                                         </div>
                                                                     </div>
@@ -216,10 +216,10 @@
                                                                         Thanks a lot.
                                                                     </p>
                                                                     <div class="field">
-                                                                        Subtotal <span>$<%= order.payedamount %> </span>
+                                                                        Subtotal <span>$<%= order.totalamount %> </span>
                                                                     </div>
                                                                     <div class="field">
-                                                                        Shipping <span>$0.00</span>
+                                                                        discount <span>$<%= order.totalamount-order.payedamount %></span>
                                                                     </div>
 
                                                                     <div class="field grand-total">
@@ -229,7 +229,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="footer">
+                                                    <div class="">
                                                         @SheShop
                                                     </div>
                                                 </div>

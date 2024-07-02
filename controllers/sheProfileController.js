@@ -352,7 +352,7 @@ res.json({success:true})
           item.productid?.name,
           item.productid?.price,
           item.quantity,
-          orderSample.totalamount,
+          item.quantity*item.productid?.price,
         ]);
       }
 
