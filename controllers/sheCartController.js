@@ -225,7 +225,9 @@ const cartController = {
 
       }
     } catch (error) {
-      res.status(400).send({ message: error.message }); // Send the error message
+      res.render('frontend/error',{title:"Logged User not Found...!",message:error.message})
+
+      //res.status(400).send({ message: error.message }); // Send the error message
       console.log(error);
     }
   },
