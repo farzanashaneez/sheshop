@@ -34,7 +34,7 @@ const resizeImage = async (req, res, next) => {
       );
 
     req.file.buffer = resizedImage;
-    next();
+   // next();
   } catch (error) {
     next(error);
   }

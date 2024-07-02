@@ -28,7 +28,7 @@ const brandController = {
   },
   async postEditBrand(req, res) {
     try {
-      
+      console.log("in posdt edit brand")
       const id = req.params.id;
       const { brandname } = req.body;
       const findBrand = await brandModel.find({ _id: id });
@@ -47,7 +47,9 @@ const brandController = {
     if (!updatedBrand) {
       throw new Error("Category not found");
   }
+  else{
         res.redirect("/admin/brands");
+  }
      
     } catch (error) { 
       console.log(error.message);

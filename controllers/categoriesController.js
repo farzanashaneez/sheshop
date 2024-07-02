@@ -73,10 +73,13 @@ const categoryController = {
 
     res.redirect("/admin/categories");
 } catch (error) {
-    console.error(error);
-    // Handle the error appropriately
-   // res.status(500).send("Error updating category");
-    res.render('frontend/error',{title:"error 500",message:"Error updating category"})
+  //   console.error(error);
+  //   // Handle the error appropriately
+  //   res.status(500).render('frontend/error', { message: 'Error editing category' });
+  //  // res.render('frontend/error',{title:"error 500",message:"Error updating category"})
+  if (!res.headersSent) {
+    res.status(500).render('frontend/error', { message: 'Error editing category' });
+}
 
 }
   },
