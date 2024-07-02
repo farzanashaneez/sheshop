@@ -423,10 +423,10 @@ const productController = {
             sortOrder = { price: -1 };
             break;
           case "a-z":
-            sortOrder = { name: 1 };
+            sortOrder =  { name: { $meta: "textScore" } };
             break;
           case "z-a":
-            sortOrder = { name: -1 };
+            sortOrder ={ name: { $meta: "textScore" }, name: -1 };
             break;
           case "date":
             sortOrder = { createdAt: -1 };
@@ -438,13 +438,23 @@ const productController = {
       } else {
         sortOrder = { id: -1 };
       }
-
+      let collation={};
+      if (sort_by === "a-z" || sort_by === "z-a") {
+        sortOrder.name = sort_by === "a-z" ? 1 : -1;
+        // Add collation for case insensitivity
+         collation = { locale: 'en', caseLevel: false };
+      }
+      const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
       const [productData, categoryData, brandData, cart] = await Promise.all([
-        Product.find(query).sort(sortOrder),
+        Product.find(query).collation(collation).sort(sortOrder).skip(skip).limit(limit),
         Category.find({}),
         Brand.find({}),
         Cart.findOne({ userid: req.session.userid })
     ]);
+    const totalPages = Math.ceil(productData.length / limit);
+
     
       let updatedCart = [];
       let subtotal = 0;
@@ -522,6 +532,10 @@ const productController = {
           minPrice,
           maxPrice,
           subtotal,
+          currentPage: page,
+          totalPages,
+          limit,
+          totalProducts:productData?.length||0
         };
       } else {
         data = {
@@ -531,6 +545,10 @@ const productController = {
 
           minPrice,
           maxPrice,
+          currentPage: page,
+          totalPages,
+          limit,
+          totalProducts:productData?.length||0
         };
       }
 
