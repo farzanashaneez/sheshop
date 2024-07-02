@@ -49,6 +49,7 @@ const orderController = {
     res.send(orderData);
   },
   async getOrderdetails(req, res) {
+    try{
     const orderId = req.params.orderId;
     const orderData = await Order.findById(orderId)
       .populate("userid")
@@ -56,6 +57,11 @@ const orderController = {
 
     console.log(orderData);
     res.render("orderDetails", { orderData: orderData });
+    }
+    catch(err){
+      res.render('frontend/error',{title:"Not Found...!",message:"Order not found"})
+
+    }
   },
 };
 module.exports = orderController;

@@ -1,8 +1,10 @@
 const express = require('express');
 const wishlistController = require('../../controllers/sheWishController');
 const router = express.Router();
+const checkblock=require('../../middlewares/checkBlockedUser')
 
-router.get('/',wishlistController.getwishlist);
+
+router.get('/',checkblock.checkBlocked,wishlistController.getwishlist);
 router.post('/removeProduct',wishlistController.postRemoveWishlist)
 
 

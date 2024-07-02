@@ -17,10 +17,13 @@ const brandController = {
   async getEditBrand(req, res) {
     try {
       const id = req.params.id;
-      const brand = await brandModel.findOne({ _id: id });
+      const brand = await brandModel.findById(id)
+     
       res.render("brandupdate", { brand: brand });
     } catch (error) {
       console.log(error.message);
+      res.render('frontend/error',{title:"Error",message:"Page Not found"})
+
     }
   },
   async postEditBrand(req, res) {

@@ -214,7 +214,9 @@ const productController = {
         });
       }
     } catch (err) {
-      res.send({ err });
+      //res.send({ err });
+      res.render('frontend/error',{title:"Error",message:"not found"})
+
     }
   },
 
@@ -243,7 +245,9 @@ const productController = {
         });
       }
     } catch (err) {
-      res.send({ err });
+      //res.send({ err });
+      res.render('frontend/error',{title:"Error",message:"not found"})
+
     }
   },
   async getProductdetails(req, res) {
@@ -330,7 +334,9 @@ const productController = {
       //res.render('frontend/productDetails',data)
       res.render("frontend/productdetails", data);
     } catch (error) {
-      res.send({ error });
+     // res.send({ error });
+     res.render('frontend/error',{title:"Error",message:"product not found"})
+
       console.log(error.message);
     }
   },

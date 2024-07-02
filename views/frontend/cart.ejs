@@ -214,7 +214,7 @@
                                                         </h3><!-- End .product-title -->
                                                     </div><!-- End .product -->
                                                 </td>
-                                                <td class="total-col">$<%= product?.price %>
+                                                <td class="total-col price" data-unitPrice="<%= product?.price %>">$<%= product?.price %>
                                                 </td>
                                                 <td class="quantity-col">
                                                     <div class="cart-product-quantity">
@@ -242,7 +242,7 @@
                                                                         <%}%>
                                                     </div><!-- End .cart-product-quantity -->
                                                 </td>
-                                                <td class="total-col">$<%= product?.totalAmount %>
+                                                <td class="total-col totalprice">$<%= product?.totalAmount %>
                                                 </td>
                                                 <td class="remove-col">
                                                     <button class="btn-remove"
@@ -271,7 +271,7 @@
                                             <tbody>
                                                 <tr class="summary-subtotal">
                                                     <td>Subtotal:</td>
-                                                    <td>$<%=subtotal%>
+                                                    <td id="overall-total">$<%=subtotal%>
                                                     </td>
                                                 </tr><!-- End .summary-subtotal -->
                                                 <tr class="summary-shipping">
@@ -288,13 +288,13 @@
                                                                 for="free-shipping">Shipping Ch</label>
                                                         </div><!-- End .custom-control -->
                                                     </td>
-                                                    <td>$<%=shippingcharge%>
+                                                    <td id="shipping">$<%=shippingcharge%>
                                                     </td>
                                                 </tr><!-- End .summary-shipping-row -->
 
                                                 <tr class="summary-total">
                                                     <td>Total:</td>
-                                                    <td>$<%=totalpayment%>
+                                                    <td id="totalwithshipping">$<%=totalpayment%>
                                                     </td>
                                                 </tr><!-- End .summary-total -->
                                             </tbody>
@@ -457,11 +457,20 @@ inputFields.forEach((input) => {
         const maxCount = parseInt(e.target.max, 10);
         const productId = e.target.dataset.productId;
         const countSpan = e.target.parentNode.querySelector('.span-left');
+        const priceElement = e.target.closest('tr').querySelector('.price');
+        const totalpriceElement = e.target.closest('tr').querySelector('.totalprice');
+
+        const unitPrice = parseFloat(priceElement.dataset.unitprice);
+        const newTotalPrice = (unitPrice * currentValue).toFixed(2);
+        totalpriceElement.textContent = `$${newTotalPrice}`;
+        console.log("priceElement",priceElement,totalpriceElement,unitPrice,newTotalPrice)
+
 
         const newCount = maxCount - currentValue;
         console.log("newCount = maxCount - currentValue",newCount,maxCount,currentValue)
         if (countSpan === null || countSpan === undefined) {
             console.error('countSpan is null or undefined');
+            updateOverallTotal();
             return;
         }
         if(newCount===0){
@@ -471,8 +480,24 @@ inputFields.forEach((input) => {
         else{
         countSpan.textContent = `${newCount} more left..`;
         }
+       
+        
+        updateOverallTotal();
+
     });
 });
+function updateOverallTotal() {
+    let overallTotal = 0;
+    document.querySelectorAll('.totalprice').forEach((totalCol) => {
+        const totalPrice = parseFloat(totalCol.textContent.replace('$', ''));
+        overallTotal += totalPrice;
+    });
+    document.querySelector('#overall-total').textContent = `$${overallTotal.toFixed(2)}`;
+   const shipping= document.querySelector('#shipping')
+  const aftershipping=parseFloat(shipping.textContent.replace('$', ''))+overallTotal;
+
+    document.querySelector('#totalwithshipping').textContent = `$${aftershipping.toFixed(2)}`;
+}
 
         function removeProduct(productId) {
             // Send an AJAX request to remove the product

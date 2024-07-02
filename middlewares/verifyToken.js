@@ -18,7 +18,9 @@ console.log(req.cookies)
             next()
         })
     } else {
-        return res.status(401).json("You are not authenticated");
+        // return res.status(401).json("You are not authenticated");               
+        return res.render('frontend/error',{title:"401",message:"You are not authenticated"})
+
     }
 }
 

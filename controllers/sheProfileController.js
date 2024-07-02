@@ -295,7 +295,9 @@ res.json({success:true})
     if (orderData.status === "processing" || orderData.status === "recieved" || orderData.status ==='shipping') {
       res.render("frontend/invoice", { order: orderData, user: userData });
     } else {
-      res.status(400).json({ message: "invoice not found" });
+      //res.status(400).json({ message: "invoice not found" });
+      res.render('frontend/error',{title:"Not Found...!",message:"invoice not found"})
+
     }
   },
 
@@ -398,6 +400,8 @@ res.json({success:true})
       doc.end();
     } catch (err) {
       console.log("error", err);
+      res.render('frontend/error',{title:"Error",message:"something went wrong"})
+
     }
   },
 };

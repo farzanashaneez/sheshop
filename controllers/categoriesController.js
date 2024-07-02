@@ -20,6 +20,8 @@ const categoryController = {
       res.render("categoryupdate", { category: category });
     } catch (error) {
       console.log(error.message);
+      res.render('frontend/error',{title:"Error",message:"Category Not found"})
+
     }
   },
   async postEditCategory(req, res) {

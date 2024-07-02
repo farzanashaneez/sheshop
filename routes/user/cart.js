@@ -2,12 +2,13 @@ const express = require('express');
 const sheCartController = require('../../controllers/sheCartController');
 const cardpaymentController=require('../../controllers/stripeController')
 const router = express.Router();
+const checkblock=require('../../middlewares/checkBlockedUser')
 
-router.get('/',sheCartController.getCart);
+router.get('/',checkblock.checkBlocked,sheCartController.getCart);
 router.post('/removeProduct',sheCartController.postremoveProduct);
 router.post('/update',sheCartController.postupdatecart)
 
-router.get('/checkout',sheCartController.getCheckout)
+router.get('/checkout',checkblock.checkBlocked,sheCartController.getCheckout)
 router.post('/placeorder',sheCartController.postPlaceOrder)
 router.post('/checkout/walletpayment',sheCartController.postWalletPayment)
 

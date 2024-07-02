@@ -64,20 +64,20 @@ const routes = require('./routes');
 app.use(routes)
 
 
+app.get('/logout',(req,res)=>{
+    
+  res.locals.user=null;
+  res.cookie('jwt', '', { maxAge: 1 });
+      res.redirect('/admin_login');
 
+  });
 app.get('*',(req,res)=>{
   //res.status(404).send('404 - Page not found');
   res.render('frontend/error',{title:"error 404",message:"Page Not Found"})
 
 
 })
-app.get('/logout',(req,res)=>{
-    
-    res.locals.user=null;
-    res.cookie('jwt', '', { maxAge: 1 });
-        res.redirect('/admin_login');
 
-    });
    
 
     const endpointSecret = "whsec_9b03b780e04a2e818d45b947e7735b801b3e05e19e84049a9a6a617f073a1a58";

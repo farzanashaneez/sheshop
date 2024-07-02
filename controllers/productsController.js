@@ -14,7 +14,9 @@ const productController={
           
             res.render('products',{products:products});
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            res.render('frontend/error',{title:"Not Found...!",message:"Product not found"})
+
+           // res.status(500).json({ message: err.message });
         }
       
     },

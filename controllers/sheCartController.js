@@ -14,6 +14,7 @@ const cartController = {
 
     try {
       if (req.session && req.session.userid) {
+        
         const cart = await Cart.findOne({
           userid: req.session.userid,
         }).populate("products.productid");

@@ -170,7 +170,9 @@ const stripeController = {
       }
     } catch (error) {
       console.log(error)
-      res.status(500).json({ error: error.message });
+      //res.status(500).json({ error: error.message });
+      res.render('frontend/error',{title:"Error",message:"not found"})
+
     }
   },
   async getCardPaymentSuccess(req, res) {
