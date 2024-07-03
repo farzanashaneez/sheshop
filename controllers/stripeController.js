@@ -177,12 +177,16 @@ const stripeController = {
   },
   async getCardPaymentSuccess(req, res) {
     try {
+    //   const orderid=req.session.orderid;
+    //   await Cart.deleteOne({userid:req.session.userid });
+    //   const order=await Order.findById(orderid);
+    //   order.status="pending";
+    //  await order.save()
+     // res.redirect('/profile')
 
         await Cart.deleteOne({userid:req.session.userid });
         const orderid=req.session.orderid;
-	const orderarray=await Order.find().sort({createdAt:-1});
-        const order=orderarray[0];
-        console.log("orderarray",orderarray)
+        const order=await Order.findById(orderid);
         order.status="processing";
        const data=await order.save()
 
