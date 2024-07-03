@@ -268,7 +268,7 @@ const profileController = {
    const findUser = await User.findById(req.session.userid);
    console.log("findUser", findUser.wallet,"type of(totalamountreturned):",typeof(totalamountreturned),totalamountreturned);
 
-   if (findUser &&  orderData.paymentType !== "COD") {
+   if (findUser ) {
      console.log("if statementdUser", orderData.paymentType);
 
      findUser.wallet +=totalamountreturned;
