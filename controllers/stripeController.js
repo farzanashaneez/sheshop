@@ -16,6 +16,7 @@ const stripeController = {
       if (req.session && req.session.userid) {
 
         const addressIndex = req.body.addressIndex;
+        //new change
         const totalamount = req.body.totalamount;
         const discount=parseInt(req.body.offerdiscount)+parseInt(req.body.coupondiscount)
         const payedamount=totalamount-discount;
