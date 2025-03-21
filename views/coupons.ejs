@@ -434,12 +434,12 @@ document.getElementById("add-coupon-formid").addEventListener("submit",  functio
     }
       else{
         await Swal.fire({
-        title: 'Failed!',
+        title: 'Success!',
         text: data.message,
-        icon: 'error',
+        icon: 'success',
         confirmButtonText: 'OK'
       }); 
-      }     
+    }
       window.location.reload();
     })
     .catch(async error => {
