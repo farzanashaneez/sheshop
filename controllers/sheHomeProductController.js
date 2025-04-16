@@ -557,15 +557,145 @@ const productController = {
       console.log(error.message);
     }
   },
+  // async postSearchProduct(req, res) {
+  //   const searchTerm = req.body.search;
+  //   const page = parseInt(req.query.page) || 1;
+  //   const limit = parseInt(req.query.limit) || 12;
+  //   const skip = (page - 1) * limit;
+
+  //   if (req.isAuthenticated()) {
+  //     req.session.userid = req.session.passport.user;
+  //     console.log("ys authenticated");
+  //   } else console.log("not authenticated");
+
+  //   let data;
+  //   let minPrice = 0;
+  //   let maxPrice = 0;
+  //   let cartArray = [];
+  //   let cart;
+  //   try {
+  //     let updatedCart = [];
+  //     let subtotal = 0;
+  //     const [productData, categoryData, brandData, cart, result] = await Promise.all([
+  //       Product.find({
+  //         $or: [
+  //           { name: { $regex: new RegExp(searchTerm, "i") } },
+  //           { category: { $regex: new RegExp(searchTerm, "i") } },
+  //           { brand: { $regex: new RegExp(searchTerm, "i") } },
+  //         ],
+  //       }),
+  //       Category.find({}),
+  //       Brand.find({}),
+  //       Cart.findOne({
+  //         userid: req.session.userid,
+  //       }),
+  //       Product.aggregate([
+  //         {
+  //           $group: {
+  //             _id: null,
+  //             minPrice: { $min: "$price" },
+  //             maxPrice: { $max: "$price" },
+  //           },
+  //         },
+  //       ]),
+  //     ]);
+      
+
+  //     if (result.length > 0) {
+  //       minPrice = result[0].minPrice;
+  //       maxPrice = result[0].maxPrice;
+  //     }
+
+  //     if (req.session && req.session.userid) {
+  //       console.log("req.session.userid", req.session.userid);
+
+  //       const [userData, wishlist] = await Promise.all([
+  //         User.findById(req.session.userid),
+  //         Wishlist.findOne({ userid: req.session.userid })
+  //       ]);
+  //       let productids = [];
+  //       if (wishlist) {
+  //         productids = wishlist.products.map((items) =>
+  //           items.productid.toString()
+  //         );
+  //         console.log("wishlist product array", productids);
+  //       }
+
+  //       if (cart) {
+  //         await cart.populate("products.productid");
+  //         console.log("populated", cart.products);
+  //         updatedCart = cart.products?.map((item) => {
+  //           const productTotal = item.productid.price * item.quantity || 0;
+  //           return {
+  //             _id: item.productid._id,
+  //             name: item.productid.name,
+  //             brand: item.productid.brand,
+  //             category: item.productid.category,
+  //             description: item.productid.description,
+  //             image: item.productid.image,
+  //             productcount: item.productid.quantity,
+  //             quantity: item.quantity,
+  //             volume: item.productid.volume,
+  //             color: item.productid.color,
+  //             price: item.productid.price,
+  //             ratings: item.productid.ratings,
+  //             updatedAt: item.productid.updatedAt,
+  //             totalAmount: productTotal,
+  //           };
+  //         });
+
+  //         subtotal = updatedCart.reduce(
+  //           (total, item) => total + item.totalAmount,
+  //           0
+  //         );
+  //       }
+
+  //       console.log(
+  //         "..........post .......................updated product.............",
+  //         updatedCart
+  //       );
+
+  //       data = {
+  //         categoryData: categoryData,
+  //         brandData: brandData,
+  //         productData: productData,
+  //         userData: userData,
+  //         cartData: updatedCart,
+  //         userWishlist: productids,
+  //         wishcount: productids.length,
+  //         minPrice,
+  //         maxPrice,
+  //         subtotal,
+  //       };
+  //     } else {
+  //       data = {
+  //         categoryData: categoryData,
+  //         brandData: brandData,
+  //         productData: productData,
+  //         currentPage: page,
+  //         totalPages,
+  //         limit,
+  //         minPrice,
+  //         maxPrice,
+  //       };
+  //     }
+
+  //     res.render("frontend/sheproducts", data);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // },
   async postSearchProduct(req, res) {
     const searchTerm = req.body.search;
-    console.log(" **************req.body.search");
-
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
+  
     if (req.isAuthenticated()) {
       req.session.userid = req.session.passport.user;
       console.log("ys authenticated");
     } else console.log("not authenticated");
-
+  
     let data;
     let minPrice = 0;
     let maxPrice = 0;
@@ -574,14 +704,18 @@ const productController = {
     try {
       let updatedCart = [];
       let subtotal = 0;
-      const [productData, categoryData, brandData, cart, result] = await Promise.all([
-        Product.find({
-          $or: [
-            { name: { $regex: new RegExp(searchTerm, "i") } },
-            { category: { $regex: new RegExp(searchTerm, "i") } },
-            { brand: { $regex: new RegExp(searchTerm, "i") } },
-          ],
-        }),
+      
+      // Search query
+      const searchQuery = {
+        $or: [
+          { name: { $regex: new RegExp(searchTerm, "i") } },
+          { category: { $regex: new RegExp(searchTerm, "i") } },
+          { brand: { $regex: new RegExp(searchTerm, "i") } },
+        ],
+      };
+      
+      const [productData, categoryData, brandData, cart, result, totalProducts] = await Promise.all([
+        Product.find(searchQuery).skip(skip).limit(limit),
         Category.find({}),
         Brand.find({}),
         Cart.findOne({
@@ -596,17 +730,19 @@ const productController = {
             },
           },
         ]),
+        Product.countDocuments(searchQuery) // Count total matching products
       ]);
       
-
+      const totalPages = Math.ceil(totalProducts / limit);
+  
       if (result.length > 0) {
         minPrice = result[0].minPrice;
         maxPrice = result[0].maxPrice;
       }
-
+  
       if (req.session && req.session.userid) {
         console.log("req.session.userid", req.session.userid);
-
+  
         const [userData, wishlist] = await Promise.all([
           User.findById(req.session.userid),
           Wishlist.findOne({ userid: req.session.userid })
@@ -618,7 +754,7 @@ const productController = {
           );
           console.log("wishlist product array", productids);
         }
-
+  
         if (cart) {
           await cart.populate("products.productid");
           console.log("populated", cart.products);
@@ -641,18 +777,13 @@ const productController = {
               totalAmount: productTotal,
             };
           });
-
+  
           subtotal = updatedCart.reduce(
             (total, item) => total + item.totalAmount,
             0
           );
         }
-
-        console.log(
-          "..........post .......................updated product.............",
-          updatedCart
-        );
-
+  
         data = {
           categoryData: categoryData,
           brandData: brandData,
@@ -664,22 +795,30 @@ const productController = {
           minPrice,
           maxPrice,
           subtotal,
+          currentPage: page,
+          totalPages,
+          limit,
+          totalProducts
         };
       } else {
         data = {
           categoryData: categoryData,
           brandData: brandData,
           productData: productData,
-
+          currentPage: page,
+          totalPages,
+          limit,
+          totalProducts,
           minPrice,
           maxPrice,
         };
       }
-
+  
       res.render("frontend/sheproducts", data);
     } catch (error) {
       console.log(error.message);
+      res.render('frontend/error', {title: "Error", message: "An error occurred while searching products"});
     }
-  },
+  }
 };
 module.exports = productController;
