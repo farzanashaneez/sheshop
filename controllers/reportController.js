@@ -4,27 +4,14 @@ const User = require("../models/userModel");
 const path = require("path");
 const fs = require("fs");
 const PDFDocument = require("../helpers/pdfkit-tables");
+const HTTP_STATUS = require('../utils/httpStatus'); 
 
 
-//const excel = require('excel4node');
 const ExcelJS = require("exceljs")
 
 
 const reportController = {
-  // async load_dashboard(req, res) {
-  //   try {
-  //     const Orders = await Order.find({})
-  //       .sort({ createdAt: -1 })
-  //       .populate("userid") // Populate userid reference
-  //       .populate("products.productid"); // Populate productid references within products array
 
-  //     console.log(Orders);
-
-  //     res.render("reports", { Orders });
-  //   } catch (err) {
-  //     console.log("error", err);
-  //   }
-  // },
   async load_dashboard(req, res) {
     try {
         const page = parseInt(req.query.page) || 1; 
@@ -43,7 +30,7 @@ const reportController = {
 
         const totalPages = Math.ceil(totalOrders / limit);
 
-        res.render("reports", {
+        res.status(HTTP_STATUS.OK).render("reports", {
             Orders,
             currentPage: page,
             totalPages,
@@ -51,7 +38,7 @@ const reportController = {
         });
     } catch (err) {
         console.log("error", err);
-        res.status(500).send("An error occurred");
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send("An error occurred");
     }
 }
 ,

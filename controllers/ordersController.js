@@ -2,13 +2,10 @@ const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const Wallet = require("../models/walletSchema");
 const User = require("../models/userModel");
+const HTTP_STATUS = require('../utils/httpStatus'); 
 
 const orderController = {
-  // async load_dashboard(req, res) {
-  //   const orderData = await Order.find().sort({ createdAt: -1 });
-
-  //   res.render("orders", { orderData });
-  // },
+ 
   async load_dashboard(req, res) {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -23,7 +20,7 @@ const orderController = {
         const totalOrders = await Order.countDocuments();
         const totalPages = Math.ceil(totalOrders / limit);
 
-        res.render("orders", {
+        res.status(HTTP_STATUS.OK).render("orders", {
             orderData,
             currentPage: page,
             totalPages,
@@ -71,7 +68,7 @@ const orderController = {
       await userWallet.save();
     }
 
-    res.send(orderData);
+    res.status(HTTP_STATUS.OK).send(orderData);
   },
   async getOrderdetails(req, res) {
     try{
@@ -80,11 +77,10 @@ const orderController = {
       .populate("userid")
       .populate("products.productid");
 
-    console.log(orderData);
-    res.render("orderDetails", { orderData: orderData });
+    res.status(HTTP_STATUS.OK).render("orderDetails", { orderData: orderData });
     }
     catch(err){
-      res.render('frontend/error',{title:"Not Found...!",message:"Order not found"})
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render('frontend/error',{title:"Not Found...!",message:"Order not found"})
 
     }
   },

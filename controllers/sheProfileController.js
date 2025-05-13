@@ -5,21 +5,18 @@ const Wallet = require("../models/walletSchema");
 const mongoose = require("mongoose");
 const AddressSchema = require("../models/addressSchema");
 const Address = mongoose.model("Address", AddressSchema);
-
 const path = require("path");
 const fs = require("fs");
 const PDFDocument = require("../helpers/pdfkit-tables");
-
 const profileAddressSchema = require("../models/profileAddressSchema");
-
 const bcrypt = require("bcrypt");
+const HttpStatus = require("../utils/httpStatus");
 
 const profileController = {
   async getProfile(req, res) {
     let data;
     try {
       if (req.session && req.session.userid) {
-       
         const [userData, wallethistory, orderData] = await Promise.all([
           User.findById(req.session.userid),
           Wallet.find({ userId: req.session.userid }).sort({ createdAt: -1 }),
@@ -28,26 +25,23 @@ const profileController = {
             .sort({ createdAt: -1 }),
         ]);
 
-
         data = {
           userData: userData,
           wallets: wallethistory,
           orderData: orderData || [],
         };
-        res.render("frontend/profile", data);
+        res.status(HttpStatus.OK).render("frontend/profile", data);
       } else {
-        res.render('frontend/error',{title:"User not Found",message:"No logged user found"})
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).render("frontend/error", {
+          title: "User not Found",
+          message: "No logged user found",
+        });
       }
-
-      // res.render("frontend/profile", data);
     } catch (error) {
       console.log(error.message);
     }
   },
   async postProfile(req, res) {
-    console.log("req body", req.body);
-    console.log("post editted profile");
-
     try {
       if (req.session && req.session.userid) {
         const userData = await User.findById(req.session.userid);
@@ -56,18 +50,18 @@ const profileController = {
         userData.lastname = req.body.lastname;
 
         await userData.save();
-        res.redirect("/home");
+        res.status(HttpStatus.OK).redirect("/home");
       } else {
-        res.send({ message: "no user logged" });
+        res.status(HttpStatus.UNAUTHORIZED).send({ message: "no user logged" });
       }
     } catch (error) {
       console.log(error.message);
-      res.send({ message: "error happened" });
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send({ message: "error happened" });
     }
   },
   async postAddress(req, res) {
-    console.log("req body", req.body);
-    console.log("req body", req.params);
     try {
       if (req.session && req.session.userid) {
         const type = req.params.type;
@@ -82,20 +76,26 @@ const profileController = {
         });
         const userData = await User.findById(req.session.userid);
 
-        if (type === "1") { 
+        if (type === "1") {
           userData.address.billingaddress = address1;
         } else if (type === "2") {
           userData.address.shippingaddress = address1;
         } else {
-          return res.status(400).json({ message: "Invalid address type" });
+          return res
+            .status(HttpStatus.NOT_FOUND)
+            .json({ message: "Invalid address type" });
         }
         await userData.save();
         res.redirect("/profile");
       } else {
-        return res.status(400).json({ message: "no logged user found" });
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: "no logged user found" });
       }
     } catch (error) {
-      return res.status(400).json({ message: "something went wrong" });
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "something went wrong" });
     }
   },
 
@@ -139,26 +139,27 @@ const profileController = {
     }
   },
   async deleteUserddress(req, res) {
-   
     try {
       if (req.session && req.session.userid) {
         const index = parseInt(req.params.index);
         const userData = await User.findById(req.session.userid);
-       
 
         userData.useraddress.splice(index, 1);
 
         await userData.save();
-        res.json({ message: "Address removed successfully" });
+        res
+          .status(HttpStatus.OK)
+          .json({ message: "Address removed successfully" });
       } else {
-        res.status(400).json({ message: "Invalid index or user not found" });
+        res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: "Invalid index or user not found" });
       }
     } catch (error) {
-      res.status(400).json({ error });
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error });
     }
   },
   async editUserddress(req, res) {
-   
     try {
       if (req.session && req.session.userid) {
         const index = parseInt(req.params.index);
@@ -171,7 +172,6 @@ const profileController = {
           zipcode,
           phone,
         });
-        console.log("address1", address1);
 
         const userData = await User.findById(req.session.userid);
 
@@ -187,7 +187,7 @@ const profileController = {
   async getcancelOrder(req, res) {
     console.log("in cancel order", req.params.orderid);
     const orderData = await Order.findById(req.params.orderid);
-    const itemstatus=orderData.status;
+    const itemstatus = orderData.status;
     orderData.status = "cancelled";
     if (orderData) await orderData.save();
 
@@ -205,14 +205,18 @@ const profileController = {
     const findUser = await User.findById(req.session.userid);
     console.log("findUser", orderData.paymentType);
 
-    if (findUser && itemstatus!=='pending' && orderData.paymentType !== "COD") {
+    if (
+      findUser &&
+      itemstatus !== "pending" &&
+      orderData.paymentType !== "COD"
+    ) {
       console.log("if statementdUser", orderData.paymentType);
 
       findUser.wallet += orderData.payedamount;
       await findUser.save();
-      let desc="credited through order cancellation";
-      if(itemstatus==='recieved'){
-        desc="credited through order return"
+      let desc = "credited through order cancellation";
+      if (itemstatus === "recieved") {
+        desc = "credited through order return";
       }
 
       const userWallet = await Wallet.create({
@@ -226,89 +230,96 @@ const profileController = {
 
     res.redirect("/profile");
   },
-  
+
   async postreturn(req, res) {
-    console.log("in postreturn",req.body)
-   const {products,order_id}=req.body;
+    console.log("in postreturn", req.body);
+    const { products, order_id } = req.body;
 
-
-   const orderData = await Order.findById(order_id).populate('products.productid')
-   console.log("orderData",orderData)
-  //  const itemstatus=orderData.status || ;
-   orderData.status = "returned";
-    const productArray=orderData.products;
-    const updatedProducts=productArray.map(product=>{
-      console.log(product._id,products)
-      if (products.some(p => p.toString() === product.productid._id.toString())) {
+    const orderData = await Order.findById(order_id).populate(
+      "products.productid"
+    );
+    console.log("orderData", orderData);
+    //  const itemstatus=orderData.status || ;
+    orderData.status = "returned";
+    const productArray = orderData.products;
+    const updatedProducts = productArray.map((product) => {
+      console.log(product._id, products);
+      if (
+        products.some((p) => p.toString() === product.productid._id.toString())
+      ) {
         product.isreturned = true;
       }
-      return product
-    })
+      return product;
+    });
 
+    console.log("updatedProducts", updatedProducts);
+    await orderData.save();
 
-
-    console.log("updatedProducts",updatedProducts)
-   await orderData.save();
-
-
-
-  // let array = orderData.products;
-  let result=[];
-  let totalamountreturned=0;
+    // let array = orderData.products;
+    let result = [];
+    let totalamountreturned = 0;
     for (const cancelledProduct of updatedProducts) {
-  if(cancelledProduct.isreturned==true){
-      result = await Products.updateOne(
-       { _id: cancelledProduct.productid._id },
-       { $inc: { quantity: cancelledProduct.quantity } }
-     );
-     totalamountreturned+=cancelledProduct.quantity*cancelledProduct.productid.price;
-  }
-     console.log("after updatiion result :", result);
+      if (cancelledProduct.isreturned == true) {
+        result = await Products.updateOne(
+          { _id: cancelledProduct.productid._id },
+          { $inc: { quantity: cancelledProduct.quantity } }
+        );
+        totalamountreturned +=
+          cancelledProduct.quantity * cancelledProduct.productid.price;
+      }
+      console.log("after updatiion result :", result);
     }
-   const findUser = await User.findById(req.session.userid);
-   console.log("findUser", findUser.wallet,"type of(totalamountreturned):",typeof(totalamountreturned),totalamountreturned);
+    const findUser = await User.findById(req.session.userid);
+    console.log(
+      "findUser",
+      findUser.wallet,
+      "type of(totalamountreturned):",
+      typeof totalamountreturned,
+      totalamountreturned
+    );
 
-   if (findUser ) {
-     console.log("if statementdUser", orderData.paymentType);
+    if (findUser) {
+      console.log("if statementdUser", orderData.paymentType);
 
-     findUser.wallet +=totalamountreturned;
-     await findUser.save();
-     let desc="credited through order return";
-     
+      findUser.wallet += totalamountreturned;
+      await findUser.save();
+      let desc = "credited through order return";
 
-     const userWallet = await Wallet.create({
-       userId: findUser._id,
-       amount: totalamountreturned,
-       description: desc,
-       balance: findUser.wallet,
-     });
-     await userWallet.save();
-   }
+      const userWallet = await Wallet.create({
+        userId: findUser._id,
+        amount: totalamountreturned,
+        description: desc,
+        balance: findUser.wallet,
+      });
+      await userWallet.save();
+    }
 
-res.json({success:true})
+    res.status(HttpStatus.OK).json({ success: true });
   },
   async getinvoice(req, res) {
     const [orderData, userData] = await Promise.all([
       Order.findById(req.params.orderid).populate("products.productid"),
-      User.findById(req.session.userid)
+      User.findById(req.session.userid),
     ]);
-    if (orderData.status === "processing" || orderData.status === "recieved" || orderData.status ==='shipping') {
-      res.render("frontend/invoice", { order: orderData, user: userData });
+    if (
+      orderData.status === "processing" ||
+      orderData.status === "recieved" ||
+      orderData.status === "shipping"
+    ) {
+      res.status(HttpStatus.OK).render("frontend/invoice", { order: orderData, user: userData });
     } else {
-      //res.status(400).json({ message: "invoice not found" });
-      res.render('frontend/error',{title:"Not Found...!",message:"invoice not found"})
-
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).render("frontend/error", {
+        title: "Not Found...!",
+        message: "invoice not found",
+      });
     }
   },
 
   async generateInvoiceReport(req, res) {
     try {
-     
       const orderSample = await Order.findById(req.params.orderid).populate(
         "products.productid"
       );
-      // const orderSample=array[0]
-
       const filename = "invoice-report.pdf";
       const doc = new PDFDocument();
 
@@ -352,7 +363,7 @@ res.json({success:true})
           item.productid?.name,
           item.productid?.price,
           item.quantity,
-          item.quantity*item.productid?.price,
+          item.quantity * item.productid?.price,
         ]);
       }
 
@@ -396,12 +407,12 @@ res.json({success:true})
         );
 
       doc.moveDown();
-
       doc.end();
     } catch (err) {
-      console.log("error", err);
-      res.render('frontend/error',{title:"Error",message:"something went wrong"})
-
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).render("frontend/error", {
+        title: "Error",
+        message: "something went wrong",
+      });
     }
   },
 };

@@ -5,21 +5,10 @@ const Order=require("../models/orderModel")
 const cropperjs=require('cropperjs')
 const path = require('path');
 const fs = require('fs');
+const HTTP_STATUS = require('../utils/httpStatus'); 
 
 
 const productController={
-    // async get_products(req,res){
-    //     try {
-    //         const products=await productModel.find({}).sort({createdAt:-1});
-          
-    //         res.render('products',{products:products});
-    //     } catch (err) {
-    //         res.render('frontend/error',{title:"Not Found...!",message:"Product not found"})
-
-    //        // res.status(500).json({ message: err.message });
-    //     }
-      
-    // },
     async get_products(req, res) {
         try {
           const page = parseInt(req.query.page) || 1;
@@ -34,14 +23,14 @@ const productController={
           const totalProducts = await productModel.countDocuments();
           const totalPages = Math.ceil(totalProducts / limit);
       
-          res.render('products', { 
+          res.status(HTTP_STATUS.OK).render('products', { 
             products, 
             currentPage: page, 
             totalPages, 
             limit 
           });
         } catch (err) {
-          res.render('frontend/error', {
+          res.status(HTTP_STATUS.NOT_FOUND).render('frontend/error', {
             title: "Not Found...!", 
             message: "Product not found"
           });
@@ -77,7 +66,7 @@ const productController={
                     categoryModel.find(),
                     brandModel.find()
                   ]);
-                res.render("productUpdate", { product:product[0],categories: categories, brands: brands,blobUrls })
+                res.status().render("productUpdate", { product:product[0],categories: categories, brands: brands,blobUrls })
             } else {
                 console.log("product not found");
             }
@@ -147,18 +136,15 @@ const productController={
                     volume:data.volume,
                     color:data.color,
                    
-                })
-                console.log("product updated");
-               
+                })               
             }
             
             
-            res.json({isvalid:true});
+            res.status(HTTP_STATUS.OK).json({isvalid:true});
     
     
         } catch (error) {
-            res.json({isvalid:false});
-            console.log(error.message);
+            res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({isvalid:false});
         }
     },
   
@@ -168,9 +154,9 @@ const productController={
                 categoryModel.find(),
                 brandModel.find()
               ]);
-            res.render("productadd", { categories: categories, brands: brands })
+            res.status(HTTP_STATUS.OK).render("productadd", { categories: categories, brands: brands })
         } catch (error) {
-            console.log(error.message);
+            res.sendStatus(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         }
        
     },
@@ -204,10 +190,10 @@ const productController={
                     image: images
                 })
                 await newProduct.save()
-                res.json({isvalid:true});
+                res.status(HTTP_STATUS.OK).json({isvalid:true});
             } else {
     
-                res.json({isvalid:false});
+                res.status(HTTP_STATUS.NOT_FOUND).json({isvalid:false});
             }
     
         } catch (error) {
@@ -217,7 +203,6 @@ const productController={
       
     },
     async postDeleteproduct(req, res) {
-        console.log("you are in product delete ")
         try {
           const id = req.params.id;
 
@@ -226,19 +211,15 @@ const productController={
     const deletedproduct = await productModel.findByIdAndDelete(id);
       
           if (deletedproduct) {
-            console.log("product deleted successfully:", deletedproduct);
             res.redirect("/admin/products");
           } else {
-            console.log("Category not found");
             res.redirect("/admin/products");
           }
         } catch (error) {
-          console.log("Error deleting category:", error.message);
-          res.status(500).json({ error: "Internal server error" });
+          res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
         }
       },
       async postApplyOffer(req,res){
-        console.log(" in postApplyOffer req.body",req.body)
         
        try{
        const products=await productModel.find({_id:{'$in':req.body.offerids}})
@@ -246,14 +227,12 @@ const productController={
         product.offerpercentage = req.body.offerPercentage;
         product.price=product.regularprice-(product.regularprice*req.body.offerPercentage/100);
         await product.save();
-        console.log("product after save",product)
-        res.json({message:"offer applied successfully"})
-
+        res.status(HTTP_STATUS.OK).json({message:"offer applied successfully"})
        }
     
        }
        catch(err){
-        res.status(404).json({err})
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({err})
        }
       }
 };

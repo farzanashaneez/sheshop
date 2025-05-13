@@ -2,6 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const bcrypt=require("bcrypt")
+const HttpStatus = require("../utils/httpStatus");
 
 
 const maxAge = 3 * 24 * 60 * 60;
@@ -15,7 +16,7 @@ const adminloginController = {
     res.redirect("/admin/dashboard");
   }
   else{
-    res.render("adminlogin");
+    return res.status(HttpStatus.OK).render("adminlogin");
   }
   },
   async login_admin(req, res) {
@@ -25,7 +26,8 @@ const adminloginController = {
      if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
 
    
-      res.render('frontend/error',{title:"Admin not Found...!",message:"user you entered is incorrect"})
+      res.status(HttpStatus.UNAUTHORIZED)
+      .render('frontend/error',{title:"Admin not Found...!",message:"user you entered is incorrect"})
     } else {
       const accessToken = jwt.sign(
         {
@@ -37,7 +39,7 @@ const adminloginController = {
       );
       const { password, ...data } = user._doc;
       res.cookie('jwt', accessToken, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.redirect("/admin/dashboard");
+      res.status(HttpStatus.OK).redirect("/admin/dashboard");
     }
   },
 };

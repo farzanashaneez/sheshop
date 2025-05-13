@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
-//const cookieSession = require('cookie-session');
 const nocache = require("nocache")
 const passport = require('passport');
 const passportsetup = require('./middlewares/googlepassport');

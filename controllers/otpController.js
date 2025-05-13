@@ -4,6 +4,8 @@ const User = require('../models/userModel');
 const Wallet=require('../models/walletSchema')
 const bcrypt=require("bcrypt")
 const crypto=require("crypto")
+const HTTP_STATUS = require('../utils/httpStatus'); 
+
 
 exports.sendOTP = async (req, res) => {
   try {
@@ -15,7 +17,7 @@ exports.sendOTP = async (req, res) => {
     const checkUserPresent = await User.findOne({ email });
     // If user found with provided email
     if (checkUserPresent) {
-      return res.status(401).json({
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
         message: 'User is already registered',
       });
@@ -42,7 +44,7 @@ exports.sendOTP = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ success: false, error: error.message });
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ success: false, error: error.message });
   }
 };
 exports.verifyOTP=  async (req, res) => {
@@ -58,7 +60,7 @@ exports.verifyOTP=  async (req, res) => {
     let isReferalSigniin=false;
 
     if (!OtpUser) {
-      return res.status(404).json({ message: 'otp not found' });
+      return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'otp not found' });
     }
     if(OtpUser.otp===otp){
     const saltRounds = 10; 
@@ -118,13 +120,13 @@ exports.verifyOTP=  async (req, res) => {
 
 
     req.session.userid = newUser._id;
-    return res.json({ 
+    return res.status(HTTP_STATUS.OK).json({ 
       message: 'OTP verified successfully',
       verified:true
        });
   }
   else{
-    return res.json({ 
+    return res.status(HTTP_STATUS.UNAUTHORIZED).json({ 
       message: 'OTP you entered is incorrect',
       verified:false
    });
@@ -132,7 +134,7 @@ exports.verifyOTP=  async (req, res) => {
   }
   } catch (error) {
     console.error('Error verifying OTP:', error);
-    return res.json({ message: 'Error verifying OTP' });
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: 'Error verifying OTP' });
   }
 };
 exports.sentResetOTP=async (req, res) => {
@@ -145,7 +147,7 @@ exports.sentResetOTP=async (req, res) => {
     const checkUserPresent = await User.findOne({ email });
     // If user found with provided email
     if (!checkUserPresent) {
-      return res.status(401).json({
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
         message: 'Not A Registered User',
       });
@@ -165,14 +167,14 @@ exports.sentResetOTP=async (req, res) => {
     const otpPayload = { email, otp };
     console.log("send otp is :",otp)
     const otpBody = await OTP.create(otpPayload);
-    res.status(200).json({
+    res.status(HTTP_STATUS.OK).json({
       success: true,
       message: 'OTP sent successfully',
       otp,
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ success: false, error: error.message });
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ success: false, error: error.message });
   }
 };
 exports.resetpassword=  async (req, res) => {
@@ -190,7 +192,7 @@ exports.resetpassword=  async (req, res) => {
     
     await updateUser.save();
     
-    return res.json({ 
+    return res.status(HTTP_STATUS.OK).json({ 
       message: 'Password reset successfully',
       isReset:true
        });
@@ -198,7 +200,7 @@ exports.resetpassword=  async (req, res) => {
   
    catch (error) {
     console.error('Error verifying OTP:', error);
-    return res.json({ message: 'Error verifying OTP' });
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: 'Error verifying OTP' });
   }
 };
 exports.verifyResetOTP=  async (req, res) => {
@@ -209,17 +211,17 @@ exports.verifyResetOTP=  async (req, res) => {
     const OtpUser = await OTP.findOne({ email }).sort({ createdAt: -1 });
 
     if (!OtpUser) {
-      return res.status(404).json({ message: 'otp not found' });
+      return res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'otp not found' });
     }
     if(OtpUser.otp===otp){
    
-    return res.json({ 
+    return res.status(HTTP_STATUS.OK).json({ 
       message: 'OTP verified successfully',
       verified:true
        });
   }
   else{
-    return res.json({ 
+    return res.status(HTTP_STATUS.UNAUTHORIZED).json({ 
       message: 'OTP you entered is incorrect',
       verified:false
    });
@@ -227,7 +229,7 @@ exports.verifyResetOTP=  async (req, res) => {
   }
   } catch (error) {
     console.error('Error verifying OTP:', error);
-    return res.json({ message: 'Error verifying OTP' });
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ message: 'Error verifying OTP' });
   }
 };
 

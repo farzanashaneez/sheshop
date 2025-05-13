@@ -1,5 +1,7 @@
 const Order=require('../models/orderModel')
 const User=require("../models/userModel")
+const HttpStatus = require("../utils/httpStatus");
+
 
 const adminController={
     async get_dashboard(req,res){
@@ -15,7 +17,7 @@ const adminController={
       const statistic= await  findstatistics();
       console.log("statistic",statistic)
         if(res.locals.user)
-        res.render('admin_panel',{ordersChartList,topProducts,topcategory,topBrand,statistic});
+        res.status(HttpStatus.OK).render('admin_panel',{ordersChartList,topProducts,topcategory,topBrand,statistic});
     else{
         res.redirect('/admin_login')
     }

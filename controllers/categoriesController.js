@@ -1,87 +1,82 @@
 const categoryModel = require("../models/categoryModel");
-const Product=require("../models/productModel");
+const Product = require("../models/productModel");
 const fs = require("fs");
 const path = require("path");
+const HTTP_STATUS = require('../utils/httpStatus'); 
 
 const categoryController = {
-  // async get_categories(req, res) {
-  //   try {
-  //     const categories = await categoryModel.find({});
-  //     categoryArray = categories;
-  //     res.render("categories", { categories: categories });
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // },
   async get_categories(req, res) {
     try {
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
       const skip = (page - 1) * limit;
-  
-      const categories = await categoryModel.find({})
-        .skip(skip)
-        .limit(limit);
-  
+
+      const categories = await categoryModel.find({}).skip(skip).limit(limit);
+
       const totalCategories = await categoryModel.countDocuments();
       const totalPages = Math.ceil(totalCategories / limit);
-  
-      res.render("categories", { 
-        categories, 
-        currentPage: page, 
-        totalPages, 
-        limit 
+
+      res.status(HTTP_STATUS.OK).render("categories", {
+        categories,
+        currentPage: page,
+        totalPages,
+        limit,
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: err.message });
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
     }
   },
-  
 
   async getEditCategory(req, res) {
     try {
       const id = req.params.id;
       const category = await categoryModel.findOne({ _id: id });
-      res.render("categoryupdate", { category: category });
+      res
+        .status(HTTP_STATUS.OK)
+        .render("categoryupdate", { category: category });
     } catch (error) {
       console.log(error.message);
-      res.render('frontend/error',{title:"Error",message:"Category Not found"})
-
+      res
+        .status(HTTP_STATUS.NOT_FOUND)
+        .render("frontend/error", {
+          title: "Error",
+          message: "Category Not found",
+        });
     }
   },
   async postEditCategory(req, res) {
     try {
-      
       const id = req.params.id;
       const { categoryName, description } = req.body;
       const findCategory = await categoryModel.find({ _id: id });
-      
 
+      let image = req.file ? req.file.filename : findCategory.categoryimage;
 
-    let image = req.file ? req.file.filename : findCategory.categoryimage;
-
-    const updatedCategory = await categoryModel.findByIdAndUpdate(
+      const updatedCategory = await categoryModel.findByIdAndUpdate(
         id,
-        { categoryname: categoryName, categorydescription: description, categoryimage: image },
+        {
+          categoryname: categoryName,
+          categorydescription: description,
+          categoryimage: image,
+        },
         { new: true } // To return the updated document
-    );
+      );
 
-    if (!updatedCategory) {
+      if (!updatedCategory) {
         throw new Error("Category not found");
+      }
+
+      res.redirect("/admin/categories");
+    } catch (error) {
+      if (!res.headersSent) {
+        res
+          .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .render("frontend/error", { message: "Error editing category" });
+      }
     }
-
-    res.redirect("/admin/categories");
-} catch (error) {
-  //   console.error(error);
-  //   // Handle the error appropriately
-  //   res.status(500).render('frontend/error', { message: 'Error editing category' });
-  //  // res.render('frontend/error',{title:"error 500",message:"Error updating category"})
-  if (!res.headersSent) {
-    res.status(500).render('frontend/error', { message: 'Error editing category' });
-}
-
-}
   },
   async postDeleteCategory(req, res) {
     try {
@@ -94,23 +89,24 @@ const categoryController = {
         res.redirect("/admin/categories");
       }
     } catch (error) {
-      res.render('frontend/error',{title:"error 500",message:"Error deleting category"})
-
-      
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .render("frontend/error", {
+          title: "error 500",
+          message: "Error deleting category",
+        });
     }
   },
 
   getAddCategory(req, res) {
-    res.render("categoryadd");
+    res.status(HTTP_STATUS.OK).render("categoryadd");
   },
- 
+
   async postAddCategory(req, res) {
     try {
       const { categoryName, categorydescription, categoryoptions } = req.body;
       let categoryOptionArray = [];
       if (categoryoptions) categoryOptionArray = categoryoptions.split(",");
-
-     
 
       const categoryExists = await categoryModel.findOne({
         categoryname: categoryName,
@@ -125,45 +121,37 @@ const categoryController = {
         });
 
         try {
-          
           const saved = await newCategory.save();
           res.redirect("/admin/categories");
         } catch (error) {
-         
           res.json({ error: error.message });
         }
       } else {
-      
-        
-        res.send("category exist");
+        res.status(HTTP_STATUS.CONFLICT).send("category exist");
       }
-    } catch (error) { 
-      console.log("error",error)
-      res.redirect("/admin/categories");
+    } catch (error) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).redirect("/admin/categories");
     }
   },
-  async postApplyOffer(req,res){
-  
-    try{  
+  async postApplyOffer(req, res) {
+    try {
+      const category = await categoryModel.findById(req.body.categoryIds[0]);
+      category.categoryofferpercentage = parseInt(req.body.offerPercentage);
+      await category.save();
 
-  const category = await categoryModel.findById(req.body.categoryIds[0])
-   category.categoryofferpercentage=parseInt(req.body.offerPercentage)
-   await category.save();
-
-   const products=await Product.find({category:category.categoryname})
-   for (const product of products) {
-    product.offerpercentage = req.body.offerPercentage;
-    product.price=product.regularprice-(product.regularprice*req.body.offerPercentage/100);
-    await product.save();
-   }
-   res.json({message:"offer applied successfully"})
-  }
-  catch(err){
-    res.status(404).json({err})
-
-  }
-
-}
+      const products = await Product.find({ category: category.categoryname });
+      for (const product of products) {
+        product.offerpercentage = req.body.offerPercentage;
+        product.price =
+          product.regularprice -
+          (product.regularprice * req.body.offerPercentage) / 100;
+        await product.save();
+      }
+      res.status(HTTP_STATUS.OK).json({ message: "offer applied successfully" });
+    } catch (err) {
+      res.status(HTTP_STATUS.NOT_FOUND).json({ err });
+    }
+  },
 };
 
 module.exports = categoryController;

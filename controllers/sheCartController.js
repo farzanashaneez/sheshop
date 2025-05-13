@@ -3,23 +3,21 @@ const User = require("../models/userModel");
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const Coupon = require("../models/couponModel");
-const Wallet=require("../models/walletSchema")
+const Wallet = require("../models/walletSchema");
 
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
+const HTTP_STATUS = require("../utils/httpStatus");
+const HttpStatus = require("../utils/httpStatus");
 
 const cartController = {
   async getCart(req, res) {
-    //console.log("get cart");
-
     try {
       if (req.session && req.session.userid) {
-        
         const cart = await Cart.findOne({
           userid: req.session.userid,
         }).populate("products.productid");
 
-        // console.log("populated", cart);
         const updatedCart = cart?.products.map((item) => {
           const productTotal = item.productid.price * item.quantity || 0;
           console.log(
@@ -52,24 +50,23 @@ const cartController = {
         );
         const shippingcharge = 0;
         const totalpayment = shippingcharge + subtotal;
-        res.render("frontend/cart", {
+        res.status(HTTP_STATUS.OK).render("frontend/cart", {
           cart: updatedCart,
           subtotal,
           shippingcharge,
           totalpayment,
-          
         });
       } else {
-               res.render('frontend/error',{title:"Logged User not Found...!",message:"Please go to home page and then proceed"})
-
-
-        
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .render("frontend/error", {
+            title: "Logged User not Found...!",
+            message: "Please go to home page and then proceed",
+          });
       }
     } catch (error) {
-      res.render('frontend/error',{title:"Error",message:error.message})
-
-     // res.send({ error });
-      console.log(error);
+      res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .render("frontend/error", { title: "Error", message: error.message });
     }
   },
   async postremoveProduct(req, res) {
@@ -94,12 +91,12 @@ const cartController = {
         await cart.save();
         await productToRestock.save();
 
-        res.send("Product removed successfully");
+        res.status(HTTP_STATUS.OK).send("Product removed successfully");
       } else {
-        res.send("Product not found");
+        res.status(HTTP_STATUS.NOT_FOUND).send("Product not found");
       }
     } catch (err) {
-      res.send(err);
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(err);
     }
   },
   async postupdatecart(req, res) {
@@ -122,7 +119,6 @@ const cartController = {
         const quantityDifference =
           reqProduct.quantity - (cartProduct ? cartProduct.quantity : 0);
 
-      
         const final = await Product.updateOne(
           { _id: cartProduct.productid },
           { $inc: { quantity: -quantityDifference } }
@@ -143,9 +139,9 @@ const cartController = {
 
       console.log("product updated", cart);
 
-      res.send("Product updated successfully");
+      res.status(HTTP_STATUS.OK).send("Product updated successfully");
     } catch (err) {
-      res.send(err);
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(err);
     }
   },
   async getCheckout(req, res) {
@@ -209,8 +205,8 @@ const cartController = {
           cart.couponid,
           cart.couponid?.offerPrice
         );
-          console.log("offerdiscount",offerdiscount)
-        res.render("frontend/checkout", {
+        console.log("offerdiscount", offerdiscount);
+        res.status(HTTP_STATUS.OK).render("frontend/checkout", {
           cart: updatedCart,
           userData,
           coupon: coupondiscount,
@@ -222,23 +218,22 @@ const cartController = {
           totalpayment,
         });
       } else {
-               res.render('frontend/error',{title:"Logged User not Found...!",message:"Please go to home page and then proceed"})
-
+        res.status(HTTP_STATUS.NOT_FOUND).render("frontend/error", {
+          title: "Logged User not Found...!",
+          message: "Please go to home page and then proceed",
+        });
       }
     } catch (error) {
-      res.render('frontend/error',{title:"No products in the cart",message:error.message})
-
-      //res.status(400).send({ message: error.message }); // Send the error message
-      console.log(error);
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render("frontend/error", {
+        title: "No products in the cart",
+        message: error.message,
+      });
     }
   },
 
   async postPlaceOrder(req, res) {
-    console.log("you are in placeorder");
-
     try {
       if (req.session && req.session.userid) {
-        //coupondiscount,offerdiscount
         const addressIndex = req.body.addressIndex;
         const totalamount = parseInt(req.body.totalamount);
         const discount =
@@ -248,8 +243,8 @@ const cartController = {
         const userid = req.session.userid;
         const [userData, cart] = await Promise.all([
           User.findById(userid),
-          Cart.findOne({ userid })
-      ]);
+          Cart.findOne({ userid }),
+        ]);
 
         if (!cart) {
           throw new Error("Cart not found");
@@ -270,79 +265,82 @@ const cartController = {
         // Save the order to the database
         await order.save();
         await Cart.deleteOne({ userid });
-       
-        res.send({ order: order });
+        res.status(HTTP_STATUS.OK).send({ order: order });
       } else {
-               res.render('frontend/error',{title:"Logged User not Found...!",message:"Please go to home page and then proceed"})
-
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render("frontend/error", {
+          title: "Logged User not Found...!",
+          message: "Please go to home page and then proceed",
+        });
       }
     } catch (error) {
-      console.error(error);
       throw error;
     }
   },
   async postWalletPayment(req, res) {
-    console.log("you are in postWalletPayment");
-
+ 
     try {
       if (req.session && req.session.userid) {
         const userid = req.session.userid;
         const userData = await User.findById(userid);
         const totalamount = parseInt(req.body.totalamount);
 
+        if (userData.wallet >= totalamount) {
+          //coupondiscount,offerdiscount
+          const addressIndex = req.body.addressIndex;
+          const discount =
+            parseInt(req.body.offerdiscount) +
+            parseInt(req.body.coupondiscount);
+          const payedamount = parseInt(totalamount - discount);
 
+          const cart = await Cart.findOne({ userid });
 
-      if(userData.wallet>=totalamount){
+          if (!cart) {
+            throw new Error("Cart not found");
+          }
+          const orderid = uuidv4();
+          // Construct the order object
+          const order = new Order({
+            userid,
+            orderid,
+            products: cart.products,
+            totalamount: totalamount,
+            discount,
+            payedamount,
+            paymentType: "wallet",
+            address: userData.useraddress[addressIndex],
+            status: "processing",
+          });
 
-      
-        //coupondiscount,offerdiscount
-        const addressIndex = req.body.addressIndex;
-        const discount =
-          parseInt(req.body.offerdiscount) + parseInt(req.body.coupondiscount);
-        const payedamount = parseInt(totalamount - discount);
+          // Save the order to the database
+          await order.save();
+          await Cart.deleteOne({ userid });
+          userData.wallet = userData.wallet - payedamount;
+          await userData.save();
+          const userWallet = await Wallet.create({
+            userId: userid,
+            amount: payedamount,
+            description: "debited by wallet purchase",
+            isCredited: false,
+            balance: userData.wallet,
+          });
+          await userWallet.save();
 
-        const cart = await Cart.findOne({ userid });
-
-        if (!cart) {
-          throw new Error("Cart not found");
+          res.status(HTTP_STATUS.OK).send({
+            isSuccess: true,
+            order: order,
+            message: "Successfully placed the order",
+          });
+        } else {
+          res.status(HTTP_STATUS.OK).send({
+            isSuccess: false,
+            message: "Your wallet doesn't have enough money",
+          });
         }
-        const orderid = uuidv4();
-        // Construct the order object
-        const order = new Order({
-          userid,
-          orderid,
-          products: cart.products,
-          totalamount: totalamount,
-          discount,
-          payedamount,
-          paymentType:"wallet",
-          address: userData.useraddress[addressIndex],
-          status: "processing",
-        });
-
-        // Save the order to the database
-        await order.save();
-        await Cart.deleteOne({ userid });
-        userData.wallet=userData.wallet-payedamount;
-        await userData.save();
-        const userWallet = await Wallet.create({
-          userId: userid,
-          amount: payedamount,
-          description:"debited by wallet purchase",
-          isCredited:false,
-          balance: userData.wallet,
-        });
-        await userWallet.save();
-        
-       
-        res.send({ isSuccess:true,order: order,message: "Successfully placed the order" });
-      }else{
-        res.send({isSuccess:false, message: "Your wallet doesn't have enough money" });
-
-      }
       } else {
-               res.render('frontend/error',{title:"Logged User not Found...!",message:"Please go to home page and then proceed"})
-
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render("frontend/error", {
+          title: "Logged User not Found...!",
+          message: "Please go to home page and then proceed",
+        });
       }
     } catch (error) {
       console.error(error);
@@ -351,28 +349,25 @@ const cartController = {
   },
   async postVerifyToken(req, res) {
     try {
-
       const couponname = req.body.coupon;
       const totalToPay = req.body.totalamount;
       const findCoupon = await Coupon.findOne({ name: couponname });
-      
-     const userid= await Coupon.findById(findCoupon._id)
 
-     
+      const userid = await Coupon.findById(findCoupon._id);
+
       if (!findCoupon) {
-        console.log("!findCoupon");
-
-        res.status(400).json({ valid: false, message: "Invalid coupon" });
+        
+        res.status(HttpStatus.NOT_FOUND).json({ valid: false, message: "Invalid coupon" });
       } else {
         if (findCoupon.expireOn < new Date()) {
           res.status(400).json({ valid: false, message: "Coupon expired" });
         } else if (totalToPay < findCoupon.minimumPrice) {
-          res.status(400).json({
+          res.status(HttpStatus.NOT_FOUND).json({
             valid: false,
             message: `Minimum purchase amount should be ${findCoupon.minimumPrice}`,
           });
         } else if (findCoupon.userId.some((id) => id === req.session.userid)) {
-          res.status(400).json({ valid: false, message: "Redeemed coupon.. " });
+          res.status(HttpStatus.NOT_FOUND).json({ valid: false, message: "Redeemed coupon.. " });
         } else {
           const cart = await Cart.findOne({
             userid: req.session.userid,
@@ -382,21 +377,19 @@ const cartController = {
           await cart.save();
           console.log("Cart after updating couponid:", cart);
 
-          //console.log("cart in findCoupon",cart)
           findCoupon.userId.push(req.session.userid.toString());
           await findCoupon.save();
 
-          res.json({ valid: true, discount: findCoupon.offerPrice });
+          res.status(HttpStatus.OK).json({ valid: true, discount: findCoupon.offerPrice });
         }
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ valid: false, message: "Error verifying coupon" });
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ valid: false, message: "Error verifying coupon" });
     }
   },
   async removeToken(req, res) {
     try {
-
       const cart = await Cart.findOne({
         userid: req.session.userid,
       });
@@ -410,14 +403,10 @@ const cartController = {
 
       cart.couponid = undefined;
       await cart.save();
-      console.log("findCoupon", findCoupon);
-      console.log("cart", cart);
-
-      res.json({ valid: true });
-      // res.redirect('/cart/checkout')
+      res.status(HttpStatus.OK).json({ valid: true });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error verifying coupon" });
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: "Error verifying coupon" });
     }
   },
 };

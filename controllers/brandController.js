@@ -1,6 +1,7 @@
 const brandModel = require("../models/brandModel");
 const fs = require('fs');
 const path = require('path');
+const HTTP_STATUS = require("../utils/httpStatus"); // Adjust path as needed
 
 
 const brandController = {
@@ -8,9 +9,9 @@ const brandController = {
     try {
       const brands = await brandModel.find({});
       brandArray = brands;
-      res.render("brand", { brands: brands });
+      res.status(HTTP_STATUS.OK).render("brand", { brands: brands });
     } catch (err) {
-     res.render('frontend/error',{title:"error 500",message:err.message})
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render('frontend/error',{title:"error 500",message:err.message})
 
     }
   },
@@ -19,10 +20,10 @@ const brandController = {
       const id = req.params.id;
       const brand = await brandModel.findById(id)
      
-      res.render("brandupdate", { brand: brand });
+      res.status(HTTP_STATUS.OK).render("brandupdate", { brand: brand });
     } catch (error) {
       console.log(error.message);
-      res.render('frontend/error',{title:"Error",message:"Page Not found"})
+      res.status(HTTP_STATUS.NOT_FOUND).render('frontend/error',{title:"Error",message:"Page Not found"})
 
     }
   },
@@ -52,10 +53,10 @@ const brandController = {
   }
      
     } catch (error) { 
-      console.log(error.message);
-
-      //res.status(500).send("Error updating brand");
-
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render('frontend/error', {
+        title: "Error",
+        message: "Error updating brand"
+      });
     }
   },
   async postDeleteBrand(req, res) {
@@ -70,13 +71,13 @@ const brandController = {
       }
     } catch (error) {
      
-     res.render('frontend/error',{title:"error 500",message:"Internal server error"})
+      res.status(HTTP_STATUS.NOT_FOUND).render('frontend/error',{title:"error 500",message:"Internal server error"})
 
       
     }
   },
   getAddBrand(req, res) {
-    res.render("brandadd");
+    res.status(HTTP_STATUS.OK).render("brandadd");
   },
 
   async postAddBrand(req, res) {
@@ -99,8 +100,10 @@ const brandController = {
           }
      
   } catch (error) {
-      console.log("error message",error.message);
-  }
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).render('frontend/error', {
+      title: "Error",
+      message: "Failed to add brand"
+    });  }
   },
 };
 
